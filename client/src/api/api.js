@@ -12,6 +12,7 @@ export const getUser = async (data) => {
         const authHeader = response.headers["authorization"];
         // const jwtToken = authHeader.split(" ")[1];
         console.log(authHeader); // logs the JWT token extracted from the response header
+        console.log(response);
       })
       .catch((error) => {
         console.error(error);
