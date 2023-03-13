@@ -75,6 +75,7 @@ function Login(props) {
             <MenuItem value={"Supervisor"}>Supervisor</MenuItem>
             <MenuItem value={"Evaluator"}>Evaluator</MenuItem>
             <MenuItem value={"Reviewer"}>Reviewer</MenuItem>
+            <MenuItem value={"FYPCommittee"}>FYP Committee</MenuItem>
           </Select>
         </FormControl>
         <Button type="submit">Submit</Button>
