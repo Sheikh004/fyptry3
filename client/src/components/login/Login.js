@@ -20,7 +20,7 @@ function Login(props) {
     setType(SelectChangeEvent.target.value);
   };
   const handleSubmit = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     let data = {
       email: email,
       password: password,

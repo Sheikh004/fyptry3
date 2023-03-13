@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 const studentSchema = new mongoose.Schema(
   {
     name: {
@@ -12,6 +12,17 @@ const studentSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
+    },
+    cgpa: {
+      type: Number,
+    },
+    groupLeader: {
+      type: Boolean,
+      required: true,
+    },
+    groupID: {
+      type: Schema.Types.ObjectId,
+      ref: "Group",
     },
   },
   {
