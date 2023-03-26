@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { getUser } from "../../api/api";
+import React, { useState, useEffect } from "react";
+import { getUser, getChatters } from "../../api/api";
 import {
   Box,
   styled,
@@ -29,6 +29,19 @@ function Login(props) {
     await getUser(data);
   };
 
+  const fetchChatters = async (e) => {
+    e.preventDefault();
+    const data2 = await getChatters({ _id: "641800d14c144769799107e6" });
+    // let filteredChatters = [];
+
+    console.log(data2.data);
+    // data.map((user) => {
+    //   filteredChatters.append(user);
+    // });
+    // console.log(filteredChatters);
+    //   setUsers(fiteredData);
+  };
+
   return (
     <Box
       sx={{
@@ -39,8 +52,7 @@ function Login(props) {
         justContent: "center",
       }}
     >
-      <form onSubmit={handleSubmit}>
-        <Typography>Email Address</Typography>
+      <form onSubmit={fetchChatters}>
         <TextField
           id="filled-basic"
           label="Filled"

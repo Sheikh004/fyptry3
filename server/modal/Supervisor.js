@@ -13,6 +13,10 @@ const supervisorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    groupCount: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true,

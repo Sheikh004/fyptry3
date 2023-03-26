@@ -4,6 +4,7 @@ import Supervisor from "../modal/Supervisor.js";
 import Reviewer from "../modal/Reviewer.js";
 import jwt from "jsonwebtoken";
 import FYPCommittee from "../modal/FYPCommittee.js";
+import Group from "../modal/Group.js";
 export const getUser = async (request, response) => {
   const options = {
     expiresIn: "1h",
@@ -123,5 +124,38 @@ export const getUser = async (request, response) => {
     }
   } catch (error) {
     return response.status(500).json(error);
+  }
+};
+
+export const getChatters = async (req, res) => {
+  try {
+    // const user = await Student.findOne({ email: request.body.email });
+    // const user2 = new Group({
+    //   studentID: ["6418d73767d4f1700d443f24"],
+    //   supervisorId: "641800d14c144769799107e6",
+    // });
+    // user2.save();
+    // return response.send({ user2 });
+    const user = await Group.find({ supervisorId: req.body._id }).populate([
+      {
+        path: "studentID",
+        model: Student,
+        select: "name",
+      },
+      {
+        path: "supervisorId",
+        model: Supervisor,
+        select: "name",
+      },
+      {
+        path: "evaluatorID",
+        model: Evaluator,
+        select: "name",
+      },
+    ]);
+    console.log(user);
+    return res.send({ user });
+  } catch (error) {
+    console.log(error);
   }
 };

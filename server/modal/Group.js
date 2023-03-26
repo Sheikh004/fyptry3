@@ -1,6 +1,10 @@
 import mongoose, { Schema } from "mongoose";
 const groupSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      required: true,
+    },
     studentID: [
       { type: Schema.Types.ObjectId, ref: "Student", required: true },
     ],

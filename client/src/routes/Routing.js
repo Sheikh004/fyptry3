@@ -1,11 +1,13 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import ChatDialog from "../components/chat/ChatDialog";
+import Conversations from "../components/chat/menu/Conversations";
 import Login from "../components/login/Login";
 
 function Routing(props) {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<ChatDialog />} />
     </Routes>
   );
 }

@@ -1,0 +1,79 @@
+// for supervisor chat
+import React from "react";
+import { useState, useEffect, useContext } from "react";
+
+import { Box, styled, Divider } from "@mui/material";
+
+import { getChatters } from "../../../api/api";
+
+//components
+import Conversation from "./Conversation";
+
+const Component = styled(Box)`
+  overflow: overlay;
+  height: 81vh;
+`;
+
+const StyledDivider = styled(Divider)`
+  background-color: #e9edef;
+  opacity: 0.6;
+`;
+
+const Conversations = ({ text }) => {
+  const [groups, setGroups] = useState([]);
+
+  // const { account, socket, setActiveUsers } = useContext(AccountContext);
+
+  useEffect(() => {
+    const fetchChatters = async () => {
+      let data = await getChatters({ _id: "641800d14c144769799107e6" });
+      let filteredData = [];
+
+      data.user.map((chatter) => {
+        if (chatter.name.toLowerCase().includes(text.toLowerCase()))
+          filteredData.push({ groupId: chatter._id, groupName: chatter.name });
+        chatter.studentID.map((student) => {
+          if (student.name.toLowerCase().includes(text.toLowerCase()))
+            filteredData.push({
+              studentId: student._id,
+              studentName: student.name,
+            });
+        });
+      });
+
+      setGroups(filteredData);
+    };
+    fetchChatters();
+  }, [text]);
+
+  // useEffect(() => {
+  //     socket.current.emit('addUser', accounyt);
+  //     socket.current.on("getUsers", users => {
+  //         setActiveUsers(users);
+  //     })
+  // }, [account])
+
+  // for supervisor chat
+
+  return (
+    <Component>
+      {groups &&
+        groups.map((chatter, index) => {
+          return (
+            <React.Fragment key={Object.values(chatter)[0]}>
+              {Object.keys(chatter).includes("groupName") && (
+                <Conversation key={chatter.groupId} group={chatter} />
+              )}
+
+              {Object.keys(chatter).includes("studentName") && (
+                <Conversation key={chatter.groupId} student={chatter} />
+              )}
+              <StyledDivider />
+            </React.Fragment>
+          );
+        })}
+    </Component>
+  );
+};
+
+export default Conversations;

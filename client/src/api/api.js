@@ -24,3 +24,17 @@ export const getUser = async (data) => {
     console.log("error");
   }
 };
+
+export const getChatters = async (data) => {
+  // console.log(data);
+
+  return await axios
+    .post(`${url}/getChatters`, data)
+    .then((response) => {
+      // console.log(response.data.user);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
