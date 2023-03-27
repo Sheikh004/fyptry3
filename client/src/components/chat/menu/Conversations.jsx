@@ -1,13 +1,14 @@
 // for supervisor chat
 import React from "react";
 import { useState, useEffect, useContext } from "react";
-
+import { setChat } from "../../../api/api";
 import { Box, styled, Divider } from "@mui/material";
 
 import { getChatters } from "../../../api/api";
 
 //components
 import Conversation from "./Conversation";
+import { ReceiverContext } from "../../../context/ReceiverProvider";
 
 const Component = styled(Box)`
   overflow: overlay;
@@ -21,7 +22,7 @@ const StyledDivider = styled(Divider)`
 
 const Conversations = ({ text }) => {
   const [groups, setGroups] = useState([]);
-
+  const { receiver } = useContext(ReceiverContext);
   // const { account, socket, setActiveUsers } = useContext(AccountContext);
 
   useEffect(() => {
@@ -46,6 +47,18 @@ const Conversations = ({ text }) => {
     fetchChatters();
   }, [text]);
 
+  useEffect(() => {
+    const getChatterRefresh = async () => {
+      if (receiver) {
+        await setChat({
+          sender: "641800d14c144769799107e6",
+          receiver: receiver.studentId,
+        });
+      }
+    };
+    getChatterRefresh();
+  }, [receiver]);
+
   // useEffect(() => {
   //     socket.current.emit('addUser', accounyt);
   //     socket.current.on("getUsers", users => {
@@ -66,7 +79,7 @@ const Conversations = ({ text }) => {
               )}
 
               {Object.keys(chatter).includes("studentName") && (
-                <Conversation key={chatter.groupId} student={chatter} />
+                <Conversation key={chatter.studentId} student={chatter} />
               )}
               <StyledDivider />
             </React.Fragment>

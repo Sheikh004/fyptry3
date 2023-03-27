@@ -38,3 +38,15 @@ export const getChatters = async (data) => {
       console.error(error);
     });
 };
+
+export const setChat = async (data) => {
+  return await axios
+    .post(`${url}/setChat`, data)
+    .then((response) => {
+      console.log(response);
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
