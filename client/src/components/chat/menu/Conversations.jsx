@@ -23,14 +23,16 @@ const StyledDivider = styled(Divider)`
 const Conversations = ({ text }) => {
   const [groups, setGroups] = useState([]);
   const { receiver } = useContext(ReceiverContext);
+  const [groupList, setGroupList] = useState([]);
   // const { account, socket, setActiveUsers } = useContext(AccountContext);
 
   useEffect(() => {
     const fetchChatters = async () => {
       let data = await getChatters({ _id: "641800d14c144769799107e6" });
       let filteredData = [];
-
+      let groupList = [];
       data.user.map((chatter) => {
+        groupList.push(chatter.name);
         if (chatter.name.toLowerCase().includes(text.toLowerCase()))
           filteredData.push({ id: chatter._id, name: chatter.name });
         chatter.studentID.map((student) => {
@@ -40,6 +42,7 @@ const Conversations = ({ text }) => {
               name: student.name,
             });
         });
+        setGroupList(groupList);
       });
 
       setGroups(filteredData);
@@ -74,12 +77,12 @@ const Conversations = ({ text }) => {
         groups.map((chatter, index) => {
           return (
             <React.Fragment key={Object.values(chatter)[0]}>
-              <Conversation key={chatter.id} chatter={chatter} />
+              <Conversation
+                key={chatter.id}
+                chatter={chatter}
+                groups={groupList}
+              />
 
-              {/* 
-              {Object.keys(chatter).includes("studentName") && (
-                <Conversation key={chatter.id} student={chatter} />
-              )} */}
               <StyledDivider />
             </React.Fragment>
           );

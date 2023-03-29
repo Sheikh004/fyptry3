@@ -36,7 +36,7 @@ const Text = styled(Typography)`
   font-size: 14px;
 `;
 
-const Conversation = ({ chatter }) => {
+const Conversation = ({ chatter, groups }) => {
   //   const url = user.picture || emptyProfilePicture;
 
   // const { account, newMessageFlag }  = useContext(AccountContext);
@@ -60,8 +60,11 @@ const Conversation = ({ chatter }) => {
       <Component onClick={() => getChatter()}>
         <Box style={{ width: "100%" }}>
           <Component>
-            <Text>{chatter.name}</Text>
-
+            {groups.includes(chatter.name) ? (
+              <Typography>{chatter.name}</Typography>
+            ) : (
+              <Text>{chatter.name}</Text>
+            )}
             {/* {message?.text && (
              <Timestamp>{formatDate(message?.timestamp)}</Timestamp>
           )} */}
@@ -72,21 +75,6 @@ const Conversation = ({ chatter }) => {
         </Box>
       </Component>
     </>
-    // <Component onClick={()=>getChatter()}>
-    //   <Box style={{ width: "100%" }}>
-    //     <Component>
-    //       {group?.groupName && <Typography>{group.groupName}</Typography>}
-    //       {student?.studentName && <Text>{student.studentName}</Text>}
-
-    //       {/* {message?.text && (
-    //         <Timestamp>{formatDate(message?.timestamp)}</Timestamp>
-    //       )} */}
-    //     </Component>
-    //     {/* <Box>
-    //                 <Text>{message?.text?.includes('localhost') ? 'media' : message.text}</Text>
-    //             </Box> */}
-    //   </Box>
-    // </Component>
   );
 };
 export default Conversation;
