@@ -32,12 +32,12 @@ const Conversations = ({ text }) => {
 
       data.user.map((chatter) => {
         if (chatter.name.toLowerCase().includes(text.toLowerCase()))
-          filteredData.push({ groupId: chatter._id, groupName: chatter.name });
+          filteredData.push({ id: chatter._id, name: chatter.name });
         chatter.studentID.map((student) => {
           if (student.name.toLowerCase().includes(text.toLowerCase()))
             filteredData.push({
-              studentId: student._id,
-              studentName: student.name,
+              id: student._id,
+              name: student.name,
             });
         });
       });
@@ -52,7 +52,7 @@ const Conversations = ({ text }) => {
       if (receiver) {
         await setChat({
           sender: "641800d14c144769799107e6",
-          receiver: receiver.studentId,
+          receiver: receiver.id,
         });
       }
     };
@@ -74,13 +74,12 @@ const Conversations = ({ text }) => {
         groups.map((chatter, index) => {
           return (
             <React.Fragment key={Object.values(chatter)[0]}>
-              {Object.keys(chatter).includes("groupName") && (
-                <Conversation key={chatter.groupId} group={chatter} />
-              )}
+              <Conversation key={chatter.id} chatter={chatter} />
 
+              {/* 
               {Object.keys(chatter).includes("studentName") && (
-                <Conversation key={chatter.studentId} student={chatter} />
-              )}
+                <Conversation key={chatter.id} student={chatter} />
+              )} */}
               <StyledDivider />
             </React.Fragment>
           );

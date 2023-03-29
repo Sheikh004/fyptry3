@@ -3,8 +3,9 @@ import { Dialog, styled, Box } from "@mui/material";
 
 //components
 import Menu from "./menu/Menu";
-// import ChatBox from "./chat/ChatBox";
 import EmptyChat from "./chat/EmptyChat";
+import { ReceiverContext } from "../../context/ReceiverProvider";
+import ChatBox from "./chat/ChatBox";
 
 const Component = styled(Box)`
   display: flex;
@@ -33,6 +34,8 @@ const dialogStyle = {
 };
 
 const ChatDialog = () => {
+  const { receiver } = useContext(ReceiverContext);
+
   return (
     <Dialog
       open={true}
@@ -45,7 +48,7 @@ const ChatDialog = () => {
           <Menu />
         </LeftComponent>
         <RightComponent>
-          <EmptyChat />
+          {receiver == null ? <EmptyChat /> : <ChatBox />}
         </RightComponent>
       </Component>
     </Dialog>

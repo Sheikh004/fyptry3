@@ -36,7 +36,7 @@ const Text = styled(Typography)`
   font-size: 14px;
 `;
 
-const Conversation = ({ student, group }) => {
+const Conversation = ({ chatter }) => {
   //   const url = user.picture || emptyProfilePicture;
 
   // const { account, newMessageFlag }  = useContext(AccountContext);
@@ -52,45 +52,25 @@ const Conversation = ({ student, group }) => {
   // }, [newMessageFlag]);
   const { setReceiver } = useContext(ReceiverContext);
   const getChatter = () => {
-    setReceiver(student);
+    setReceiver(chatter);
   };
-
-  const getGroupChatters = () => {};
 
   return (
     <>
-      {group?.groupName && (
-        <Component onClick={() => getGroupChatters()}>
-          <Box style={{ width: "100%" }}>
-            <Component>
-              <Typography>{group?.groupName}</Typography>
+      <Component onClick={() => getChatter()}>
+        <Box style={{ width: "100%" }}>
+          <Component>
+            <Text>{chatter.name}</Text>
 
-              {/* {message?.text && (
-            <Timestamp>{formatDate(message?.timestamp)}</Timestamp>
-          )} */}
-            </Component>
-            {/* <Box>
-                    <Text>{message?.text?.includes('localhost') ? 'media' : message.text}</Text>
-                </Box> */}
-          </Box>
-        </Component>
-      )}{" "}
-      {student?.studentName && (
-        <Component onClick={() => getChatter()}>
-          <Box style={{ width: "100%" }}>
-            <Component>
-              <Text>{student?.studentName}</Text>
-
-              {/* {message?.text && (
+            {/* {message?.text && (
              <Timestamp>{formatDate(message?.timestamp)}</Timestamp>
           )} */}
-            </Component>
-            {/* <Box>
+          </Component>
+          {/* <Box>
                      <Text>{message?.text?.includes('localhost') ? 'media' : message.text}</Text>
                  </Box> */}
-          </Box>
-        </Component>
-      )}
+        </Box>
+      </Component>
     </>
     // <Component onClick={()=>getChatter()}>
     //   <Box style={{ width: "100%" }}>

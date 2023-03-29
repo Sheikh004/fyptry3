@@ -1,35 +1,36 @@
-import { useContext, useState, useEffect } from 'react';
+import { useContext, useState, useEffect } from "react";
 
-import { Box } from '@mui/material';
+import { Box } from "@mui/material";
 
-import { UserContext } from '../../../context/UserProvider';
-import { AccountContext } from '../../../context/AccountProvider';
-import { getConversation } from '../../../service/api';
+import { ReceiverContext } from "../../../context/ReceiverProvider";
+// import { getConversation } from "../../../service/api";
 
 //components
-import ChatHeader from './ChatHeader';
-import Messages from './Messages';
+import ChatHeader from "./ChatHeader";
+// import Messages from "./Messages";
 
 const ChatBox = () => {
-    const { person } = useContext(UserContext);
-    const { account } = useContext(AccountContext);
+  const { receiver } = useContext(ReceiverContext);
 
-    const [conversation, setConversation] = useState({});
-    
-    useEffect(() => {
-        const getConversationDetails = async () => {
-            let data = await getConversation({ senderId: account.sub, receiverId: person.sub });
-            setConversation(data);
-        }
-        getConversationDetails();
-    }, [person.sub]);
+  const [conversation, setConversation] = useState({});
 
-    return (
-        <Box style={{height: '75%'}}>
-            <ChatHeader person={person} />
-            <Messages person={person} conversation={conversation} />
-        </Box>
-    )
-}
+  // useEffect(() => {
+  //   const getConversationDetails = async () => {
+  //     let data = await getConversation({
+  //       senderId: "641800d14c144769799107e6",
+  //       receiverId: receiver.studentId,
+  //     });
+  //     setConversation(data);
+  //   };
+  //   getConversationDetails();
+  // }, [receiver.studentId]);
+
+  return (
+    <Box style={{ height: "75%" }}>
+      <ChatHeader receiver={receiver} />
+      {/* {<Messages receiver={receiver} conversation={conversation} />} */}
+    </Box>
+  );
+};
 
 export default ChatBox;
