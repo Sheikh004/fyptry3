@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { ReceiverContext } from "../../../context/ReceiverProvider";
+import { ChatContext } from "../../../context/ChatProvider";
 import { styled, Box, Typography } from "@mui/material";
 
 import { formatDate } from "../../../utils/common-utils";
@@ -50,7 +50,7 @@ const Conversation = ({ chatter, groups }) => {
   //     }
   //     getConversationMessage();
   // }, [newMessageFlag]);
-  const { setReceiver } = useContext(ReceiverContext);
+  const { setReceiver } = useContext(ChatContext);
   const getChatter = () => {
     setReceiver(chatter);
   };

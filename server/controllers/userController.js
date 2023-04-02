@@ -153,7 +153,7 @@ export const getChatters = async (req, res) => {
         select: "name",
       },
     ]);
-    console.log(user);
+
     return res.send({ user });
   } catch (error) {
     console.log(error);

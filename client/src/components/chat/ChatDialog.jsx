@@ -4,7 +4,7 @@ import { Dialog, styled, Box } from "@mui/material";
 //components
 import Menu from "./menu/Menu";
 import EmptyChat from "./chat/EmptyChat";
-import { ReceiverContext } from "../../context/ReceiverProvider";
+import { ChatContext } from "../../context/ChatProvider";
 import ChatBox from "./chat/ChatBox";
 
 const Component = styled(Box)`
@@ -34,7 +34,7 @@ const dialogStyle = {
 };
 
 const ChatDialog = () => {
-  const { receiver } = useContext(ReceiverContext);
+  const { receiver } = useContext(ChatContext);
 
   return (
     <Dialog

@@ -8,7 +8,7 @@ import { getChatters } from "../../../api/api";
 
 //components
 import Conversation from "./Conversation";
-import { ReceiverContext } from "../../../context/ReceiverProvider";
+import { ChatContext } from "../../../context/ChatProvider";
 
 const Component = styled(Box)`
   overflow: overlay;
@@ -22,7 +22,7 @@ const StyledDivider = styled(Divider)`
 
 const Conversations = ({ text }) => {
   const [groups, setGroups] = useState([]);
-  const { receiver } = useContext(ReceiverContext);
+  const { receiver, setChatID } = useContext(ChatContext);
   const [groupList, setGroupList] = useState([]);
   // const { account, socket, setActiveUsers } = useContext(AccountContext);
 
@@ -53,10 +53,11 @@ const Conversations = ({ text }) => {
   useEffect(() => {
     const getChatterRefresh = async () => {
       if (receiver) {
-        await setChat({
+        const chatDetails = await setChat({
           sender: "641800d14c144769799107e6",
           receiver: receiver.id,
         });
+        setChatID(chatDetails.data._id);
       }
     };
     getChatterRefresh();

@@ -9,7 +9,7 @@ export const setChat = async (request, response) => {
   });
 
   if (exist) {
-    response.status(200).json("conversation already exists");
+    response.status(200).json(exist);
     return;
   }
   const newConversation = new Conversation({

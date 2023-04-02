@@ -1,5 +1,4 @@
 import express from "express";
-// import bodyParser from "body-parser";
 import cors from "cors";
 import dotenv from "dotenv";
 import Routes from "./routes/Routes.js";
@@ -7,9 +6,13 @@ import Connection from "./database/db.js";
 import session from "express-session";
 import cookieParser from "cookie-parser";
 
+import path from "path";
+import { createRequire } from "module";
+
+const require = createRequire(import.meta.url);
 dotenv.config();
 const app = express();
-// app.use(cors());
+
 const corsOptions = {
   exposedHeaders: "Authorization",
 };
@@ -26,6 +29,9 @@ app.use(
     saveUninitialized: true,
   })
 );
+const __dirname = path.dirname(new URL(import.meta.url).pathname);
+
+app.use(express.static("./uploads/"));
 
 app.use("/", Routes);
 

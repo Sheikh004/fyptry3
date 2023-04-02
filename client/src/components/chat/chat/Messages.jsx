@@ -1,10 +1,9 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { Box, styled } from "@mui/material";
 
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
-import { getMessages, newMessages } from "../../../service/api";
-import { AccountContext } from "../../../context/AccountProvider";
+import { createMessage, getMessages } from "../../../api/api";
 
 //components
 import Message from "./Message";
@@ -32,12 +31,12 @@ const Container = styled(Box)`
   padding: 1px 80px;
 `;
 
-const Messages = ({ receiver, conversation }) => {
+const Messages = ({ receiver, chatID }) => {
   const [messages, setMessages] = useState([]);
-  // const [incomingMessage, setIncomingMessage] = useState(null);
-  const [value, setValue] = useState();
+  const [newMessageFlag, setNewMessageFlag] = useState(null);
+  const [value, setValue] = useState("");
   const [file, setFile] = useState();
-  const [image, setImage] = useState();
+  const [form, setForm] = useState();
 
   const scrollRef = useRef();
 
@@ -54,11 +53,14 @@ const Messages = ({ receiver, conversation }) => {
 
   useEffect(() => {
     const getMessageDetails = async () => {
-      let data = await getMessages(conversation?._id);
-      setMessages(data);
+      // console.log(chatID);
+      let data = await getMessages(chatID);
+      // console.log(data);
+      if (data) setMessages(data);
+      // console.log(typeof messages);
     };
     getMessageDetails();
-  }, [conversation?._id, person._id]);
+  }, [chatID, receiver.id, newMessageFlag]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ transition: "smooth" });
@@ -70,41 +72,43 @@ const Messages = ({ receiver, conversation }) => {
   //       setMessages((prev) => [...prev, incomingMessage]);
   //   }, [incomingMessage, conversation]);
 
-  const receiverId = conversation?.members?.find(
-    (member) => member !== account.sub
-  );
+  // const receiverId = conversation?.members?.find(
+  //   (member) => member !== account.sub
+  // );
 
   const sendText = async (e) => {
-    let code = e.keyCode || e.which;
+    let code = e.key;
     if (!value) return;
 
-    if (code === 13) {
+    if (code === "Enter") {
       let message = {};
       if (!file) {
         message = {
-          senderId: account.sub,
-          receiverId: receiverId,
-          conversationId: conversation._id,
+          senderId: "641800d14c144769799107e6",
+          receiverId: receiver.id,
+          conversationId: chatID,
           type: "text",
           text: value,
         };
       } else {
         message = {
-          senderId: account.sub,
-          conversationId: conversation._id,
-          receiverId: receiverId,
+          senderId: "641800d14c144769799107e6",
+          conversationId: chatID,
+          receiverId: receiver.id,
           type: "file",
-          text: image,
+          text: form,
         };
+        console.log(form);
       }
 
-      socket.current.emit("sendMessage", message);
+      // socket.current.emit("sendMessage", message);
 
-      await newMessages(message);
+      await createMessage(message);
 
       setValue("");
       setFile();
-      setImage("");
+      setForm("");
+
       setNewMessageFlag((prev) => !prev);
     }
   };
@@ -114,8 +118,8 @@ const Messages = ({ receiver, conversation }) => {
       <Component>
         {messages &&
           messages.map((message) => (
-            <Container ref={scrollRef}>
-              <Message message={message} />
+            <Container ref={scrollRef} key={message._id}>
+              <Message message={message} key={message._id} />
             </Container>
           ))}
       </Component>
@@ -125,7 +129,7 @@ const Messages = ({ receiver, conversation }) => {
         setValue={setValue}
         setFile={setFile}
         file={file}
-        setImage={setImage}
+        setForm={setForm}
       />
     </Wrapper>
   );
