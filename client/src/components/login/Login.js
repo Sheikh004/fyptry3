@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { ChatContext } from "../../context/ChatProvider";
 import { getUser, getChatters } from "../../api/api";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   styled,
@@ -15,7 +17,8 @@ function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [type, setType] = useState("");
-
+  const { user, setUser } = useContext(ChatContext);
+  const navigate = useNavigate();
   const handleChange = (SelectChangeEvent) => {
     setType(SelectChangeEvent.target.value);
   };
@@ -26,22 +29,15 @@ function Login(props) {
       password: password,
       type: type,
     };
-    await getUser(data);
+    let user2 = await getUser(data);
+
+    if (user2 != null) {
+      await setUser(user2);
+    }
   };
-
-  const fetchChatters = async (e) => {
-    e.preventDefault();
-    const data2 = await getChatters({ _id: "641800d14c144769799107e6" });
-    // let filteredChatters = [];
-
-    console.log(data2.data);
-    // data.map((user) => {
-    //   filteredChatters.append(user);
-    // });
-    // console.log(filteredChatters);
-    //   setUsers(fiteredData);
-  };
-
+  useEffect(() => {
+    if (user != null) navigate("/SupervisorHome");
+  }, [user]);
   return (
     <Box
       sx={{
@@ -52,7 +48,7 @@ function Login(props) {
         justContent: "center",
       }}
     >
-      <form onSubmit={fetchChatters}>
+      <form onSubmit={handleSubmit}>
         <TextField
           id="filled-basic"
           label="Filled"

@@ -4,7 +4,7 @@ import { useState, useEffect, useContext } from "react";
 import { setChat } from "../../../api/api";
 import { Box, styled, Divider } from "@mui/material";
 
-import { getChatters } from "../../../api/api";
+import { getChatters, getStChatters } from "../../../api/api";
 
 //components
 import Conversation from "./Conversation";
@@ -22,31 +22,64 @@ const StyledDivider = styled(Divider)`
 
 const Conversations = ({ text }) => {
   const [groups, setGroups] = useState([]);
-  const { receiver, setChatID } = useContext(ChatContext);
+  const { receiver, setChatID, user } = useContext(ChatContext);
   const [groupList, setGroupList] = useState([]);
   // const { account, socket, setActiveUsers } = useContext(AccountContext);
 
   useEffect(() => {
     const fetchChatters = async () => {
-      let data = await getChatters({ _id: "641800d14c144769799107e6" });
-      let filteredData = [];
-      let groupList = [];
-      data.user.map((chatter) => {
-        groupList.push(chatter.name);
-        if (chatter.name.toLowerCase().includes(text.toLowerCase()))
-          filteredData.push({ id: chatter._id, name: chatter.name });
-        chatter.studentID.map((student) => {
-          if (student.name.toLowerCase().includes(text.toLowerCase()))
-            filteredData.push({
-              id: student._id,
-              name: student.name,
-            });
+      if (user.type === "Supervisor") {
+        let data = await getChatters({ supId: user.id });
+        console.log(data.user);
+        let filteredData = [];
+        let groupList = [];
+        data.user.map((chatter) => {
+          groupList.push(chatter.name);
+          if (chatter.name.toLowerCase().includes(text.toLowerCase()))
+            filteredData.push({ id: chatter._id, name: chatter.name });
+          chatter.studentID.map((student) => {
+            if (student.name.toLowerCase().includes(text.toLowerCase()))
+              filteredData.push({
+                id: student._id,
+                name: student.name,
+              });
+          });
+          setGroupList(groupList);
         });
-        setGroupList(groupList);
-      });
 
-      setGroups(filteredData);
+        setGroups(filteredData);
+      }
+      if (user.type == "Student") {
+        let data = await getStChatters({ stId: user.id });
+        console.log(data.user);
+        let filteredData = [];
+        let groupList = [];
+        data.user.map((chatter) => {
+          groupList.push(chatter.name);
+          if (chatter.name.toLowerCase().includes(text.toLowerCase()))
+            filteredData.push({ id: chatter._id, name: chatter.name });
+
+          if (
+            chatter.supervisorId.name.toLowerCase().includes(text.toLowerCase())
+          )
+            filteredData.push({
+              id: chatter.supervisorId._id,
+              name: chatter.supervisorId.name,
+            });
+
+          chatter.studentID.map((student) => {
+            if (student._id !== user.id) {
+              if (student.name.toLowerCase().includes(text.toLowerCase()))
+                filteredData.push({ id: student._id, name: student.name });
+            }
+          });
+
+          setGroupList(groupList);
+        });
+        setGroups(filteredData);
+      }
     };
+
     fetchChatters();
   }, [text]);
 
@@ -54,7 +87,7 @@ const Conversations = ({ text }) => {
     const getChatterRefresh = async () => {
       if (receiver) {
         const chatDetails = await setChat({
-          sender: "641800d14c144769799107e6",
+          sender: user.id,
           receiver: receiver.id,
         });
         setChatID(chatDetails.data._id);

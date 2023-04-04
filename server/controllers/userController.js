@@ -5,6 +5,7 @@ import Reviewer from "../modal/Reviewer.js";
 import jwt from "jsonwebtoken";
 import FYPCommittee from "../modal/FYPCommittee.js";
 import Group from "../modal/Group.js";
+
 export const getUser = async (request, response) => {
   const options = {
     expiresIn: "1h",
@@ -24,10 +25,16 @@ export const getUser = async (request, response) => {
           const token = jwt.sign({ email: email }, "myjwtsecret", options);
 
           response.header("Access-Control-Expose-Headers", "Authorization");
-
-          return response.header("Authorization", token).status(200).send({
-            user,
-          });
+          // console.log(user.name);
+          return response
+            .header("authorization", `Bearer ${token}`)
+            .status(200)
+            .send({
+              id: user._id,
+              name: user.name,
+              email: user.email,
+              type: request.body.type,
+            });
         } else {
           console.log("Incorrect password");
           return;
@@ -47,9 +54,15 @@ export const getUser = async (request, response) => {
 
           response.header("Access-Control-Expose-Headers", "Authorization");
 
-          return response.header("Authorization", token).status(200).send({
-            user,
-          });
+          return response
+            .header("authorization", `Bearer ${token}`)
+            .status(200)
+            .send({
+              id: user._id,
+              name: user.name,
+              email: user.email,
+              type: request.body.type,
+            });
         } else {
           console.log("Incorrect password");
           return;
@@ -69,9 +82,15 @@ export const getUser = async (request, response) => {
 
           response.header("Access-Control-Expose-Headers", "Authorization");
 
-          return response.header("Authorization", token).status(200).send({
-            user,
-          });
+          return response
+            .header("authorization", `Bearer ${token}`)
+            .status(200)
+            .send({
+              id: user._id,
+              name: user.name,
+              email: user.email,
+              type: request.body.type,
+            });
         } else {
           console.log("Incorrect password");
           return;
@@ -91,9 +110,15 @@ export const getUser = async (request, response) => {
 
           response.header("Access-Control-Expose-Headers", "Authorization");
 
-          return response.header("Authorization", token).status(200).send({
-            user,
-          });
+          return response
+            .header("authorization", `Bearer ${token}`)
+            .status(200)
+            .send({
+              id: user._id,
+              name: user.name,
+              email: user.email,
+              type: request.body.type,
+            });
         } else {
           console.log("Incorrect password");
           return;
@@ -113,9 +138,15 @@ export const getUser = async (request, response) => {
 
           response.header("Access-Control-Expose-Headers", "Authorization");
 
-          return response.header("Authorization", token).status(200).send({
-            user,
-          });
+          return response
+            .header("authorization", `Bearer ${token}`)
+            .status(200)
+            .send({
+              id: user._id,
+              name: user.name,
+              email: user.email,
+              type: request.body.type,
+            });
         } else {
           console.log("Incorrect password");
           return;
@@ -136,7 +167,7 @@ export const getChatters = async (req, res) => {
     // });
     // user2.save();
     // return response.send({ user2 });
-    const user = await Group.find({ supervisorId: req.body._id }).populate([
+    const user = await Group.find({ supervisorId: req.body.supId }).populate([
       {
         path: "studentID",
         model: Student,
@@ -154,6 +185,31 @@ export const getChatters = async (req, res) => {
       },
     ]);
 
+    return res.send({ user });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getStChatters = async (req, res) => {
+  try {
+    const user = await Group.find({ studentID: req.body.stId }).populate([
+      {
+        path: "studentID",
+        model: Student,
+        select: "name",
+      },
+      {
+        path: "supervisorId",
+        model: Supervisor,
+        select: "name",
+      },
+      {
+        path: "evaluatorID",
+        model: Evaluator,
+        select: "name",
+      },
+    ]);
     return res.send({ user });
   } catch (error) {
     console.log(error);

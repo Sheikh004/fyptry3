@@ -4,14 +4,13 @@ import ChatDialog from "../components/chat/ChatDialog";
 
 import Login from "../components/login/Login";
 
-import ChatProvider from "../context/ChatProvider";
 function Routing(props) {
   return (
-    <ChatProvider>
-      <Routes>
-        <Route path="/" element={<ChatDialog />} />
-      </Routes>
-    </ChatProvider>
+    <Routes>
+      <Route path="/" component={Login} />
+      <Route path="/SupervisorHome" component={ChatDialog} />
+      <Route path="*" component={Login} />
+    </Routes>
   );
 }
 

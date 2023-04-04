@@ -5,13 +5,18 @@ const url = "http://localhost:8000";
 export const getUser = async (data) => {
   // console.log(data);
   try {
-    let response = await axios
+    return await axios
       .post(`${url}/getUser`, data)
       .then((response) => {
-        console.log(response.headers);
         const authHeader = response.headers["authorization"];
-        // const jwtToken = authHeader.split(" ")[1];
-        console.log(authHeader); // logs the JWT token extracted from the response header
+        const jwtToken = authHeader.split(" ")[1];
+        console.log(authHeader);
+        // console.log(authHeader); // logs the JWT token extracted from the response header
+        // console.log(response.data);
+        console.log(jwtToken);
+        sessionStorage.setItem("jwtToken", jwtToken);
+
+        return response.data;
       })
       .catch((error) => {
         console.error(error);
@@ -25,10 +30,32 @@ export const getUser = async (data) => {
 };
 
 export const getChatters = async (data) => {
-  // console.log(data);
+  const token = sessionStorage.getItem("jwtToken");
 
   return await axios
-    .post(`${url}/getChatters`, data)
+    .post(`${url}/getChatters`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      // console.log(response.data.user);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getStChatters = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+
+  return await axios
+    .post(`${url}/getStChatters`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((response) => {
       // console.log(response.data.user);
       return response.data;
@@ -39,8 +66,13 @@ export const getChatters = async (data) => {
 };
 
 export const setChat = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
   return await axios
-    .post(`${url}/setChat`, data)
+    .post(`${url}/setChat`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((response) => {
       return response;
     })
@@ -50,8 +82,13 @@ export const setChat = async (data) => {
 };
 
 export const getMessages = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
   return await axios
-    .get(`${url}/getMessages/get/${data}`)
+    .get(`${url}/getMessages/get/${data}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((response) => {
       return response.data;
     })
@@ -61,8 +98,13 @@ export const getMessages = async (data) => {
 };
 
 export const createMessage = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
   return await axios
-    .post(`${url}/createMessage`, data)
+    .post(`${url}/createMessage`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .then((response) => {
       // console.log(response);
       return response;
@@ -73,8 +115,13 @@ export const createMessage = async (data) => {
 };
 
 export const uploadFile = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
   try {
-    return await axios.post(`${url}/file/upload`, data);
+    return await axios.post(`${url}/file/upload`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   } catch (error) {
     console.log("Error while calling uploadFile API ", error);
   }

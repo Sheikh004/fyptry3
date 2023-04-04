@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { Box, styled } from "@mui/material";
-
+import { ChatContext } from "../../../context/ChatProvider";
 // import { io } from "socket.io-client";
 
 import { createMessage, getMessages } from "../../../api/api";
@@ -37,7 +37,7 @@ const Messages = ({ receiver, chatID }) => {
   const [value, setValue] = useState("");
   const [file, setFile] = useState();
   const [form, setForm] = useState();
-
+  const { user } = useContext(ChatContext);
   const scrollRef = useRef();
 
   // const { account, socket, newMessageFlag, setNewMessageFlag } = useContext(AccountContext);
@@ -55,7 +55,7 @@ const Messages = ({ receiver, chatID }) => {
     const getMessageDetails = async () => {
       // console.log(chatID);
       let data = await getMessages(chatID);
-      // console.log(data);
+      console.log(data);
       if (data) setMessages(data);
       // console.log(typeof messages);
     };
@@ -84,7 +84,7 @@ const Messages = ({ receiver, chatID }) => {
       let message = {};
       if (!file) {
         message = {
-          senderId: "641800d14c144769799107e6",
+          senderId: user.id,
           receiverId: receiver.id,
           conversationId: chatID,
           type: "text",
@@ -92,7 +92,7 @@ const Messages = ({ receiver, chatID }) => {
         };
       } else {
         message = {
-          senderId: "641800d14c144769799107e6",
+          senderId: user.id,
           conversationId: chatID,
           receiverId: receiver.id,
           type: "file",

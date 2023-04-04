@@ -16,6 +16,7 @@ const Container = styled(Box)`
     margin: 5px;
     color: #919191;
   }
+  padding-left: 30px;
 `;
 
 const Search = styled(Box)`
@@ -60,7 +61,6 @@ const Footer = ({ sendText, value, setValue, setFile, file, setForm }) => {
 
   return (
     <Container>
-      <EmojiEmotions />
       <label htmlFor="fileInput">
         <ClipIcon />
       </label>
@@ -80,7 +80,6 @@ const Footer = ({ sendText, value, setValue, setFile, file, setForm }) => {
           value={value}
         />
       </Search>
-      <Mic />
     </Container>
   );
 };

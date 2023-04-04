@@ -2,7 +2,7 @@ import { useContext } from "react";
 import officeIcon from "../../../assets/office.png";
 import { Box, styled, Typography } from "@mui/material";
 import { GetApp as GetAppIcon } from "@mui/icons-material";
-
+import { ChatContext } from "../../../context/ChatProvider";
 import { downloadMedia, formatDate } from "../../../utils/common-utils";
 // import { iconPDF } from "../../../constants/data";
 
@@ -41,9 +41,10 @@ const Time = styled(Typography)`
 `;
 
 const Message = ({ message }) => {
+  const { user } = useContext(ChatContext);
   return (
     <>
-      {message.senderId === "641800d14c144769799107e6" ? (
+      {message.senderId === user.id ? (
         <Own>
           {message.type === "file" ? (
             <ImageMessage message={message} />
@@ -99,10 +100,27 @@ const ImageMessage = ({ message }) => {
           </Typography>
         </div>
       )}
+      {(message?.text?.includes(".m4a") ||
+        message?.text?.includes(".mp4") ||
+        message?.text?.includes(".mp3")) && (
+        <div style={{ display: "flex" }}>
+          <img
+            src={require("../../../assets/audio-file.png")}
+            alt="pdf-icon"
+            style={{ width: 80 }}
+          />
+          <Typography style={{ fontSize: 14 }}>
+            {message.text.split("--").pop()}
+          </Typography>
+        </div>
+      )}
       {!message?.text?.includes(".pdf") &&
         !message?.text?.includes(".png") &&
         !message?.text?.includes(".jpeg") &&
-        !message?.text?.includes(".jpg") && (
+        !message?.text?.includes(".jpg") &&
+        !message?.text?.includes(".m4a") &&
+        !message?.text?.includes(".mp3") &&
+        !message?.text?.includes(".mp4") && (
           <div style={{ display: "flex" }}>
             <img src={officeIcon} alt="pdf-icon" style={{ width: 80 }} />
             <Typography style={{ fontSize: 14 }}>
