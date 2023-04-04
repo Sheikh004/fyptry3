@@ -16,15 +16,15 @@ export const getUser = async (data) => {
         console.log(jwtToken);
         sessionStorage.setItem("jwtToken", jwtToken);
 
-        return response.data;
+        return response;
       })
       .catch((error) => {
         console.error(error);
+        return error.response.data.message;
       });
 
     // console.log(response);
   } catch (error) {
-    console.log(error.message);
     console.log("error");
   }
 };

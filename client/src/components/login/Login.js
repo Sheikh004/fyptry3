@@ -18,21 +18,44 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const [type, setType] = useState("");
   const { user, setUser } = useContext(ChatContext);
+  const [mailError, setMailError] = useState("");
+  const [passError, setPassError] = useState("");
+  const [typeError, setTypeError] = useState("");
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
   const handleChange = (SelectChangeEvent) => {
     setType(SelectChangeEvent.target.value);
+    setTypeError("");
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let data = {
-      email: email,
-      password: password,
-      type: type,
-    };
-    let user2 = await getUser(data);
-
-    if (user2 != null) {
-      await setUser(user2);
+    setError("");
+    if (!email) {
+      setMailError("Email is required");
+    } else if (
+      !/^[a-zA-Z]{2}\d{2}-[a-zA-Z]{3}-\d{3}@cuilahore\.edu\.pk$/.test(email)
+    ) {
+      setMailError("Invalid email format");
+    } else if (!password) {
+      setPassError("Password is required");
+    } else if (password.length < 8) {
+      setPassError("Password must be at least 8 characters long");
+    } else if (!type) {
+      setTypeError("Please select login type");
+    } else {
+      let data = {
+        email: email,
+        password: password,
+        type: type,
+      };
+      let user2 = await getUser(data);
+      console.log(user2);
+      if (user2.data != null) {
+        await setUser(user2.data);
+      } else {
+        setError(user2);
+      }
     }
   };
   useEffect(() => {
@@ -49,14 +72,17 @@ function Login(props) {
       }}
     >
       <form onSubmit={handleSubmit}>
+        {mailError && <p>{mailError}</p>}
         <TextField
           id="filled-basic"
           label="Filled"
           variant="filled"
           onChange={(event) => {
             setEmail(event.target.value);
+            setMailError("");
           }}
         />
+        {passError && <p>{passError}</p>}
         <Typography>Password</Typography>
         <TextField
           id="outlined-password-input"
@@ -65,8 +91,10 @@ function Login(props) {
           autoComplete="current-password"
           onChange={(event) => {
             setPassword(event.target.value);
+            setPassError("");
           }}
         />
+        {typeError && <p>{typeError}</p>}
         <Typography>Login Type:</Typography>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Login Type</InputLabel>
@@ -86,6 +114,7 @@ function Login(props) {
             <MenuItem value={"FYPCommittee"}>FYP Committee</MenuItem>
           </Select>
         </FormControl>
+        {error && <p>{error}</p>}
         <Button type="submit">Submit</Button>
       </form>
     </Box>

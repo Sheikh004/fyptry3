@@ -16,7 +16,7 @@ export const getUser = async (request, response) => {
 
       if (!user) {
         console.log("No such user");
-        return;
+        return response.status(550).json({ message: "No such user exists" });
       } else {
         let email = request.body.email;
         let password = request.body.password;
@@ -37,14 +37,14 @@ export const getUser = async (request, response) => {
             });
         } else {
           console.log("Incorrect password");
-          return;
+          return response.status(401).json({ message: "Incorrect password" });
         }
       }
     } else if (request.body.type == "Supervisor") {
       const user = await Supervisor.findOne({ email: request.body.email });
       if (!user) {
         console.log("No such user");
-        return;
+        return response.status(550).json({ message: "No such user exists" });
       } else {
         let email = request.body.email;
         let password = request.body.password;
@@ -65,14 +65,14 @@ export const getUser = async (request, response) => {
             });
         } else {
           console.log("Incorrect password");
-          return;
+          return response.status(401).json({ message: "Incorrect password" });
         }
       }
     } else if (request.body.type == "Evaluator") {
       const user = await Evaluator.findOne({ email: request.body.email });
       if (!user) {
         console.log("No such user");
-        return;
+        return response.status(550).json({ message: "No such user exists" });
       } else {
         let email = request.body.email;
         let password = request.body.password;
@@ -93,14 +93,14 @@ export const getUser = async (request, response) => {
             });
         } else {
           console.log("Incorrect password");
-          return;
+          return response.status(401).json({ message: "Incorrect password" });
         }
       }
     } else if (request.body.type == "FYPCommittee") {
       const user = await FYPCommittee.findOne({ email: request.body.email });
       if (!user) {
         console.log("No such user");
-        return;
+        return response.status(550).json({ message: "No such user exists" });
       } else {
         let email = request.body.email;
         let password = request.body.password;
@@ -121,14 +121,14 @@ export const getUser = async (request, response) => {
             });
         } else {
           console.log("Incorrect password");
-          return;
+          return response.status(401).json({ message: "Incorrect password" });
         }
       }
     } else if (request.body.type == "Reviewer") {
       const user = await Reviewer.findOne({ email: request.body.email });
       if (!user) {
         console.log("No such user");
-        return;
+        return response.status(550).json({ message: "No such user exists" });
       } else {
         let email = request.body.email;
         let password = request.body.password;
@@ -149,7 +149,7 @@ export const getUser = async (request, response) => {
             });
         } else {
           console.log("Incorrect password");
-          return;
+          return response.status(401).json({ message: "Incorrect password" });
         }
       }
     }
