@@ -3,8 +3,6 @@ import { uploadFile } from "../../../api/api";
 import { EmojiEmotions, AttachFile, Mic } from "@mui/icons-material";
 import { Box, styled, InputBase } from "@mui/material";
 
-// import { uploadFile } from '../../../service/api';
-
 const Container = styled(Box)`
   height: 55px;
   background: #ededed;

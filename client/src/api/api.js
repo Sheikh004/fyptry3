@@ -10,10 +10,10 @@ export const getUser = async (data) => {
       .then((response) => {
         const authHeader = response.headers["authorization"];
         const jwtToken = authHeader.split(" ")[1];
-        console.log(authHeader);
+
         // console.log(authHeader); // logs the JWT token extracted from the response header
         // console.log(response.data);
-        console.log(jwtToken);
+
         sessionStorage.setItem("jwtToken", jwtToken);
 
         return response;
@@ -81,6 +81,22 @@ export const setChat = async (data) => {
     });
 };
 
+export const setGroupChat = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/setGroupChat`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const getMessages = async (data) => {
   const token = sessionStorage.getItem("jwtToken");
   return await axios
@@ -125,4 +141,36 @@ export const uploadFile = async (data) => {
   } catch (error) {
     console.log("Error while calling uploadFile API ", error);
   }
+};
+
+export const forgotPasswordEmail = async (data) => {
+  return await axios
+    .post(`${url}/fEmail`, data)
+    .then((response) => {
+      const authHeaderForPass = response.headers["authorization"];
+      const jwtTokenForPass = authHeaderForPass.split(" ")[1];
+
+      localStorage.setItem("jwtTokenForPass", jwtTokenForPass);
+
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+export const setNewPassword = async (newPassword) => {
+  const token = localStorage.getItem("jwtTokenForPass");
+  console.log(token);
+  return await axios
+    .post(`${url}/reset-password`, newPassword, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };

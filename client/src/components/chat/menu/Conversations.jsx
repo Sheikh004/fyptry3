@@ -1,7 +1,7 @@
 // for supervisor chat
 import React from "react";
 import { useState, useEffect, useContext } from "react";
-import { setChat } from "../../../api/api";
+import { setChat, setGroupChat } from "../../../api/api";
 import { Box, styled, Divider } from "@mui/material";
 
 import { getChatters, getStChatters } from "../../../api/api";
@@ -86,11 +86,21 @@ const Conversations = ({ text }) => {
   useEffect(() => {
     const getChatterRefresh = async () => {
       if (receiver) {
-        const chatDetails = await setChat({
-          sender: user.id,
-          receiver: receiver.id,
-        });
-        setChatID(chatDetails.data._id);
+        console.log(groupList);
+        if (groupList.includes(receiver.name)) {
+          console.log("hI GROUP");
+          const groupChatDetails = await setGroupChat({
+            sender: user.id,
+            groupId: receiver.id,
+          });
+          setChatID(groupChatDetails.data._id);
+        } else {
+          const chatDetails = await setChat({
+            sender: user.id,
+            receiver: receiver.id,
+          });
+          setChatID(chatDetails.data._id);
+        }
       }
     };
     getChatterRefresh();

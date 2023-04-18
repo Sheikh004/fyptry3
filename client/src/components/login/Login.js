@@ -33,11 +33,11 @@ function Login(props) {
     setError("");
     if (!email) {
       setMailError("Email is required");
-    } else if (
-      !/^[a-zA-Z]{2}\d{2}-[a-zA-Z]{3}-\d{3}@cuilahore\.edu\.pk$/.test(email)
-    ) {
-      setMailError("Invalid email format");
-    } else if (!password) {
+    }
+    //  else if (!/^.+@cuilahore\.edu\.pk$/.test(email)) {
+    //   setMailError("Invalid email format");
+    // }
+    else if (!password) {
       setPassError("Password is required");
     } else if (password.length < 8) {
       setPassError("Password must be at least 8 characters long");
@@ -50,17 +50,24 @@ function Login(props) {
         type: type,
       };
       let user2 = await getUser(data);
-      console.log(user2);
-      if (user2.data != null) {
+
+      if (user2 != null) {
         await setUser(user2.data);
       } else {
         setError(user2);
       }
     }
   };
+
+  const forgotPassword = () => {
+    navigate("/ForgotPassword");
+  };
   useEffect(() => {
-    if (user != null) navigate("/SupervisorHome");
-  }, [user]);
+    if (user != null) {
+      navigate("/SupervisorHome");
+    }
+  }, [user, navigate]);
+
   return (
     <Box
       sx={{
@@ -116,6 +123,11 @@ function Login(props) {
         </FormControl>
         {error && <p>{error}</p>}
         <Button type="submit">Submit</Button>
+        <br />
+
+        <Button variant="outlined" onClick={forgotPassword}>
+          Forgot Password
+        </Button>
       </form>
     </Box>
   );

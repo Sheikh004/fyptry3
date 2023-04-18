@@ -2,11 +2,14 @@ import Evaluator from "../modal/Evaluator.js";
 import Student from "../modal/Student.js";
 import Supervisor from "../modal/Supervisor.js";
 import Reviewer from "../modal/Reviewer.js";
+import Faculty from "../modal/Faculty.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 import FYPCommittee from "../modal/FYPCommittee.js";
 import Group from "../modal/Group.js";
 
 export const getUser = async (request, response) => {
+  let passFlag;
   const options = {
     expiresIn: "1h",
   };
@@ -20,136 +23,200 @@ export const getUser = async (request, response) => {
       } else {
         let email = request.body.email;
         let password = request.body.password;
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (err) {
+            console.log("error in encrypt password comparing", err);
+            return;
+          } else if (result == true) {
+            const token = jwt.sign({ email: email }, "myjwtsecret", options);
 
-        if (user.password == password) {
-          const token = jwt.sign({ email: email }, "myjwtsecret", options);
-
-          response.header("Access-Control-Expose-Headers", "Authorization");
-          // console.log(user.name);
-          return response
-            .header("authorization", `Bearer ${token}`)
-            .status(200)
-            .send({
-              id: user._id,
-              name: user.name,
-              email: user.email,
-              type: request.body.type,
-            });
-        } else {
-          console.log("Incorrect password");
-          return response.status(401).json({ message: "Incorrect password" });
-        }
+            response.header("Access-Control-Expose-Headers", "Authorization");
+            // console.log(user.name);
+            return response
+              .header("authorization", `Bearer ${token}`)
+              .status(200)
+              .send({
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                type: request.body.type,
+              });
+          } else {
+            console.log("Incorrect password");
+            return response.status(401).json({ message: "Incorrect password" });
+          }
+        });
       }
     } else if (request.body.type == "Supervisor") {
-      const user = await Supervisor.findOne({ email: request.body.email });
+      const user = await Faculty.findOne({ email: request.body.email });
       if (!user) {
         console.log("No such user");
         return response.status(550).json({ message: "No such user exists" });
       } else {
         let email = request.body.email;
         let password = request.body.password;
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (err) {
+            console.log("Error in encrypted password compare", err);
+            return;
+          } else if (result == true) {
+            passFlag = true;
+          } else {
+            passFlag = false;
+            return response.status(401).json({ message: "Incorrect password" });
+          }
+        });
+        if (passFlag == true) {
+          const userType = await Supervisor.findOne({ email: email });
+          if (!userType) {
+            console.log("User is not registered as Supervisor");
+            return response
+              .status(401)
+              .json({ message: "User is not registered as Supervisor" });
+          } else {
+            const token = jwt.sign({ email: email }, "myjwtsecret", options);
 
-        if (user.password == password) {
-          const token = jwt.sign({ email: email }, "myjwtsecret", options);
+            response.header("Access-Control-Expose-Headers", "Authorization");
 
-          response.header("Access-Control-Expose-Headers", "Authorization");
-
-          return response
-            .header("authorization", `Bearer ${token}`)
-            .status(200)
-            .send({
-              id: user._id,
-              name: user.name,
-              email: user.email,
-              type: request.body.type,
-            });
-        } else {
-          console.log("Incorrect password");
-          return response.status(401).json({ message: "Incorrect password" });
+            return response
+              .header("authorization", `Bearer ${token}`)
+              .status(200)
+              .send({
+                id: userType._id,
+                name: userType.name,
+                email: userType.email,
+                type: request.body.type,
+              });
+          }
         }
       }
     } else if (request.body.type == "Evaluator") {
-      const user = await Evaluator.findOne({ email: request.body.email });
+      const user = await Faculty.findOne({ email: request.body.email });
       if (!user) {
         console.log("No such user");
         return response.status(550).json({ message: "No such user exists" });
       } else {
         let email = request.body.email;
         let password = request.body.password;
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (err) {
+            console.log("Error in encrypted password compare", err);
+            return;
+          } else if (result == true) {
+            passFlag = true;
+          } else {
+            passFlag = false;
+            return response.status(401).json({ message: "Incorrect password" });
+          }
+        });
+        if (passFlag == true) {
+          const userType = await Evaluator.findOne({ email: email });
+          if (!userType) {
+            console.log("User is not registered as Evaluator");
+            return response
+              .status(401)
+              .json({ message: "User is not registered as Evaluator" });
+          } else {
+            const token = jwt.sign({ email: email }, "myjwtsecret", options);
 
-        if (user.password == password) {
-          const token = jwt.sign({ email: email }, "myjwtsecret", options);
+            response.header("Access-Control-Expose-Headers", "Authorization");
 
-          response.header("Access-Control-Expose-Headers", "Authorization");
-
-          return response
-            .header("authorization", `Bearer ${token}`)
-            .status(200)
-            .send({
-              id: user._id,
-              name: user.name,
-              email: user.email,
-              type: request.body.type,
-            });
-        } else {
-          console.log("Incorrect password");
-          return response.status(401).json({ message: "Incorrect password" });
+            return response
+              .header("authorization", `Bearer ${token}`)
+              .status(200)
+              .send({
+                id: userType._id,
+                name: userType.name,
+                email: userType.email,
+                type: request.body.type,
+              });
+          }
         }
       }
     } else if (request.body.type == "FYPCommittee") {
-      const user = await FYPCommittee.findOne({ email: request.body.email });
+      const user = await Faculty.findOne({ email: request.body.email });
       if (!user) {
         console.log("No such user");
         return response.status(550).json({ message: "No such user exists" });
       } else {
         let email = request.body.email;
         let password = request.body.password;
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (err) {
+            console.log("Error in encrypted password compare", err);
+            return;
+          } else if (result == true) {
+            passFlag = true;
+          } else {
+            passFlag = false;
+            return response.status(401).json({ message: "Incorrect password" });
+          }
+        });
+        if (passFlag == true) {
+          const userType = await FYPCommittee.findOne({ email: email });
+          if (!userType) {
+            console.log("User is not registered as FYPCommittee");
+            return response
+              .status(401)
+              .json({ message: "User is not registered as FYPCommittee" });
+          } else {
+            const token = jwt.sign({ email: email }, "myjwtsecret", options);
 
-        if (user.password == password) {
-          const token = jwt.sign({ email: email }, "myjwtsecret", options);
+            response.header("Access-Control-Expose-Headers", "Authorization");
 
-          response.header("Access-Control-Expose-Headers", "Authorization");
-
-          return response
-            .header("authorization", `Bearer ${token}`)
-            .status(200)
-            .send({
-              id: user._id,
-              name: user.name,
-              email: user.email,
-              type: request.body.type,
-            });
-        } else {
-          console.log("Incorrect password");
-          return response.status(401).json({ message: "Incorrect password" });
+            return response
+              .header("authorization", `Bearer ${token}`)
+              .status(200)
+              .send({
+                id: userType._id,
+                name: userType.name,
+                email: userType.email,
+                type: request.body.type,
+              });
+          }
         }
       }
     } else if (request.body.type == "Reviewer") {
-      const user = await Reviewer.findOne({ email: request.body.email });
+      const user = await Faculty.findOne({ email: request.body.email });
       if (!user) {
         console.log("No such user");
         return response.status(550).json({ message: "No such user exists" });
       } else {
         let email = request.body.email;
         let password = request.body.password;
+        bcrypt.compare(password, user.password, (err, result) => {
+          if (err) {
+            console.log("Error in encrypted password compare", err);
+            return;
+          } else if (result == true) {
+            passFlag = true;
+          } else {
+            passFlag = false;
+            return response.status(401).json({ message: "Incorrect password" });
+          }
+        });
+        if (passFlag == true) {
+          const userType = await Reviewer.findOne({ email: email });
+          if (!userType) {
+            console.log("User is not registered as Reviewer");
+            return response
+              .status(401)
+              .json({ message: "User is not registered as Reviewer" });
+          } else {
+            const token = jwt.sign({ email: email }, "myjwtsecret", options);
 
-        if (user.password == password) {
-          const token = jwt.sign({ email: email }, "myjwtsecret", options);
+            response.header("Access-Control-Expose-Headers", "Authorization");
 
-          response.header("Access-Control-Expose-Headers", "Authorization");
-
-          return response
-            .header("authorization", `Bearer ${token}`)
-            .status(200)
-            .send({
-              id: user._id,
-              name: user.name,
-              email: user.email,
-              type: request.body.type,
-            });
-        } else {
-          console.log("Incorrect password");
-          return response.status(401).json({ message: "Incorrect password" });
+            return response
+              .header("authorization", `Bearer ${token}`)
+              .status(200)
+              .send({
+                id: userType._id,
+                name: userType.name,
+                email: userType.email,
+                type: request.body.type,
+              });
+          }
         }
       }
     }
@@ -167,6 +234,17 @@ export const getChatters = async (req, res) => {
     // });
     // user2.save();
     // return response.send({ user2 });
+    // const user = await Faculty.findOne({
+    //   email: "humairaafzal@cuilahore.edu.pk",
+    // });
+    // const supervisor = new Supervisor({
+    //   email: user.email,
+    //   facultyId: user._id,
+    //   name: user.name,
+    //   email: user.email,
+    //   groupCount: 0,
+    // });
+    // supervisor.save();
     const user = await Group.find({ supervisorId: req.body.supId }).populate([
       {
         path: "studentID",
