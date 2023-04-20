@@ -16,6 +16,9 @@ const studentSchema = new mongoose.Schema(
     cgpa: {
       type: Number,
     },
+    department: {
+      type: String,
+    },
     groupLeader: {
       type: Boolean,
       required: true,

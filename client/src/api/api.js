@@ -47,6 +47,24 @@ export const getChatters = async (data) => {
     });
 };
 
+export const getGroupMembers = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+
+  return await axios
+    .post(`${url}/getGroupMembers`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      // console.log(response.data.user);
+      return response.data.message;
+    })
+    .catch((error) => {
+      return error.response.data.message;
+    });
+};
+
 export const getStChatters = async (data) => {
   const token = sessionStorage.getItem("jwtToken");
 

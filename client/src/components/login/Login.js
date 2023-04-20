@@ -53,6 +53,7 @@ function Login(props) {
 
       if (user2 != null) {
         await setUser(user2.data);
+        // localStorage.setItem("user", JSON.stringify(user2.data));
       } else {
         setError(user2);
       }
@@ -64,7 +65,7 @@ function Login(props) {
   };
   useEffect(() => {
     if (user != null) {
-      navigate("/SupervisorHome");
+      navigate("/view-groups");
     }
   }, [user, navigate]);
 

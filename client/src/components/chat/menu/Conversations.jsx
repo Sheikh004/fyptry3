@@ -30,7 +30,7 @@ const Conversations = ({ text }) => {
     const fetchChatters = async () => {
       if (user.type === "Supervisor") {
         let data = await getChatters({ supId: user.id });
-        console.log(data.user);
+
         let filteredData = [];
         let groupList = [];
         data.user.map((chatter) => {
@@ -51,7 +51,7 @@ const Conversations = ({ text }) => {
       }
       if (user.type == "Student") {
         let data = await getStChatters({ stId: user.id });
-        console.log(data.user);
+
         let filteredData = [];
         let groupList = [];
         data.user.map((chatter) => {

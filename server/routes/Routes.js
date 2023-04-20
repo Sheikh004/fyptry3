@@ -20,10 +20,12 @@ import {
   forgotPasswordMail,
   resetPassword,
 } from "../controllers/passwordController.js";
+import { getGroupMembers } from "../controllers/group-controller.js";
 const route = express.Router();
 
 route.post("/getUser", getUser);
 route.post("/getChatters", verifyToken, getChatters);
+route.post("/getGroupMembers", verifyToken, getGroupMembers);
 route.post("/getStChatters", verifyToken, getStChatters);
 route.post("/setChat", verifyToken, setChat);
 route.post("/setGroupChat", verifyToken, setGroupChat);

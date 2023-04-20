@@ -55,17 +55,25 @@ export const getUser = async (request, response) => {
       } else {
         let email = request.body.email;
         let password = request.body.password;
-        bcrypt.compare(password, user.password, (err, result) => {
-          if (err) {
-            console.log("Error in encrypted password compare", err);
-            return;
-          } else if (result == true) {
-            passFlag = true;
-          } else {
-            passFlag = false;
-            return response.status(401).json({ message: "Incorrect password" });
-          }
-        });
+        // bcrypt.compare(password, user.password, (err, result) => {
+        //   if (err) {
+        //     console.log("Error in encrypted password compare", err);
+        //     return;
+        //   } else if (result == true) {
+        //     passFlag = true;
+        //   } else {
+        //     passFlag = false;
+        //     return response.status(401).json({ message: "Incorrect password" });
+        //   }
+        // }); commenting for bypassing purposes.
+
+        //remove this code and uncomment above code later on
+        if (password == user.password) {
+          passFlag = true;
+        } else {
+          passFlag = false;
+          return response.status(401).json({ message: "Incorrect password" });
+        } //remove this code and uncomment above code later on
         if (passFlag == true) {
           const userType = await Supervisor.findOne({ email: email });
           if (!userType) {
