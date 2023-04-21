@@ -43,6 +43,7 @@ export const getGroupMembers = async (req, res) => {
     name: req.body.groupName,
     studentID: groupmemberIds,
     supervisorId: req.body.supId,
+    groupLeader: req.body.groupLeader,
   });
   await newGroup.save();
   return res.status(200).json({ message: "Group registered successfully" });

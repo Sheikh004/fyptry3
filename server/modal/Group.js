@@ -8,6 +8,10 @@ const groupSchema = new mongoose.Schema(
     studentID: [
       { type: Schema.Types.ObjectId, ref: "Student", required: true },
     ],
+    groupLeader: {
+      type: String,
+      required: true,
+    },
     supervisorId: {
       type: Schema.Types.ObjectId,
       ref: "Supervisor",

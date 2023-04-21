@@ -1,17 +1,28 @@
 import React, { useState, useContext } from "react";
 import { ChatContext } from "../../context/ChatProvider";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  Radio,
+  RadioGroup,
+  FormControl,
+  FormControlLabel,
+} from "@mui/material";
+
 import { getGroupMembers } from "../../api/api";
 function RegisterGroup(props) {
   const [memberNumber, setMemberNumber] = useState(1);
   const [members, setMembers] = useState(Array(memberNumber).fill(""));
   const [groupName, setGroupName] = useState("");
+  const [duplicateError, setDuplicateError] = useState();
   const { user } = useContext(ChatContext);
+  const [groupLeader, setGroupLeader] = useState("");
   const handleInputFieldChange = (index, value) => {
     let updatedEntries = [...members];
-    updatedEntries[index] = value;
+    updatedEntries[index] = value.toLowerCase();
     setMembers(updatedEntries);
-    console.log(members);
   };
   const addNewField = () => {
     setMemberNumber(memberNumber + 1);
@@ -30,14 +41,33 @@ function RegisterGroup(props) {
   };
 
   const register = async () => {
-    if (groupName !== "" && members.length !== 0 && user !== null) {
-      const registerData = await getGroupMembers({
-        groupMembers: members,
-        groupName: groupName.toUpperCase(),
-        supId: user.id,
-      });
-      console.log(registerData);
+    let uniqueEmails = new Set(
+      members.map((email) => {
+        return email;
+      })
+    );
+
+    if (uniqueEmails.size < members.length) {
+      setDuplicateError(true);
+      console.log(duplicateError);
+    } else {
+      setDuplicateError(false);
+
+      if (groupName !== "" && members.length !== 0 && user !== null) {
+        const registerData = await getGroupMembers({
+          groupMembers: members,
+          groupName: groupName.toUpperCase(),
+          supId: user.id,
+          groupLeader: groupLeader,
+        });
+        console.log(registerData);
+      }
     }
+  };
+
+  const handleGroupLeader = (e) => {
+    setGroupLeader(e.target.value);
+    console.log(groupLeader);
   };
   return (
     <Box>
@@ -49,26 +79,44 @@ function RegisterGroup(props) {
           variant="filled"
           onChange={(e) => {
             handleGroupFieldChange(e.target.value);
+            console.log(groupLeader);
           }}
         ></TextField>
       </Box>
+
       <Box>
-        {Array.from({ length: memberNumber }, (_, i) => {
-          return (
-            <Box key={i.toString()}>
-              <Typography>Enter Email Address of Student</Typography>
-              <TextField
-                key={i}
-                id={i.toString()}
-                label="Filled"
-                variant="filled"
-                onChange={(e) => {
-                  handleInputFieldChange(i, e.target.value);
-                }}
-              ></TextField>
-            </Box>
-          );
-        })}
+        <FormControl component="fieldset">
+          <RadioGroup
+            aria-label="gender"
+            name="gender1"
+            onChange={handleGroupLeader}
+          >
+            {Array.from({ length: memberNumber }, (_, i) => {
+              return (
+                <Box key={i.toString()}>
+                  <Typography>Enter Email Address of Student</Typography>
+                  <TextField
+                    key={i}
+                    id={i.toString()}
+                    label="Filled"
+                    variant="filled"
+                    onChange={(e) => {
+                      handleInputFieldChange(i, e.target.value);
+                    }}
+                  ></TextField>
+                  <FormControlLabel
+                    value={members[i]}
+                    control={<Radio />}
+                    label="Assign Group Leader"
+                  />
+                </Box>
+              );
+            })}
+          </RadioGroup>
+        </FormControl>
+        <br />
+        <br />
+        <br />
         {memberNumber < 3 && (
           <Button variant="outlined" onClick={addNewField}>
             Add member
@@ -79,6 +127,7 @@ function RegisterGroup(props) {
             Remove member
           </Button>
         )}
+
         <Button variant="outlined" onClick={register}>
           Register
         </Button>

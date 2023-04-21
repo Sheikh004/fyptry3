@@ -19,10 +19,7 @@ const studentSchema = new mongoose.Schema(
     department: {
       type: String,
     },
-    groupLeader: {
-      type: Boolean,
-      required: true,
-    },
+
     groupID: {
       type: Schema.Types.ObjectId,
       ref: "Group",
