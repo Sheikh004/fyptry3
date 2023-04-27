@@ -65,7 +65,8 @@ function Login(props) {
   };
   useEffect(() => {
     if (user != null) {
-      navigate("/view-groups");
+      if (user.type === "Supervisor") navigate("/view-groups");
+      if (user.type === "Student") navigate("/student-tasks-view");
     }
   }, [user, navigate]);
 

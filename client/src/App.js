@@ -1,6 +1,7 @@
 import "./App.css";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Login from "./components/login/Login";
-
 import ChatDialog from "./components/chat/ChatDialog";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedStudent from "./components/protected/ProtectedStudent";
@@ -11,43 +12,81 @@ import ForgotPassword from "./components/login/ForgotPassword";
 import ResetPassword from "./components/login/ResetPassword";
 import ViewGroups from "./components/group-management/ViewGroups";
 import RegisterGroup from "./components/group-management/RegisterGroup";
-
+import AssignTask from "./components/task-management/AssignTask";
+import StudentDetails from "./components/task-management/StudentDetails";
+import ProtectedSupervisor_Student from "./components/protected/ProtectedSupervisor_Student";
+import StudentTasksView from "./components/task-management/StudentTasksView";
+import ViewTask from "./components/task-management/ViewTask";
 function App() {
   return (
-    <ChatProvider>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route
-            path="/SupervisorHome"
-            element={
-              <ProtectedSupervisor>
-                <ChatDialog />
-              </ProtectedSupervisor>
-            }
-          />
-          <Route path="/ForgotPassword" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          <Route
-            path="/view-groups"
-            element={
-              <ProtectedSupervisor>
-                <ViewGroups />
-              </ProtectedSupervisor>
-            }
-          />
-          <Route
-            path="/register-group"
-            element={
-              <ProtectedSupervisor>
-                <RegisterGroup />
-              </ProtectedSupervisor>
-            }
-          />
-          <Route path="*" element={<Login />} />
-        </Routes>
-      </Router>
-    </ChatProvider>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <ChatProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Login />} />
+            <Route
+              path="/SupervisorHome"
+              element={
+                <ProtectedSupervisor_Student>
+                  <ChatDialog />
+                </ProtectedSupervisor_Student>
+              }
+            />
+            <Route path="/ForgotPassword" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="/view-groups"
+              element={
+                <ProtectedSupervisor>
+                  <ViewGroups />
+                </ProtectedSupervisor>
+              }
+            />
+            <Route
+              path="/student-tasks-view"
+              element={
+                <ProtectedStudent>
+                  <StudentTasksView />
+                </ProtectedStudent>
+              }
+            />
+            <Route
+              path="/register-group"
+              element={
+                <ProtectedSupervisor>
+                  <RegisterGroup />
+                </ProtectedSupervisor>
+              }
+            />
+            <Route
+              path="/assign-task"
+              element={
+                <ProtectedSupervisor>
+                  <AssignTask />
+                </ProtectedSupervisor>
+              }
+            />
+            <Route
+              path="/student-details"
+              element={
+                <ProtectedSupervisor>
+                  <StudentDetails />
+                </ProtectedSupervisor>
+              }
+            />
+            <Route
+              path="/view-task"
+              element={
+                <ProtectedStudent>
+                  <ViewTask />
+                </ProtectedStudent>
+              }
+            />
+            <Route path="*" element={<Login />} />
+          </Routes>
+        </Router>
+      </ChatProvider>
+    </LocalizationProvider>
   );
 }
 

@@ -13,9 +13,11 @@ function ViewGroups(props) {
   const settingState = () => {
     setNavigation(true);
   };
-  useEffect(() => {
-    if (navigation === true) navigate("/register-group");
-  }, [navigate, navigation]);
+
+  const navigateRegisterGroup = () => {
+    navigate("/register-group");
+  };
+
   useEffect(() => {
     const getGroups = async () => {
       // let user = JSON.parse(localStorage.getItem("user"));
@@ -42,7 +44,7 @@ function ViewGroups(props) {
           return <Group group={group} key={key} />;
         })}
       {registerBool && (
-        <Button variant="outlined" onClick={settingState}>
+        <Button variant="outlined" onClick={navigateRegisterGroup}>
           Register Group
         </Button>
       )}

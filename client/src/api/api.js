@@ -148,6 +148,74 @@ export const createMessage = async (data) => {
     });
 };
 
+export const assignTask = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/assignTask`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      // console.log(response);
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getTasks = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/getTasks`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      // console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const fetchTasks = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/fetchTasks`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      // console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const updateTask = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/updateTask`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      // console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const uploadFile = async (data) => {
   const token = sessionStorage.getItem("jwtToken");
   try {
