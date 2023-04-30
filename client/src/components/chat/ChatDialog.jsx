@@ -6,6 +6,7 @@ import Menu from "./menu/Menu";
 import EmptyChat from "./chat/EmptyChat";
 import { ChatContext } from "../../context/ChatProvider";
 import ChatBox from "./chat/ChatBox";
+import NavBar from "../NavBar";
 
 const Component = styled(Box)`
   display: flex;
@@ -13,6 +14,7 @@ const Component = styled(Box)`
 
 const LeftComponent = styled(Box)`
   min-width: 450px;
+  padding-top: 5px;
 `;
 
 const RightComponent = styled(Box)`
@@ -20,38 +22,26 @@ const RightComponent = styled(Box)`
   min-width: 300px;
   height: 100%;
   border-left: 1px solid rgba(0, 0, 0, 0.14);
+  padding-top: 5px;
 `;
-
-const dialogStyle = {
-  height: "95%",
-  width: "100%",
-  margin: "20px",
-  maxWidth: "100%",
-  maxHeight: "100%",
-  borderRadius: 0,
-  boxShadow: "none",
-  overflow: "hidden",
-};
 
 const ChatDialog = () => {
   const { receiver } = useContext(ChatContext);
 
   return (
-    <Dialog
-      open={true}
-      BackdropProps={{ style: { backgroundColor: "unset" } }}
-      PaperProps={{ sx: dialogStyle }}
-      maxWidth={"md"}
-    >
-      <Component>
-        <LeftComponent>
-          <Menu />
-        </LeftComponent>
-        <RightComponent>
-          {receiver == null ? <EmptyChat /> : <ChatBox />}
-        </RightComponent>
-      </Component>
-    </Dialog>
+    <Box>
+      <NavBar />
+      <Box>
+        <Component>
+          <LeftComponent>
+            <Menu />
+          </LeftComponent>
+          <RightComponent>
+            {receiver == null ? <EmptyChat /> : <ChatBox />}
+          </RightComponent>
+        </Component>
+      </Box>
+    </Box>
   );
 };
 

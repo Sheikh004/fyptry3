@@ -17,6 +17,9 @@ import StudentDetails from "./components/task-management/StudentDetails";
 import ProtectedSupervisor_Student from "./components/protected/ProtectedSupervisor_Student";
 import StudentTasksView from "./components/task-management/StudentTasksView";
 import ViewTask from "./components/task-management/ViewTask";
+import SupEvaViewTask from "./components/task-management/SupEvaViewTask";
+import StudentDashboard from "./components/dashboards/StudentDashboard";
+import Help from "./components/Help/Help";
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -25,11 +28,19 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route
-              path="/SupervisorHome"
+              path="/discussion"
               element={
                 <ProtectedSupervisor_Student>
                   <ChatDialog />
                 </ProtectedSupervisor_Student>
+              }
+            />
+            <Route
+              path="/student-dashboard"
+              element={
+                <ProtectedStudent>
+                  <StudentDashboard />
+                </ProtectedStudent>
               }
             />
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
@@ -42,6 +53,16 @@ function App() {
                 </ProtectedSupervisor>
               }
             />
+
+            <Route
+              path="/view-help"
+              element={
+                <ProtectedSupervisor_Student>
+                  <Help />
+                </ProtectedSupervisor_Student>
+              }
+            />
+
             <Route
               path="/student-tasks-view"
               element={
@@ -80,6 +101,14 @@ function App() {
                 <ProtectedStudent>
                   <ViewTask />
                 </ProtectedStudent>
+              }
+            />
+            <Route
+              path="/sup-eva-view-task"
+              element={
+                <ProtectedSupervisor>
+                  <SupEvaViewTask />
+                </ProtectedSupervisor>
               }
             />
             <Route path="*" element={<Login />} />

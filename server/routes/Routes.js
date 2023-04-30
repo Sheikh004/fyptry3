@@ -26,7 +26,9 @@ import {
   assignTask,
   getTasks,
   fetchTasks,
+  handleUploadTasks,
   updateTask,
+  setPendingTask,
 } from "../controllers/task-controller.js";
 
 const route = express.Router();
@@ -45,11 +47,11 @@ route.post("/assignTask", verifyToken, assignTask);
 route.post("/getTasks", verifyToken, getTasks);
 route.post("/fetchTasks", verifyToken, fetchTasks);
 route.post(
-  "/updateTask",
+  "/handleUploadTasks",
   verifyToken,
   upload2.array("files", 7),
-  (req, res) => {
-    console.log(req);
-  }
+  handleUploadTasks
 );
+route.post("/updateTask", verifyToken, updateTask);
+route.post("/setPendingTask", verifyToken, setPendingTask);
 export default route;

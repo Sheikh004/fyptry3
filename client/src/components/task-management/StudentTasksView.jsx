@@ -4,7 +4,7 @@ import { ChatContext } from "../../context/ChatProvider";
 import { fetchTasks } from "../../api/api";
 import { formatDate2, formatTimeAMPM2 } from "../../utils/common-utils";
 import { useNavigate } from "react-router-dom";
-
+import NavBar from "../NavBar";
 function StudentTasksView(props) {
   const { user } = useContext(ChatContext);
   const [studentTasks, setStudentTasks] = useState();
@@ -21,6 +21,7 @@ function StudentTasksView(props) {
   });
   return (
     <Box>
+      <NavBar />
       <Typography>Tasks</Typography>
       <Box>
         <Typography>Completed Tasks</Typography>

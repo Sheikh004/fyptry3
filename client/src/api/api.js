@@ -199,10 +199,43 @@ export const fetchTasks = async (data) => {
     });
 };
 
+export const handleUploadTasks = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/handleUploadTasks`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      // console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const updateTask = async (data) => {
   const token = sessionStorage.getItem("jwtToken");
   return await axios
     .post(`${url}/updateTask`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      // console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+export const setPendingTask = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/setPendingTask`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

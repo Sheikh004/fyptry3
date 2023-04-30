@@ -10,6 +10,9 @@ function StudentDetails(props) {
   const location = useLocation();
   const { user } = useContext(ChatContext);
   const [tasks, setTasks] = useState();
+  const handleNavigateToStudentTask = (value) => {
+    navigate("/sup-eva-view-task", { state: value });
+  };
   const navigateAssignTask = () => {
     navigate("/assign-task", { state: location.state });
   };
@@ -40,7 +43,14 @@ function StudentDetails(props) {
                     Date: {formatDate2(value.deadline)}
                     Time: {formatTimeAMPM2(value.deadline)}
                   </Typography>
-                  <Button key={"button" + index}>View</Button>
+                  <Button
+                    key={"button" + index}
+                    onClick={() => {
+                      handleNavigateToStudentTask(value);
+                    }}
+                  >
+                    View
+                  </Button>
                 </Box>
               );
             }
@@ -59,7 +69,14 @@ function StudentDetails(props) {
                     Date: {formatDate2(value.deadline)}
                     Time: {formatTimeAMPM2(value.deadline)}
                   </Typography>
-                  <Button key={index}>View</Button>
+                  <Button
+                    key={"button" + index}
+                    onClick={() => {
+                      handleNavigateToStudentTask(value);
+                    }}
+                  >
+                    View
+                  </Button>
                 </Box>
               );
             }
