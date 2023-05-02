@@ -23,29 +23,50 @@ export const getUser = async (request, response) => {
       } else {
         let email = request.body.email;
         let password = request.body.password;
-        bcrypt.compare(password, user.password, (err, result) => {
-          if (err) {
-            console.log("error in encrypt password comparing", err);
-            return;
-          } else if (result == true) {
-            const token = jwt.sign({ email: email }, "myjwtsecret", options);
+        // bcrypt.compare(password, user.password, (err, result) => {
+        //   if (err) {
+        //     console.log("error in encrypt password comparing", err);
+        //     return;
+        //   } else if (result == true) {
+        //     const token = jwt.sign({ email: email }, "myjwtsecret", options);
 
-            response.header("Access-Control-Expose-Headers", "Authorization");
-            // console.log(user.name);
-            return response
-              .header("authorization", `Bearer ${token}`)
-              .status(200)
-              .send({
-                id: user._id,
-                name: user.name,
-                email: user.email,
-                type: request.body.type,
-              });
-          } else {
-            console.log("Incorrect password");
-            return response.status(401).json({ message: "Incorrect password" });
-          }
-        });
+        //     response.header("Access-Control-Expose-Headers", "Authorization");
+        //     // console.log(user.name);
+        //     return response
+        //       .header("authorization", `Bearer ${token}`)
+        //       .status(200)
+        //       .send({
+        //         id: user._id,
+        //         name: user.name,
+        //         email: user.email,
+        //         type: request.body.type,
+        //       });
+        //   } else {
+        //     console.log("Incorrect password");
+        //     return response.status(401).json({ message: "Incorrect password" });
+        //   }
+        // }); commenting for bypassing purposes.
+
+        //remove this code and uncomment above code later on
+        if (password == user.password) {
+          const token = jwt.sign({ email: email }, "myjwtsecret", options);
+
+          response.header("Access-Control-Expose-Headers", "Authorization");
+          // console.log(user.name);
+          return response
+            .header("authorization", `Bearer ${token}`)
+            .status(200)
+            .send({
+              id: user._id,
+              name: user.name,
+              email: user.email,
+              type: request.body.type,
+            });
+        } else {
+          console.log("Incorrect password");
+          return response.status(401).json({ message: "Incorrect password" });
+        }
+        //remove this code and uncomment above code later on
       }
     } else if (request.body.type == "Supervisor") {
       const user = await Faculty.findOne({ email: request.body.email });

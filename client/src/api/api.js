@@ -131,6 +131,54 @@ export const getMessages = async (data) => {
     });
 };
 
+export const getSupervisorGroups = async (id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getSupervisorGroups/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getSupervisorProposals = async (id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getSupervisorProposals/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getGroupLeader = async (id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getGroupLeader/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const createMessage = async (data) => {
   const token = sessionStorage.getItem("jwtToken");
   return await axios
@@ -236,6 +284,23 @@ export const setPendingTask = async (data) => {
   const token = sessionStorage.getItem("jwtToken");
   return await axios
     .post(`${url}/setPendingTask`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      // console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const setCompletedTask = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/setCompletedTask`, data, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

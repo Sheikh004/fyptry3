@@ -4,6 +4,7 @@ import { getChatters } from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
 import Group from "./Group";
 import { Box, Button } from "@mui/material";
+import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 function ViewGroups(props) {
   const { user } = useContext(ChatContext);
   const [registerBool, setRegisterBool] = useState();
@@ -39,6 +40,7 @@ function ViewGroups(props) {
   }, []);
   return (
     <Box>
+      <SupervisorNavbar />
       {groups &&
         groups.map((group, key) => {
           return <Group group={group} key={key} />;

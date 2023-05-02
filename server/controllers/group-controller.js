@@ -48,3 +48,28 @@ export const getGroupMembers = async (req, res) => {
   await newGroup.save();
   return res.status(200).json({ message: "Group registered successfully" });
 };
+
+export const getSupervisorGroups = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const group = await Group.find({ supervisorId: id });
+
+    return res.send({ group });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getGroupLeader = async (req, res) => {
+  const { id } = req.params;
+  Group.findOne({ studentID: id })
+    .select("groupLeader")
+    .exec((err, groupLeader) => {
+      if (err) {
+        console.log(err);
+        res.send(err);
+      } else {
+        res.send(groupLeader);
+      }
+    });
+};

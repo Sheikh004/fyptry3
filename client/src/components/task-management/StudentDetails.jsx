@@ -5,6 +5,7 @@ import { getTasks } from "../../api/api";
 import { useContext } from "react";
 import { ChatContext } from "../../context/ChatProvider";
 import { formatDate2, formatTimeAMPM2 } from "../../utils/common-utils";
+import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 function StudentDetails(props) {
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,6 +29,7 @@ function StudentDetails(props) {
   }, [location.state._id, user.id]);
   return (
     <Box>
+      <SupervisorNavbar />
       <Typography>Name: {location.state.name}</Typography>
       <Box>
         <Typography>Completed Tasks</Typography>

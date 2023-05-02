@@ -7,6 +7,7 @@ import EmptyChat from "./chat/EmptyChat";
 import { ChatContext } from "../../context/ChatProvider";
 import ChatBox from "./chat/ChatBox";
 import NavBar from "../NavBar";
+import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 
 const Component = styled(Box)`
   display: flex;
@@ -26,11 +27,13 @@ const RightComponent = styled(Box)`
 `;
 
 const ChatDialog = () => {
-  const { receiver } = useContext(ChatContext);
+  const { receiver, user } = useContext(ChatContext);
 
   return (
     <Box>
-      <NavBar />
+      {user && user.type == "Supervisor" && <SupervisorNavbar />}
+      {user && user.type == "Student" && <NavBar />}
+
       <Box>
         <Component>
           <LeftComponent>

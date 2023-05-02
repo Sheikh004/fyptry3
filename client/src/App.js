@@ -20,6 +20,7 @@ import ViewTask from "./components/task-management/ViewTask";
 import SupEvaViewTask from "./components/task-management/SupEvaViewTask";
 import StudentDashboard from "./components/dashboards/StudentDashboard";
 import Help from "./components/Help/Help";
+import GroupProposals from "./components/proposal-management/GroupProposals";
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -108,6 +109,14 @@ function App() {
               element={
                 <ProtectedSupervisor>
                   <SupEvaViewTask />
+                </ProtectedSupervisor>
+              }
+            />
+            <Route
+              path="/group-proposals"
+              element={
+                <ProtectedSupervisor>
+                  <GroupProposals />
                 </ProtectedSupervisor>
               }
             />

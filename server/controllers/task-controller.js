@@ -74,7 +74,6 @@ export const updateTask = async (request, response) => {
       },
       {
         $set: {
-          taskStatus: "Completed",
           filespaths: request.body.filesNameArr,
         },
       },
@@ -96,6 +95,27 @@ export const setPendingTask = async (request, response) => {
       {
         $set: {
           taskStatus: "Pending",
+          filespaths: "",
+        },
+      },
+      { returnOriginal: false }
+    );
+    response.status(200).json(data);
+  } catch (error) {
+    console.log(error);
+    response.send(error);
+  }
+};
+
+export const setCompletedTask = async (request, response) => {
+  try {
+    const data = await Task.findOneAndUpdate(
+      {
+        _id: request.body.id,
+      },
+      {
+        $set: {
+          taskStatus: "Completed",
         },
       },
       { returnOriginal: false }

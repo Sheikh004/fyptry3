@@ -21,7 +21,11 @@ import {
   forgotPasswordMail,
   resetPassword,
 } from "../controllers/passwordController.js";
-import { getGroupMembers } from "../controllers/group-controller.js";
+import {
+  getGroupMembers,
+  getSupervisorGroups,
+  getGroupLeader,
+} from "../controllers/group-controller.js";
 import {
   assignTask,
   getTasks,
@@ -29,8 +33,9 @@ import {
   handleUploadTasks,
   updateTask,
   setPendingTask,
+  setCompletedTask,
 } from "../controllers/task-controller.js";
-
+import { getSupervisorProposals } from "../controllers/proposal-controller.js";
 const route = express.Router();
 route.post("/getUser", getUser);
 route.post("/getChatters", verifyToken, getChatters);
@@ -54,4 +59,8 @@ route.post(
 );
 route.post("/updateTask", verifyToken, updateTask);
 route.post("/setPendingTask", verifyToken, setPendingTask);
+route.post("/setCompletedTask", verifyToken, setCompletedTask);
+route.get("/getSupervisorGroups/:id", verifyToken, getSupervisorGroups);
+route.get("/getSupervisorProposals/:id", verifyToken, getSupervisorProposals);
+route.get("/getGroupLeader/:id", verifyToken, getGroupLeader);
 export default route;

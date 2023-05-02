@@ -3,55 +3,73 @@ import { AttachFile } from "@mui/icons-material";
 import React, { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { formatDate2, formatTimeAMPM2 } from "../../utils/common-utils";
-import { handleUploadTasks, updateTask, setPendingTask } from "../../api/api";
+import {
+  handleUploadTasks,
+  updateTask,
+  setPendingTask,
+  setCompletedTask,
+} from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
 import NavBar from "../NavBar";
 function ViewTask(props) {
   const location = useLocation();
   const [taskFiles, setTaskFiles] = useState();
-  const [uploadedData, setUploadedData] = useState();
+  const [uploadedData, setUploadedData] = useState("");
   const [tasks, setTasks] = useState();
   const { user } = useContext(ChatContext);
 
   useEffect(() => {
     setTasks(location.state);
-  }, []);
+  }, [location]);
   const handleUnUploadTask = async () => {
     let data3 = await setPendingTask({ id: location.state._id });
     setTasks(data3);
     console.log(data3);
-    console.log(tasks);
   };
 
   const handleUploadTask = async () => {
-    const formData = new FormData();
+    let result2 = await setCompletedTask({
+      id: location.state._id,
+    });
+    setTasks(result2);
 
-    let filesKeys = Object.keys(taskFiles);
-    for (let key in filesKeys) {
-      formData.append("files", taskFiles[key]);
-    }
-    formData.append("files", taskFiles);
-    console.log(formData);
-
-    let data2 = await handleUploadTasks(formData);
-    if (data2) setUploadedData(data2);
+    console.log(result2);
   };
   useEffect(() => {
-    const updatingTask = async () => {
-      if (uploadedData) {
+    const updateFilePaths = async () => {
+      if (uploadedData && uploadedData != "") {
         let result = await updateTask({
           id: location.state._id,
           filesNameArr: uploadedData,
         });
         setTasks(result);
+        setUploadedData("");
         console.log(result);
       }
     };
-    updatingTask();
+    updateFilePaths();
   }, [uploadedData]);
-  const onFileChange = (e) => {
+  const onFileChange = async (e) => {
     setTaskFiles(e.target.files);
   };
+  useEffect(() => {
+    const uploadTaskFiles = async () => {
+      if (taskFiles) {
+        const formData = new FormData();
+
+        let filesKeys = Object.keys(taskFiles);
+        for (let key in filesKeys) {
+          formData.append("files", taskFiles[key]);
+        }
+        formData.append("files", taskFiles);
+        console.log(formData);
+
+        let data2 = await handleUploadTasks(formData);
+        if (data2) setUploadedData(data2);
+      }
+    };
+    uploadTaskFiles();
+  }, [taskFiles]);
   return (
     <Box>
       <NavBar />

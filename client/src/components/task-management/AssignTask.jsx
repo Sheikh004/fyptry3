@@ -5,6 +5,7 @@ import { assignTask } from "../../api/api";
 import { useContext } from "react";
 import { ChatContext } from "../../context/ChatProvider";
 import { useLocation } from "react-router-dom";
+import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 function AssignTask(props) {
   const location = useLocation();
   const [title, setTitle] = useState("");
@@ -32,6 +33,7 @@ function AssignTask(props) {
   };
   return (
     <Box>
+      <SupervisorNavbar />
       <Typography>Enter Title of Task</Typography>
       <TextField
         multiline

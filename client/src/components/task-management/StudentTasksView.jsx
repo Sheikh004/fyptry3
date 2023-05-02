@@ -18,7 +18,7 @@ function StudentTasksView(props) {
       setStudentTasks(data);
     };
     fetchTask();
-  });
+  }, [navigate]);
   return (
     <Box>
       <NavBar />

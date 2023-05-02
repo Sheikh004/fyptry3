@@ -2,6 +2,7 @@ import { Box, Typography, Link } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { formatDate2, formatTimeAMPM2 } from "../../utils/common-utils";
 import { useLocation } from "react-router-dom";
+import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 function SupEvaViewTask(props) {
   const location = useLocation();
   const [supEvaTask, setSupEvaTask] = useState();
@@ -10,6 +11,7 @@ function SupEvaViewTask(props) {
   }, []);
   return (
     <Box>
+      <SupervisorNavbar />
       <Typography>Title</Typography>
       <Typography>{location.state.title}</Typography>
       <Typography>Description</Typography>
@@ -19,6 +21,7 @@ function SupEvaViewTask(props) {
       <Typography>Time: {formatTimeAMPM2(location.state.deadline)}</Typography>
       <Box>
         {supEvaTask &&
+          supEvaTask.taskStatus === "Completed" &&
           supEvaTask.filespaths.length !== 0 &&
           supEvaTask.filespaths.map((task, index) => {
             return (
