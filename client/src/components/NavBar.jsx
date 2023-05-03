@@ -53,7 +53,7 @@ function NavBar(props) {
               {user &&
                 groupLeader &&
                 user.email === groupLeader.groupLeader && (
-                  <Nav.Link as={NavLink} to="">
+                  <Nav.Link as={NavLink} to="/submission">
                     Submission
                   </Nav.Link>
                 )}
