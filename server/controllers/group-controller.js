@@ -73,3 +73,14 @@ export const getGroupLeader = async (req, res) => {
       }
     });
 };
+
+export const getGroup = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const group = await Group.findOne({ studentID: id });
+    res.send(group);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
+  }
+};

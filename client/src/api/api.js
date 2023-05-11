@@ -358,3 +358,36 @@ export const setNewPassword = async (newPassword) => {
       console.error(error);
     });
 };
+
+export const getGroup = async (id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getGroup/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const createProposal = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/createProposal`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      // console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};

@@ -25,6 +25,7 @@ import {
   getGroupMembers,
   getSupervisorGroups,
   getGroupLeader,
+  getGroup,
 } from "../controllers/group-controller.js";
 import {
   assignTask,
@@ -35,7 +36,10 @@ import {
   setPendingTask,
   setCompletedTask,
 } from "../controllers/task-controller.js";
-import { getSupervisorProposals } from "../controllers/proposal-controller.js";
+import {
+  getSupervisorProposals,
+  createProposal,
+} from "../controllers/proposal-controller.js";
 const route = express.Router();
 route.post("/getUser", getUser);
 route.post("/getChatters", verifyToken, getChatters);
@@ -63,4 +67,6 @@ route.post("/setCompletedTask", verifyToken, setCompletedTask);
 route.get("/getSupervisorGroups/:id", verifyToken, getSupervisorGroups);
 route.get("/getSupervisorProposals/:id", verifyToken, getSupervisorProposals);
 route.get("/getGroupLeader/:id", verifyToken, getGroupLeader);
+route.get("/getGroup/:id", verifyToken, getGroup);
+route.post("/createProposal", verifyToken, createProposal);
 export default route;

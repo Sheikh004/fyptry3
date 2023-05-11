@@ -1,17 +1,26 @@
 import React, { useEffect, useState, useContext } from "react";
 import NavBar from "../NavBar";
-import { uploadFile } from "../../api/api";
+import { uploadFile, getGroup, createProposal } from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
 function Submission(props) {
   const [proposal, setProposal] = useState();
   const [proposalPath, setProposalPath] = useState();
   const { user } = useContext(ChatContext);
+  const [group, setGroup] = useState();
   const onFileChange = (e) => {
     setProposal(e.target.files[0]);
   };
   useEffect(() => {
+    const findGroup = async () => {
+      const data0 = await getGroup(user.id);
+      console.log(data0);
+      setGroup(data0);
+    };
+    findGroup();
+  }, []);
+  useEffect(() => {
     const uploadProposal = async () => {
-      console.log(proposal);
+      //   console.log(proposal);
       if (proposal) {
         const data = new FormData();
         data.append("file", proposal);
@@ -25,11 +34,17 @@ function Submission(props) {
   }, [proposal]);
   useEffect(() => {
     const makeProposal = async () => {
-      if (proposalPath) {
-        const data2 = await createProposal({});
+      if (proposalPath && group) {
+        const data2 = await createProposal({
+          groupsId: group._id,
+          supervisorsId: group.supervisorId,
+          proposalsPath: proposalPath,
+        });
+        console.log(data2);
       }
     };
-  });
+    makeProposal();
+  }, [proposalPath, group]);
 
   return (
     <div>
