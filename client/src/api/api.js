@@ -179,6 +179,37 @@ export const getGroupLeader = async (id) => {
     });
 };
 
+export const updateProposalStatus = async (approvalProposal) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/updateProposalStatus/${approvalProposal}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+export const unUpdateProposalStatus = async (unApprovalProposal) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/unUpdateProposalStatus/${unApprovalProposal}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const createMessage = async (data) => {
   const token = sessionStorage.getItem("jwtToken");
   return await axios

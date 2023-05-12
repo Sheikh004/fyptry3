@@ -1,14 +1,50 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Button } from "@mui/material";
 import React, { useState } from "react";
 import { useContext, useEffect } from "react";
 import { ChatContext } from "../../context/ChatProvider";
-import { getSupervisorGroups, getSupervisorProposals } from "../../api/api";
+import SupervisorNavbar from "../Navbar/SupervisorNavbar";
+import {
+  getSupervisorGroups,
+  getSupervisorProposals,
+  updateProposalStatus,
+  unUpdateProposalStatus,
+} from "../../api/api";
 function GroupProposals(props) {
   const { user } = useContext(ChatContext);
   const [supervisorGroups, setSupervisorGroups] = useState();
   const [supervisorProposals, setSupervisorProposals] = useState();
   const [groupProposals, setGroupProposals] = useState();
-  const handleNoveltyRedirect = () => {};
+  const [approvalProposal, setApprovalProposal] = useState();
+  const [unApprovalProposal, setUnApprovalProposal] = useState();
+
+  const [reRun, setReRun] = useState(false);
+  const setApprove = (proposalId) => {
+    setApprovalProposal(proposalId);
+    setUnApprovalProposal();
+  };
+
+  const setUnApprove = (proposalId) => {
+    setUnApprovalProposal(proposalId);
+    setApprovalProposal();
+  };
+  useEffect(() => {
+    const unUpdateApproval = async () => {
+      await unUpdateProposalStatus(unApprovalProposal);
+      setReRun(!reRun);
+    };
+    if (unApprovalProposal) {
+      unUpdateApproval();
+    }
+  }, [unApprovalProposal]);
+  useEffect(() => {
+    const updateApproval = async () => {
+      await updateProposalStatus(approvalProposal);
+      setReRun(!reRun);
+    };
+    if (approvalProposal) {
+      updateApproval();
+    }
+  }, [approvalProposal]);
   useEffect(() => {
     const getGroups = async () => {
       const data = await getSupervisorGroups(user.id);
@@ -17,31 +53,32 @@ function GroupProposals(props) {
       setSupervisorProposals(data2);
     };
     getGroups();
-  }, []);
+  }, [reRun]);
   useEffect(() => {
-    // let groupProposalArr = [];
     if (supervisorGroups && supervisorProposals) {
       let data34 = supervisorGroups.group.map((group) => {
-        let newgroup = group;
+        group.filepath = "";
+        group.proposalId = "";
+        group.proposalStatus = "";
 
         supervisorProposals.proposals.map((proposal) => {
           if (group._id === proposal.groupId) {
-            newgroup.filepath = proposal.filepath;
-            newgroup.proposalId = proposal._id;
-          } else {
-            newgroup.filepath = "";
-            newgroup.proposalId = "";
+            group.filepath = proposal.filepath;
+            group.proposalId = proposal._id;
+            group.proposalStatus = proposal.status;
           }
-          // groupProposalArr.push(newgroup);
         });
 
-        return newgroup;
+        return group;
       });
+
       setGroupProposals(data34);
     }
   }, [supervisorGroups, supervisorProposals]);
   return (
     <Box>
+      <SupervisorNavbar />
+
       {groupProposals &&
         groupProposals.map((group, index) => (
           <Box key={"box" + index}>
@@ -53,10 +90,29 @@ function GroupProposals(props) {
                 <a key={"proposalIs" + index} href={group.filepath}>
                   {group.filepath.split("--").pop()}
                 </a>
-                <button onClick={handleNoveltyRedirect}>Novelty Checker</button>
+                {group.proposalStatus &&
+                  group.proposalStatus === "Approved" && (
+                    <Button
+                      onClick={() => {
+                        setUnApprove(group.proposalId);
+                      }}
+                    >
+                      Disapprove
+                    </Button>
+                  )}
+                {group.proposalStatus &&
+                  group.proposalStatus !== "Approved" && (
+                    <Button
+                      onClick={() => {
+                        setApprove(group.proposalId);
+                      }}
+                    >
+                      Approve
+                    </Button>
+                  )}
               </div>
             )}
-            {!group.filepath && <p>Proposal not submitted</p>}
+            {!group.filepath && <p>Proposal Pending</p>}
           </Box>
         ))}
     </Box>

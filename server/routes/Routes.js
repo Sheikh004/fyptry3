@@ -39,6 +39,8 @@ import {
 import {
   getSupervisorProposals,
   createProposal,
+  updateProposalStatus,
+  unUpdateProposalStatus,
 } from "../controllers/proposal-controller.js";
 const route = express.Router();
 route.post("/getUser", getUser);
@@ -68,5 +70,15 @@ route.get("/getSupervisorGroups/:id", verifyToken, getSupervisorGroups);
 route.get("/getSupervisorProposals/:id", verifyToken, getSupervisorProposals);
 route.get("/getGroupLeader/:id", verifyToken, getGroupLeader);
 route.get("/getGroup/:id", verifyToken, getGroup);
+route.get(
+  "/updateProposalStatus/:approvalProposal",
+  verifyToken,
+  updateProposalStatus
+);
+route.get(
+  "/unUpdateProposalStatus/:unApprovalProposal",
+  verifyToken,
+  unUpdateProposalStatus
+);
 route.post("/createProposal", verifyToken, createProposal);
 export default route;
