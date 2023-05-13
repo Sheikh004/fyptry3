@@ -11,40 +11,67 @@ import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 
 const Component = styled(Box)`
   display: flex;
+  height: 100vh;
+  background-color: #0b2b40;
+  @media (max-width: 768px) {
+    height: 100vh;
+  }
 `;
 
 const LeftComponent = styled(Box)`
-  min-width: 450px;
-  padding-top: 5px;
+  min-width: 400px;
+
+  @media (max-width: 768px) {
+    min-width: unset;
+  }
 `;
 
 const RightComponent = styled(Box)`
-  width: 73%;
+  flex: 1;
   min-width: 300px;
-  height: 100%;
+  height: 100vh;
   border-left: 1px solid rgba(0, 0, 0, 0.14);
-  padding-top: 5px;
-`;
 
+  @media (max-width: 768px) {
+    border-left: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.14);
+    min-width: unset;
+    height: unset;
+  }
+`;
+const dialogStyle = {
+  height: "100vh" /* Set full height */,
+  width: "100vw",
+  margin: 0 /* Remove margin */,
+
+  padding: 0 /* Remove padding */,
+  maxWidth: "100vw",
+  maxHeight: "100vh",
+  borderRadius: 0,
+  boxShadow: "none",
+};
 const ChatDialog = () => {
   const { receiver, user } = useContext(ChatContext);
 
   return (
-    <Box>
+    <Dialog
+      open={true}
+      BackdropProps={{ style: { backgroundColor: "unset" } }}
+      PaperProps={{ sx: dialogStyle }}
+      maxWidth={"md"}
+      fullWidth /* Set full width */
+    >
       {user && user.type == "Supervisor" && <SupervisorNavbar />}
       {user && user.type == "Student" && <NavBar />}
-
-      <Box>
-        <Component>
-          <LeftComponent>
-            <Menu />
-          </LeftComponent>
-          <RightComponent>
-            {receiver == null ? <EmptyChat /> : <ChatBox />}
-          </RightComponent>
-        </Component>
-      </Box>
-    </Box>
+      <Component>
+        <LeftComponent>
+          <Menu />
+        </LeftComponent>
+        <RightComponent>
+          {receiver == null ? <EmptyChat /> : <ChatBox />}
+        </RightComponent>
+      </Component>
+    </Dialog>
   );
 };
 

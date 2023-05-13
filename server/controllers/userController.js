@@ -21,6 +21,11 @@ export const getUser = async (request, response) => {
         console.log("No such user");
         return response.status(550).json({ message: "No such user exists" });
       } else {
+        const userGroupExist = await Group.findOne({ studentID: user._id });
+        if (!userGroupExist)
+          return response
+            .status(550)
+            .json({ message: "Student is not registered in any group" });
         let email = request.body.email;
         let password = request.body.password;
         // bcrypt.compare(password, user.password, (err, result) => {
@@ -61,6 +66,7 @@ export const getUser = async (request, response) => {
               name: user.name,
               email: user.email,
               type: request.body.type,
+              groupId: userGroupExist._id,
             });
         } else {
           console.log("Incorrect password");
@@ -278,7 +284,7 @@ export const getChatters = async (req, res) => {
       {
         path: "studentID",
         model: Student,
-        select: "name",
+        select: "name email",
       },
       {
         path: "supervisorId",

@@ -1,4 +1,5 @@
 import Task from "../modal/Task.js";
+import Group from "../modal/Group.js";
 import fs from "fs";
 export const assignTask = async (request, response) => {
   const title = request.body.title;
@@ -39,9 +40,28 @@ export const getTasks = async (request, response) => {
 };
 
 export const fetchTasks = async (request, response) => {
+  let supervisorsId;
   try {
-    const data = await Task.find({ assignedTo: request.body.assignedTo });
-    response.status(200).json(data);
+    await Group.findOne({
+      _id: request.body.groupId,
+    })
+      .select("supervisorId")
+
+      .exec(async (err, user) => {
+        if (err) {
+          console.error(err);
+          response.send({ message: "Error while fetching supervisorId" });
+        } else {
+          const data = await Task.find({
+            $and: [
+              { assignedBy: user.supervisorId },
+              { assignedTo: request.body.assignedTo },
+            ],
+          });
+          console.log(data);
+          response.status(200).json(data);
+        }
+      });
   } catch (error) {
     console.log(error);
     response.send(error);

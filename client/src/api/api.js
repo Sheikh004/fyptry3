@@ -147,6 +147,22 @@ export const getSupervisorGroups = async (id) => {
     });
 };
 
+export const updateGroupMembers = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/updateGroupMembers`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const getSupervisorProposals = async (id) => {
   const token = sessionStorage.getItem("jwtToken");
   return await axios

@@ -10,7 +10,7 @@ import {
   FormControl,
   FormControlLabel,
 } from "@mui/material";
-
+import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 import { getGroupMembers } from "../../api/api";
 function RegisterGroup(props) {
   const [memberNumber, setMemberNumber] = useState(1);
@@ -71,66 +71,144 @@ function RegisterGroup(props) {
   };
   return (
     <Box>
-      <Box>
-        <Typography>Enter Group Name</Typography>
-        <TextField
-          id="group-name"
-          label="Filled"
-          variant="filled"
-          onChange={(e) => {
-            handleGroupFieldChange(e.target.value);
-            console.log(groupLeader);
+      <SupervisorNavbar />
+      <Box
+        sx={{
+          bgcolor: "#0B2B40",
+          height: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Box
+          sx={{
+            bgcolor: "purple",
+            width: { xs: "90%", sm: "70%", md: "50%", lg: "50%" },
+            paddingLeft: { xs: "10px", md: "100px" },
+            paddingRight: { xs: "10px", md: "100px" },
+            paddingTop: "20px",
+            paddingBottom: "30px",
           }}
-        ></TextField>
-      </Box>
+        >
+          <Box>
+            <Typography sx={{ color: "white" }}>Enter Group Name</Typography>
+            <TextField
+              sx={{ bgcolor: "white", width: "100%" }}
+              id="group-name"
+              label="Filled"
+              variant="filled"
+              onChange={(e) => {
+                handleGroupFieldChange(e.target.value);
+                console.log(groupLeader);
+              }}
+            />
+          </Box>
 
-      <Box>
-        <FormControl component="fieldset">
-          <RadioGroup
-            aria-label="gender"
-            name="gender1"
-            onChange={handleGroupLeader}
-          >
-            {Array.from({ length: memberNumber }, (_, i) => {
-              return (
-                <Box key={i.toString()}>
-                  <Typography>Enter Email Address of Student</Typography>
-                  <TextField
-                    key={i}
-                    id={i.toString()}
-                    label="Filled"
-                    variant="filled"
-                    onChange={(e) => {
-                      handleInputFieldChange(i, e.target.value);
-                    }}
-                  ></TextField>
-                  <FormControlLabel
-                    value={members[i]}
-                    control={<Radio />}
-                    label="Assign Group Leader"
-                  />
-                </Box>
-              );
-            })}
-          </RadioGroup>
-        </FormControl>
-        <br />
-        <br />
-        <br />
-        {memberNumber < 3 && (
-          <Button variant="outlined" onClick={addNewField}>
-            Add member
-          </Button>
-        )}
-        {memberNumber > 1 && (
-          <Button variant="outlined" onClick={removeField}>
-            Remove member
-          </Button>
-        )}
+          <Box>
+            <FormControl component="fieldset">
+              <RadioGroup
+                aria-label="gender"
+                name="gender1"
+                onChange={handleGroupLeader}
+              >
+                {Array.from({ length: memberNumber }, (_, i) => {
+                  return (
+                    <Box key={i.toString()}>
+                      <Typography sx={{ color: "white" }}>
+                        Enter Email Address of Student
+                      </Typography>
+                      <TextField
+                        sx={{ bgcolor: "white", width: "100%" }}
+                        key={i}
+                        id={i.toString()}
+                        label="Filled"
+                        variant="filled"
+                        onChange={(e) => {
+                          handleInputFieldChange(i, e.target.value);
+                        }}
+                      ></TextField>
+                      <FormControlLabel
+                        sx={{ color: "white" }}
+                        value={members[i]}
+                        control={<Radio />}
+                        label="Assign Group Leader"
+                      />
+                    </Box>
+                  );
+                })}
+              </RadioGroup>
+            </FormControl>
+            <br />
+            <br />
+            <br />
+            {memberNumber < 3 && (
+              <Button
+                variant="outlined"
+                sx={{
+                  bgcolor: "white",
+                  color: "purple",
+                  border: "1px solid purple",
+                  borderRadius: "4px",
+                  padding: "8px 16px",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                  transition: "background-color 0.3s ease",
+                  "&:hover": {
+                    bgcolor: "purple",
+                    color: "white",
+                  },
+                }}
+                onClick={addNewField}
+              >
+                Add member
+              </Button>
+            )}
+            {memberNumber > 1 && (
+              <Button
+                variant="outlined"
+                sx={{
+                  bgcolor: "white",
+                  color: "purple",
+                  border: "1px solid purple",
+                  borderRadius: "4px",
+                  padding: "8px 16px",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                  transition: "background-color 0.3s ease",
+                  "&:hover": {
+                    bgcolor: "purple",
+                    color: "white",
+                  },
+                }}
+                onClick={removeField}
+              >
+                Remove member
+              </Button>
+            )}
 
-        <Button variant="outlined" onClick={register}>
-          Register
-        </Button>
+            <Button
+              variant="outlined"
+              sx={{
+                bgcolor: "white",
+                color: "purple",
+                border: "1px solid purple",
+                borderRadius: "4px",
+                padding: "8px 16px",
+                fontWeight: "bold",
+                textTransform: "uppercase",
+                transition: "background-color 0.3s ease",
+                "&:hover": {
+                  bgcolor: "purple",
+                  color: "white",
+                },
+              }}
+              onClick={register}
+            >
+              Register
+            </Button>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );

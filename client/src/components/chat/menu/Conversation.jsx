@@ -7,10 +7,31 @@ import { formatDate } from "../../../utils/common-utils";
 const Component = styled(Box)`
   height: 45px;
   display: flex;
-  padding: 13px 0;
+  align-items: center;
+  padding: 0 16px;
   cursor: pointer;
 `;
+const ChatName = styled(Typography)`
+  display: block;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+`;
 
+const GroupChatName = styled(Typography)`
+  display: block;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 15px;
+  margin-left: 20px;
+  color: white;
+`;
+
+const PersonalChatName = styled(Typography)`
+  display: block;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 15px;
+  margin-left: 30px;
+  color: white;
+`;
 // const Image = styled("img")({
 //   width: 50,
 //   height: 50,
@@ -61,9 +82,9 @@ const Conversation = ({ chatter, groups }) => {
         <Box style={{ width: "100%" }}>
           <Component>
             {groups.includes(chatter.name) ? (
-              <Typography>{chatter.name}</Typography>
+              <GroupChatName>{chatter.name}</GroupChatName>
             ) : (
-              <Text>{chatter.name}</Text>
+              <PersonalChatName>{chatter.name}</PersonalChatName>
             )}
             {/* {message?.text && (
              <Timestamp>{formatDate(message?.timestamp)}</Timestamp>

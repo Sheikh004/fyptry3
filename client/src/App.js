@@ -21,6 +21,7 @@ import SupEvaViewTask from "./components/task-management/SupEvaViewTask";
 import StudentDashboard from "./components/dashboards/StudentDashboard";
 import Help from "./components/Help/Help";
 import GroupProposals from "./components/proposal-management/GroupProposals";
+import EditGroup from "./components/group-management/EditGroup";
 import Submission from "./components/proposal-management/Submission";
 function App() {
   return (
@@ -118,6 +119,14 @@ function App() {
               element={
                 <ProtectedSupervisor>
                   <GroupProposals />
+                </ProtectedSupervisor>
+              }
+            />
+            <Route
+              path="/edit-group"
+              element={
+                <ProtectedSupervisor>
+                  <EditGroup />
                 </ProtectedSupervisor>
               }
             />

@@ -12,7 +12,7 @@ const ChatBox = () => {
   const [conversation, setConversation] = useState({});
 
   return (
-    <Box style={{ height: "75%" }}>
+    <Box style={{ height: "auto" }}>
       <ChatHeader receiver={receiver} />
       {<Messages receiver={receiver} chatID={chatID} />}
     </Box>

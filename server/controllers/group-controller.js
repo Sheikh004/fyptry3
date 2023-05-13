@@ -84,3 +84,48 @@ export const getGroup = async (req, res) => {
     res.send(error);
   }
 };
+
+export const updateGroupMembers = async (req, res) => {
+  const groupName = req.body.groupName;
+  const studentID = req.body.studentID;
+  const groupLeader = req.body.groupLeader;
+  const groupID = req.body.groupID;
+  try {
+    let updatedGroupmemberIds = [];
+    for (let student of studentID) {
+      let user = await Student.findOne({ email: student });
+      if (!user)
+        return res.status(550).json({ message: "No such student exists" });
+      if (user.department != "CS")
+        return res
+          .status(550)
+          .json({ message: "Student is not from CS department" });
+
+      let studentReg = await Group.findOne({ studentID: user._id });
+      if (studentReg && studentReg._id != groupID) {
+        return res
+          .status(403)
+          .json({ message: "Student(s) already registered in a group" });
+      }
+      updatedGroupmemberIds.push(user._id);
+    }
+    const groupNameExist = await Group.findOne({ name: groupName });
+    if (groupNameExist && groupNameExist._id != groupID)
+      return res.status(403).json({ message: "Group name already exists" });
+
+    const updatedGroup = await Group.findOneAndUpdate(
+      { _id: groupID },
+      {
+        $set: {
+          name: groupName,
+          studentID: updatedGroupmemberIds,
+          groupLeader: groupLeader,
+        },
+      },
+      { returnOriginal: false }
+    );
+    return res.send({ updatedGroup });
+  } catch (err) {
+    return res.send({ err });
+  }
+};

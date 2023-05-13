@@ -14,23 +14,43 @@ function StudentTasksView(props) {
   };
   useEffect(() => {
     const fetchTask = async () => {
-      let data = await fetchTasks({ assignedTo: user.id });
+      let data = await fetchTasks({
+        assignedTo: user.id,
+        groupId: user.groupId,
+      });
       setStudentTasks(data);
     };
     fetchTask();
   }, [navigate]);
   return (
-    <Box>
+    <Box sx={{ bgcolor: "#0B2B40", color: "white", minHeight: "100vh" }}>
       <NavBar />
-      <Typography>Tasks</Typography>
-      <Box>
-        <Typography>Completed Tasks</Typography>
 
+      <Box
+        sx={{
+          bgcolor: "purple",
+          color: "white",
+          padding: "20px",
+          width: { xs: "100%", sm: "100%", md: "100%", lg: "100%" },
+          margin: "20px auto",
+          marginBottom: "20px",
+          maxWidth: { xs: "100%", sm: "90%", md: "70%", lg: "50%" },
+        }}
+      >
+        <h2>Completed Tasks</h2>
+        {console.log(user)}
         {studentTasks &&
           studentTasks.map((value, index) => {
             if (value.taskStatus == "Completed") {
               return (
-                <Box key={index}>
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginBottom: "10px",
+                  }}
+                >
                   <Typography key={"title" + index}>{value.title}</Typography>
 
                   <Typography key={"deadline" + index}>
@@ -48,13 +68,30 @@ function StudentTasksView(props) {
             }
           })}
       </Box>
-      <Box>
-        <Typography>Pending Tasks</Typography>
+      <Box
+        sx={{
+          bgcolor: "purple",
+          color: "white",
+          padding: "20px",
+          width: { xs: "100%", sm: "100%", md: "100%", lg: "100%" },
+          margin: "auto",
+          marginTop: "20px",
+          maxWidth: { xs: "100%", sm: "90%", md: "70%", lg: "50%" },
+        }}
+      >
+        <h2>Pending Tasks</h2>
         {studentTasks &&
           studentTasks.map((value, index) => {
             if (value.taskStatus == "Pending") {
               return (
-                <Box key={index}>
+                <Box
+                  key={index}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    marginBottom: "10px",
+                  }}
+                >
                   <Typography key={"title" + index}>{value.title}</Typography>
 
                   <Typography key={"deadline" + index}>

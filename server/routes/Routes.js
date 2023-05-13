@@ -26,6 +26,7 @@ import {
   getSupervisorGroups,
   getGroupLeader,
   getGroup,
+  updateGroupMembers,
 } from "../controllers/group-controller.js";
 import {
   assignTask,
@@ -81,4 +82,5 @@ route.get(
   unUpdateProposalStatus
 );
 route.post("/createProposal", verifyToken, createProposal);
+route.post("/updateGroupMembers", verifyToken, updateGroupMembers);
 export default route;

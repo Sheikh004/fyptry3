@@ -4,7 +4,7 @@ import { EmojiEmotions, AttachFile, Mic } from "@mui/icons-material";
 import { Box, styled, InputBase } from "@mui/material";
 
 const Container = styled(Box)`
-  height: 55px;
+  height: 100%;
   background: #ededed;
   width: 100%;
   display: flex;
@@ -14,22 +14,23 @@ const Container = styled(Box)`
     margin: 5px;
     color: #919191;
   }
-  padding-left: 30px;
+  padding-left: 90px;
 `;
 
 const Search = styled(Box)`
   border-radius: 18px;
   background-color: #ffffff;
-  width: calc(94% - 100px);
+  width: calc(100% - 100px);
 `;
 
 const InputField = styled(InputBase)`
   width: 100%;
   padding: 20px;
-  padding-left: 25px;
+  padding-right: 530px;
   font-size: 14px;
   height: 20px;
-  width: 100%;
+  overflow: visible;
+  direction: ltr;
 `;
 
 const ClipIcon = styled(AttachFile)`

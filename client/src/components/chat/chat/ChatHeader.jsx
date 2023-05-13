@@ -1,6 +1,7 @@
 import { useContext } from "react";
 
 import { Box, Typography, styled } from "@mui/material";
+import VideoCameraBackIcon from "@mui/icons-material/VideoCameraBack";
 import { Search, MoreVert } from "@mui/icons-material";
 
 const Header = styled(Box)`
@@ -9,6 +10,10 @@ const Header = styled(Box)`
   display: flex;
   padding: 8px 16px;
   align-items: center;
+
+  @media (max-width: 600px) {
+    padding: 8px;
+  }
 `;
 
 const Image = styled("img")({
@@ -45,9 +50,10 @@ const ChatHeader = ({ receiver }) => {
   return (
     <Header>
       {/* <Image src={url} alt="display picture" /> */}
-      <Box>
-        <Name>{receiver.name}</Name>
+      <Box style={{ width: "90%" }}>
+        <Name style={{ fontSize: 20 }}>{receiver.name}</Name>
       </Box>
+      <VideoCameraBackIcon style={{ width: "10%" }} />
     </Header>
   );
 };

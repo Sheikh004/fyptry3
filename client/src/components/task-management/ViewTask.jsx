@@ -71,47 +71,63 @@ function ViewTask(props) {
     uploadTaskFiles();
   }, [taskFiles]);
   return (
-    <Box>
+    <Box sx={{ bgcolor: "#0B2B40", color: "white", minHeight: "100vh" }}>
       <NavBar />
-      <Typography>Title</Typography>
-      <Typography>{location.state.title}</Typography>
-      <Typography>Description</Typography>
-      <Typography>{location.state.description}</Typography>
-      <Typography>Due Date</Typography>
-      <Typography>Date: {formatDate2(location.state.deadline)}</Typography>
-      <Typography>Time: {formatTimeAMPM2(location.state.deadline)}</Typography>
-      {user.type === "Student" && tasks && tasks.taskStatus == "Pending" && (
+      <Box
+        sx={{
+          bgcolor: "#6A0572",
+          color: "white",
+          padding: "20px",
+          width: { xs: "100%", sm: "100%", md: "100%", lg: "100%" },
+          margin: "20px auto",
+          marginBottom: "10px",
+          maxWidth: { xs: "100%", sm: "90%", md: "70%", lg: "50%" },
+        }}
+      >
+        <Typography variant="h6">Title</Typography>
+        <Typography>{location.state.title}</Typography>
+        <Typography variant="h6">Description</Typography>
+        <Typography>{location.state.description}</Typography>
+        <Typography variant="h6">Due Date</Typography>
+        <Typography>Date: {formatDate2(location.state.deadline)}</Typography>
+        <Typography>
+          Time: {formatTimeAMPM2(location.state.deadline)}
+        </Typography>
+        {user.type === "Student" && tasks && tasks.taskStatus == "Pending" && (
+          <Box>
+            {" "}
+            <label htmlFor="fileInput">Upload</label>
+            <form method="post" encType="multipart/form-data">
+              <input
+                type="file"
+                name="files"
+                multiple
+                style={{ display: "none" }}
+                id="fileInput"
+                onChange={(e) => onFileChange(e)}
+              />
+            </form>
+          </Box>
+        )}
+        {user.type === "Student" && tasks && tasks.taskStatus == "Pending" && (
+          <Button onClick={handleUploadTask}>Submit Task</Button>
+        )}{" "}
+        {user.type === "Student" &&
+          tasks &&
+          tasks.taskStatus == "Completed" && (
+            <Button onClick={handleUnUploadTask}>Unsubmit Task</Button>
+          )}
         <Box>
-          {" "}
-          <label htmlFor="fileInput">Upload</label>
-          <form method="post" encType="multipart/form-data">
-            <input
-              type="file"
-              name="files"
-              multiple
-              style={{ display: "none" }}
-              id="fileInput"
-              onChange={(e) => onFileChange(e)}
-            />
-          </form>
+          {tasks &&
+            tasks.filespaths.length !== 0 &&
+            tasks.filespaths.map((task, index) => {
+              return (
+                <Link href={task} target="_blank" rel="noopener" key={index}>
+                  {task.split("--").pop()}
+                </Link>
+              );
+            })}
         </Box>
-      )}
-      {user.type === "Student" && tasks && tasks.taskStatus == "Pending" && (
-        <Button onClick={handleUploadTask}>Submit Task</Button>
-      )}{" "}
-      {user.type === "Student" && tasks && tasks.taskStatus == "Completed" && (
-        <Button onClick={handleUnUploadTask}>Unsubmit Task</Button>
-      )}
-      <Box>
-        {tasks &&
-          tasks.filespaths.length !== 0 &&
-          tasks.filespaths.map((task, index) => {
-            return (
-              <Link href={task} target="_blank" rel="noopener" key={index}>
-                {task.split("--").pop()}
-              </Link>
-            );
-          })}
       </Box>
     </Box>
   );

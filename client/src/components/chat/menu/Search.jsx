@@ -2,7 +2,7 @@ import { Box, InputBase, styled } from "@mui/material";
 import { Search as SearchIcon } from "@mui/icons-material";
 
 const Component = styled(Box)`
-  background: #fff;
+  //background: #fff;
   height: 45px;
   display: flex;
   align-items: center;
@@ -11,16 +11,16 @@ const Component = styled(Box)`
 
 const Wrapper = styled(Box)`
   position: relative;
-  border-radius: 10px;
+  border-radius: 15px;
   background-color: #f0f2f5;
-  margin: 0 13px;
+  margin: 12px;
   width: 100%;
 `;
 
 const Icon = styled(Box)`
   color: #919191;
-  padding: 8px;
-  height: 100%;
+  padding: 3px;
+  height: 200%;
   position: absolute;
 `;
 

@@ -7,29 +7,31 @@ import { downloadMedia, formatDate } from "../../../utils/common-utils";
 // import { iconPDF } from "../../../constants/data";
 
 const Wrapper = styled(Box)`
-  background: #ffffff;
-  padding: 5px;
-  max-width: 60%;
-  width: fit-content;
-  display: flex;
-  border-radius: 10px;
-  word-break: break-word;
+background: #ffffff;
+padding: 5px;
+max-width: 60%;
+width: fit-content;z
+display: flex;
+border-radius: 10px;
+word-break: break-word;
 `;
 
 const Own = styled(Box)`
-  background: #dcf8c6;
+  background: #81007f;
   padding: 5px;
   max-width: 60%;
   width: fit-content;
   margin-left: auto;
   display: flex;
   border-radius: 10px;
+  color: white;
   word-break: break-word;
 `;
 
 const Text = styled(Typography)`
   font-size: 14px;
   padding: 0 25px 0 5px;
+  color: white;
 `;
 
 const Time = styled(Typography)`

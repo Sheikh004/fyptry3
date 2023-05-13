@@ -28,17 +28,17 @@ function StudentDetails(props) {
     getTask();
   }, [location.state._id, user.id]);
   return (
-    <Box>
+    <Box sx={{ bgcolor: "#0B2B40", color: "white", minHeight: "100vh" }}>
       <SupervisorNavbar />
       <Typography>Name: {location.state.name}</Typography>
-      <Box>
+      <Box sx={{ bgcolor: "purple", padding: "20px", marginBottom: "10px" }}>
         <Typography>Completed Tasks</Typography>
 
         {tasks &&
           tasks.map((value, index) => {
             if (value.taskStatus == "Completed") {
               return (
-                <Box key={index}>
+                <Box key={index} sx={{ marginBottom: "10px" }}>
                   <Typography key={"title" + index}>{value.title}</Typography>
 
                   <Typography key={"deadline" + index}>
@@ -58,13 +58,13 @@ function StudentDetails(props) {
             }
           })}
       </Box>
-      <Box>
+      <Box sx={{ bgcolor: "purple", padding: "20px", marginBottom: "10px" }}>
         <Typography>Pending Tasks</Typography>
         {tasks &&
           tasks.map((value, index) => {
             if (value.taskStatus == "Pending") {
               return (
-                <Box key={index}>
+                <Box key={index} sx={{ marginBottom: "10px" }}>
                   <Typography key={"title" + index}>{value.title}</Typography>
 
                   <Typography key={"deadline" + index}>
@@ -84,7 +84,25 @@ function StudentDetails(props) {
             }
           })}
       </Box>
-      <Button onClick={navigateAssignTask}>Assign New Task</Button>
+      <Button
+        onClick={navigateAssignTask}
+        sx={{
+          bgcolor: "purple",
+          color: "white",
+          border: "1px solid white",
+          borderRadius: "4px",
+          padding: "8px 16px",
+          fontWeight: "bold",
+          textTransform: "uppercase",
+          transition: "background-color 0.3s ease",
+          "&:hover": {
+            bgcolor: "white",
+            color: "purple",
+          },
+        }}
+      >
+        Assign New Task
+      </Button>
     </Box>
   );
 }

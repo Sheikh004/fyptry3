@@ -12,7 +12,7 @@ import { ChatContext } from "../../../context/ChatProvider";
 
 const Component = styled(Box)`
   overflow: overlay;
-  height: 81vh;
+  height: 100%;
 `;
 
 const StyledDivider = styled(Divider)`
