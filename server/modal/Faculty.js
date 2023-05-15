@@ -16,6 +16,21 @@ const facultySchema = new mongoose.Schema(
     department: {
       type: String,
     },
+    title: {
+      type: String,
+      required: true,
+    },
+    isHOD: {
+      type: Boolean,
+    },
+    areaOfInterest: [
+      {
+        type: String,
+      },
+    ],
+    developmentField: {
+      type: String,
+    },
   },
   {
     timestamps: true,

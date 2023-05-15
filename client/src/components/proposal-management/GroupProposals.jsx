@@ -1,4 +1,14 @@
-import { Box, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Button,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+
 import React, { useState } from "react";
 import { useContext, useEffect } from "react";
 import { ChatContext } from "../../context/ChatProvider";
@@ -77,44 +87,106 @@ function GroupProposals(props) {
   }, [supervisorGroups, supervisorProposals]);
   return (
     <Box>
-      <SupervisorNavbar />
+      <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 1 }}>
+        <SupervisorNavbar />
+      </div>
 
-      {groupProposals &&
-        groupProposals.map((group, index) => (
-          <Box key={"box" + index}>
-            <Typography key={"groupName" + index}>Group Name</Typography>
-            <Typography key={"group name" + index}>{group.name}</Typography>
-            <Typography key={"proposal" + index}>Proposal</Typography>
-            {group.filepath && (
-              <div>
-                <a key={"proposalIs" + index} href={group.filepath}>
-                  {group.filepath.split("--").pop()}
-                </a>
-                {group.proposalStatus &&
-                  group.proposalStatus === "Approved" && (
-                    <Button
-                      onClick={() => {
-                        setUnApprove(group.proposalId);
-                      }}
-                    >
-                      Disapprove
-                    </Button>
-                  )}
-                {group.proposalStatus &&
-                  group.proposalStatus !== "Approved" && (
-                    <Button
-                      onClick={() => {
-                        setApprove(group.proposalId);
-                      }}
-                    >
-                      Approve
-                    </Button>
-                  )}
-              </div>
-            )}
-            {!group.filepath && <p>Proposal Pending</p>}
-          </Box>
-        ))}
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundColor: "#0b2b40",
+          flexDirection: "column",
+        }}
+      >
+        <Table
+          style={{
+            margin: "0 auto",
+            border: "1px solid black",
+            backgroundColor: "#81007f",
+            width: "100vh",
+          }}
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ color: "white", fontWeight: "bold" }}>
+                Group Name
+              </TableCell>
+              <TableCell style={{ color: "white", fontWeight: "bold" }}>
+                Proposal
+              </TableCell>
+              <TableCell style={{ color: "white", fontWeight: "bold" }}>
+                Status
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {groupProposals &&
+              groupProposals.map((group, index) => (
+                <TableRow key={index}>
+                  <TableCell style={{ color: "white" }}>{group.name}</TableCell>
+                  <TableCell>
+                    {group.filepath ? (
+                      <div>
+                        <a href={group.filepath}>
+                          {group.filepath.split("--").pop()}
+                        </a>
+                      </div>
+                    ) : (
+                      <p>Proposal Pending</p>
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {group.proposalStatus === "Approved" && (
+                      <Button
+                        onClick={() => {
+                          setUnApprove(group.proposalId);
+                        }}
+                        style={{
+                          backgroundColor: "red",
+                          color: "white",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = "white";
+                          e.target.style.color = "red";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = "red";
+                          e.target.style.color = "white";
+                        }}
+                      >
+                        Disapprove
+                      </Button>
+                    )}
+                    {group.proposalStatus === "Pending" && (
+                      <Button
+                        onClick={() => {
+                          setApprove(group.proposalId);
+                        }}
+                        style={{
+                          backgroundColor: "green",
+                          color: "white",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = "white";
+                          e.target.style.color = "green";
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = "green";
+                          e.target.style.color = "white";
+                        }}
+                      >
+                        Approve
+                      </Button>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </Box>
     </Box>
   );
 }

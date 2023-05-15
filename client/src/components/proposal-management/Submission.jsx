@@ -47,19 +47,54 @@ function Submission(props) {
   }, [proposalPath, group]);
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#0b2b40", minHeight: "100vh" }}>
       <NavBar />
-      <p>FYP Proposal</p>
-      <label htmlFor="fileInput2">Upload</label>
-      <form method="post" encType="multipart/form-data">
-        <input
-          type="file"
-          name="files"
-          style={{ display: "none" }}
-          id="fileInput2"
-          onChange={(e) => onFileChange(e)}
-        />
-      </form>
+      <h1 style={{ color: "white", textAlign: "center", marginTop: 80 }}>
+        FYP Proposal
+      </h1>
+      <div
+        style={{
+          backgroundColor: "#81007f",
+          width: "400px",
+          height: "200px",
+          margin: "0 auto",
+          marginTop: "50px",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <form method="post" encType="multipart/form-data">
+          <label htmlFor="fileInput2">Upload</label>
+          <input
+            type="file"
+            name="files"
+            style={{ display: "none" }}
+            id="fileInput2"
+            onChange={(e) => onFileChange(e)}
+          />
+          <br />
+          <br />
+          <button
+            type="submit"
+            style={{
+              backgroundColor: "black",
+              color: "white",
+              borderRadius: 10,
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = "white";
+              e.target.style.color = "black";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = "black";
+              e.target.style.color = "white";
+            }}
+          >
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

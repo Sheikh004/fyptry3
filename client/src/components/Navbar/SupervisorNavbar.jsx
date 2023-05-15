@@ -29,7 +29,7 @@ function SupervisorNavbar(props) {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link as={NavLink} to="">
+            <Nav.Link as={NavLink} to="/supervisor-dashboard">
               Home
             </Nav.Link>
             <Nav.Link as={NavLink} to="/view-groups">

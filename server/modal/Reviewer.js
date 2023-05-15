@@ -14,6 +14,27 @@ const reviewerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    title: {
+      type: String,
+      required: true,
+    },
+    proposalList: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Proposal",
+      },
+    ],
+    isHOD: {
+      type: Boolean,
+    },
+    areaOfInterest: [
+      {
+        type: String,
+      },
+    ],
+    developmentField: {
+      type: String,
+    },
   },
   {
     timestamps: true,

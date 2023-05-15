@@ -139,8 +139,8 @@ function Login(props) {
   };
   useEffect(() => {
     if (user != null) {
-      if (user.type === "Supervisor") navigate("/view-groups");
-      if (user.type === "Student") navigate("/student-tasks-view");
+      if (user.type === "Supervisor") navigate("/supervisor-dashboard");
+      if (user.type === "Student") navigate("/student-dashboard");
     }
   }, [user, navigate]);
 

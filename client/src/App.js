@@ -23,6 +23,7 @@ import Help from "./components/Help/Help";
 import GroupProposals from "./components/proposal-management/GroupProposals";
 import EditGroup from "./components/group-management/EditGroup";
 import Submission from "./components/proposal-management/Submission";
+import SupervisorDashboard from "./components/dashboards/SupervisorDashboard";
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -136,6 +137,14 @@ function App() {
                 <ProtectedStudent>
                   <Submission />
                 </ProtectedStudent>
+              }
+            />
+            <Route
+              path="/supervisor-dashboard"
+              element={
+                <ProtectedSupervisor>
+                  <SupervisorDashboard />
+                </ProtectedSupervisor>
               }
             />
             <Route path="*" element={<Login />} />

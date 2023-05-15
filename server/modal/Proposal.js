@@ -19,6 +19,18 @@ const proposalSchema = new mongoose.Schema(
     status: {
       type: String,
     },
+    isAssigned: {
+      type: Boolean,
+      default: false,
+    },
+    areaOfInterest: [
+      {
+        type: String,
+      },
+    ],
+    developmentField: {
+      type: String,
+    },
   },
 
   {

@@ -4,11 +4,17 @@ import {
   RadioGroup,
   FormControlLabel,
   Radio,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import { updateGroupMembers } from "../../api/api";
+import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 function EditGroup(props) {
   const location = useLocation();
   const [modGName, setModGName] = useState(location.state.name);
@@ -71,82 +77,219 @@ function EditGroup(props) {
   }, [actualList]);
   return (
     <div>
-      <FormControl component="fieldset">
-        <RadioGroup
-          aria-label="gender"
-          name="gender1"
-          onChange={handleGroupLeader}
+      <SupervisorNavbar />
+      <div style={{ backgroundColor: "#0b2b40", height: "100vh" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+          }}
         >
-          {console.log(location.state)}
-          <p>Group Name</p>
-          <TextField
-            id="mgroup-name"
-            variant="filled"
-            value={modGName}
-            onChange={(e) => {
-              setModGName(e.target.value);
-            }}
-          ></TextField>
+          <div style={{ backgroundColor: "#81007f", padding: "50px" }}>
+            <FormControl component="fieldset">
+              <RadioGroup
+                aria-label="gender"
+                name="gender1"
+                onChange={handleGroupLeader}
+              >
+                {/* <p>Group Name</p> */}
+                <TextField
+                  id="mgroup-name"
+                  variant="filled"
+                  label="Group Name"
+                  value={modGName}
+                  onChange={(e) => {
+                    setModGName(e.target.value);
+                  }}
+                  InputProps={{
+                    style: { color: "white" },
+                  }}
+                  InputLabelProps={{
+                    style: { color: "white" },
+                  }}
+                ></TextField>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell
+                        style={{
+                          color: "white",
+                          fontWeight: "bold",
+                          fontSize: 16,
+                        }}
+                      >
+                        Email
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          color: "white",
+                          fontWeight: "bold",
+                          fontSize: 16,
+                        }}
+                      >
+                        Action
+                      </TableCell>
+                      <TableCell
+                        style={{
+                          color: "white",
+                          fontWeight: "bold",
+                          fontSize: 16,
+                        }}
+                      >
+                        Assign Group Leader
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {modMembers &&
+                      Array.from({ length: modMembers.length }, (_, i) => {
+                        return (
+                          <TableRow key={"key" + i}>
+                            <TableCell
+                              key={"key" + i}
+                              style={{ color: "white" }}
+                            >
+                              {modMembers[i].email}
+                            </TableCell>
+                            <TableCell>
+                              <Button
+                                key={"Button" + i}
+                                style={{
+                                  backgroundColor: "red",
+                                  color: "white",
+                                  borderRadius: 10,
+                                }}
+                                onMouseEnter={(e) => {
+                                  e.target.style.backgroundColor = "white";
+                                  e.target.style.color = "red";
+                                }}
+                                onMouseLeave={(e) => {
+                                  e.target.style.backgroundColor = "red";
+                                  e.target.style.color = "white";
+                                }}
+                                onClick={() => {
+                                  handleRemoveField(modMembers[i]._id);
+                                }}
+                              >
+                                Delete
+                              </Button>
+                            </TableCell>
+                            <TableCell>
+                              <FormControlLabel
+                                key={"rkey" + i}
+                                value={modMembers[i].email}
+                                control={<Radio />}
+                                label="Assign Group Leader"
+                                style={{ color: "white" }}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
 
-          {modMembers &&
-            Array.from({ length: modMembers.length }, (_, i) => {
-              return (
-                <div key={"key" + i}>
-                  <p key={"key" + i}>{modMembers[i].email}</p>
+                    {Array.from({ length: fieldNumber }, (_, i) => {
+                      return (
+                        <TableRow key={i.toString()}>
+                          {/* <p>Enter Email Address of Student</p> */}
+                          <TableCell>
+                            <TextField
+                              key={i}
+                              id={i.toString()}
+                              variant="filled"
+                              label="Email Address of Student"
+                              onChange={(e) => {
+                                handleModInputFieldChange(i, e.target.value);
+                              }}
+                              InputProps={{
+                                style: { color: "white" },
+                              }}
+                              InputLabelProps={{
+                                style: { color: "white" },
+                              }}
+                            ></TextField>
+                          </TableCell>
+                          <TableCell>
+                            <FormControlLabel
+                              value={fieldList[i]}
+                              control={<Radio />}
+                              label="Assign Group Leader"
+                            />
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+                {totalNum < 3 && (
                   <Button
-                    key={"Button" + i}
+                    style={{
+                      backgroundColor: "green",
+                      color: "white",
+                      borderRadius: 10,
+                      marginRight: "30px",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = "white";
+                      e.target.style.color = "green";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = "green";
+                      e.target.style.color = "white";
+                    }}
+                    onClick={handleAddField}
+                  >
+                    Add member
+                  </Button>
+                )}
+                {fieldNumber > 0 && totalNum > 0 && (
+                  <Button
+                    style={{
+                      backgroundColor: "red",
+                      color: "white",
+                      borderRadius: 10,
+                      marginRight: "30px",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.target.style.backgroundColor = "white";
+                      e.target.style.color = "red";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.backgroundColor = "red";
+                      e.target.style.color = "white";
+                    }}
                     onClick={() => {
-                      handleRemoveField(modMembers[i]._id);
+                      handleRemoveField2();
                     }}
                   >
                     Delete
                   </Button>
-                  <FormControlLabel
-                    key={"rkey" + i}
-                    value={modMembers[i].email}
-                    control={<Radio />}
-                    label="Assign Group Leader"
-                  />
-                </div>
-              );
-            })}
-
-          {Array.from({ length: fieldNumber }, (_, i) => {
-            return (
-              <div key={i.toString()}>
-                <p>Enter Email Address of Student</p>
-                <TextField
-                  key={i}
-                  id={i.toString()}
-                  label="Filled"
-                  variant="filled"
-                  onChange={(e) => {
-                    handleModInputFieldChange(i, e.target.value);
-                  }}
-                ></TextField>
-                <FormControlLabel
-                  value={fieldList[i]}
-                  control={<Radio />}
-                  label="Assign Group Leader"
-                />
-              </div>
-            );
-          })}
-          {modMembers && totalNum && totalNum < 3 && (
-            <Button onClick={handleAddField}>Add member</Button>
-          )}
-          {fieldNumber > 1 && totalNum > 0 && (
-            <Button
-              onClick={() => {
-                handleRemoveField2();
-              }}
-            >
-              Delete
-            </Button>
-          )}
-        </RadioGroup>
-        <Button onClick={handleGroupUpdate}>Update</Button>
-      </FormControl>
+                )}
+              </RadioGroup>
+              <Button
+                onClick={handleGroupUpdate}
+                style={{
+                  backgroundColor: "black",
+                  color: "white",
+                  borderRadius: 10,
+                  marginRight: "30px",
+                }}
+                onMouseEnter={(e) => {
+                  e.target.style.backgroundColor = "white";
+                  e.target.style.color = "black";
+                }}
+                onMouseLeave={(e) => {
+                  e.target.style.backgroundColor = "black";
+                  e.target.style.color = "white";
+                }}
+              >
+                Update
+              </Button>
+            </FormControl>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

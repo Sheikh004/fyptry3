@@ -1,4 +1,6 @@
+import proposal from "../modal/Proposal.js";
 import Proposal from "../modal/Proposal.js";
+import Reviewer from "../modal/Reviewer.js";
 export const getSupervisorProposals = async (req, res) => {
   const { id } = req.params;
   try {
@@ -84,4 +86,51 @@ export const createProposal = async (req, res) => {
     console.log(err);
     res.send(err);
   }
+};
+
+export const assignProposals = async (req, res) => {
+  const proposals = await Proposal.find({
+    $and: [{ status: "Approved" }, { isAssigned: false }],
+  });
+  let gameProposals = proposals.filter((proposal) => {
+    if (proposal.developmentField == "Game Development") {
+      return proposal;
+    }
+  });
+  let webProposals = proposals.filter((proposal) => {
+    if (proposal.developmentField == "Web Development") {
+      return proposal;
+    }
+  });
+  let mobileProposals = proposals.filter((proposal) => {
+    if (proposal.developmentField == "Mobile Application Development") {
+      return proposal;
+    }
+  });
+  let webMobileProposals = proposals.filter((proposal) => {
+    if (proposal.developmentField == "Web and Mobile Development") {
+      return proposal;
+    }
+  });
+  let systemProposals = proposals.filter((proposal) => {
+    if (proposal.developmentField == "System Application Development") {
+      return proposal;
+    }
+  });
+  const reviewers = await Reviewer.find();
+  let lecturers = reviewers.filter((reviewer) => {
+    if (reviewer.title == "Lecturer") return reviewer;
+  });
+
+  let assistantProfessors = reviewers.filter((reviewer) => {
+    if (reviewer.title == "Assistant Professor") return reviewer;
+  });
+
+  let pHDAssistantProfessors = reviewers.filter((reviewer) => {
+    if (reviewer.title == "PHD Assistant Professor") return reviewer;
+  });
+  let associateProfessors = reviewers.filter((reviewer) => {
+    if (reviewer.title == "Associate Professor" && reviewer.isHOD == false)
+      return reviewer;
+  });
 };
