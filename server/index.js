@@ -5,7 +5,6 @@ import Routes from "./routes/Routes.js";
 import Connection from "./database/db.js";
 import session from "express-session";
 import cookieParser from "cookie-parser";
-
 import path from "path";
 import { createRequire } from "module";
 

@@ -1,24 +1,35 @@
 import React, { useEffect, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getChatters } from "../../api/api";
+import { getChatters, deleteGroup } from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
 import Group from "./Group";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 function ViewGroups(props) {
   const { user } = useContext(ChatContext);
   const [registerBool, setRegisterBool] = useState();
   const [groups, setGroups] = useState([]);
-  const [navigation, setNavigation] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState();
+  const [isDelete, setIsDelete] = useState(false);
   const navigate = useNavigate();
-  const settingState = () => {
-    setNavigation(true);
+
+  const navigateToEditPage = (group) => {
+    navigate("/edit-group", { state: group });
   };
 
   const navigateRegisterGroup = () => {
     navigate("/register-group");
   };
 
+  const deletingGroup = async (groupId) => {
+    const data = await deleteGroup(groupId);
+
+    setDeleteMessage(data);
+    setIsDelete(!isDelete);
+  };
+  useEffect(() => {
+    if (deleteMessage) console.log(deleteMessage);
+  }, [isDelete, deleteMessage]);
   useEffect(() => {
     const getGroups = async () => {
       // let user = JSON.parse(localStorage.getItem("user"));
@@ -37,7 +48,7 @@ function ViewGroups(props) {
       }
     };
     getGroups();
-  }, []);
+  }, [isDelete]);
   return (
     <Box>
       <SupervisorNavbar />
@@ -63,7 +74,29 @@ function ViewGroups(props) {
         >
           {groups &&
             groups.map((group, key) => {
-              return <Group group={group} key={key} />;
+              return (
+                <Box key={"Box" + key}>
+                  <Typography key={"TYpography" + key}>{group.name}</Typography>
+
+                  <Button
+                    key={"delete" + key}
+                    onClick={() => {
+                      deletingGroup(group._id);
+                    }}
+                  >
+                    Delete Group
+                  </Button>
+                  <Button
+                    key={"edit" + key}
+                    onClick={() => {
+                      navigateToEditPage(group);
+                    }}
+                  >
+                    Edit Group
+                  </Button>
+                  <Group group={group} key={key} />
+                </Box>
+              );
             })}
           {registerBool && (
             <Button

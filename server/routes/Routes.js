@@ -27,6 +27,7 @@ import {
   getGroupLeader,
   getGroup,
   updateGroupMembers,
+  deleteGroup,
 } from "../controllers/group-controller.js";
 import {
   assignTask,
@@ -43,6 +44,7 @@ import {
   updateProposalStatus,
   unUpdateProposalStatus,
 } from "../controllers/proposal-controller.js";
+
 const route = express.Router();
 route.post("/getUser", getUser);
 route.post("/getChatters", verifyToken, getChatters);
@@ -83,4 +85,5 @@ route.get(
 );
 route.post("/createProposal", verifyToken, createProposal);
 route.post("/updateGroupMembers", verifyToken, updateGroupMembers);
+route.delete("/deleteGroup/:id", verifyToken, deleteGroup);
 export default route;

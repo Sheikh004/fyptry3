@@ -85,6 +85,19 @@ export const getGroup = async (req, res) => {
   }
 };
 
+export const deleteGroup = async (req, res) => {
+  const { id } = req.params;
+  const deletedGroup = Group.findByIdAndDelete(id)
+    .then(() => {
+      res.status(200).json({ message: "Group deleted successfully" });
+    })
+    .catch((error) => {
+      res
+        .status(500)
+        .json({ error: "An error occurred while deleting the group" });
+    });
+};
+
 export const updateGroupMembers = async (req, res) => {
   const groupName = req.body.groupName;
   const studentID = req.body.studentID;

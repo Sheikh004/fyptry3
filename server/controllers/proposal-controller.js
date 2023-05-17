@@ -92,45 +92,171 @@ export const assignProposals = async (req, res) => {
   const proposals = await Proposal.find({
     $and: [{ status: "Approved" }, { isAssigned: false }],
   });
-  let gameProposals = proposals.filter((proposal) => {
-    if (proposal.developmentField == "Game Development") {
-      return proposal;
-    }
-  });
-  let webProposals = proposals.filter((proposal) => {
-    if (proposal.developmentField == "Web Development") {
-      return proposal;
-    }
-  });
-  let mobileProposals = proposals.filter((proposal) => {
-    if (proposal.developmentField == "Mobile Application Development") {
-      return proposal;
-    }
-  });
-  let webMobileProposals = proposals.filter((proposal) => {
-    if (proposal.developmentField == "Web and Mobile Development") {
-      return proposal;
-    }
-  });
-  let systemProposals = proposals.filter((proposal) => {
-    if (proposal.developmentField == "System Application Development") {
-      return proposal;
-    }
-  });
+
   const reviewers = await Reviewer.find();
   let lecturers = reviewers.filter((reviewer) => {
     if (reviewer.title == "Lecturer") return reviewer;
   });
 
-  let assistantProfessors = reviewers.filter((reviewer) => {
+  const assistantProfessors = reviewers.filter((reviewer) => {
     if (reviewer.title == "Assistant Professor") return reviewer;
   });
 
-  let pHDAssistantProfessors = reviewers.filter((reviewer) => {
+  const pHDAssistantProfessors = reviewers.filter((reviewer) => {
     if (reviewer.title == "PHD Assistant Professor") return reviewer;
   });
-  let associateProfessors = reviewers.filter((reviewer) => {
+  const associateProfessors = reviewers.filter((reviewer) => {
     if (reviewer.title == "Associate Professor" && reviewer.isHOD == false)
       return reviewer;
   });
+  const data = await Promise.all(
+    proposals.map(async (proposal) => {
+      for (let i = 0; i < lecturers.length; i++) {
+        if (
+          lecturers.length != 0 &&
+          proposal.developmentField == lecturers[i].developmentField
+        ) {
+          if (
+            proposal.areaOfInterest.some((interest) =>
+              lecturers[i].areaOfInterest.includes(interest)
+            )
+          ) {
+            let arr = lecturers[i].proposalList;
+            arr.push(proposal._id);
+            const data2 = await Proposal.findOneAndUpdate(
+              { _id: proposal._id },
+              {
+                $set: {
+                  isAssigned: true,
+                },
+              },
+              { returnOriginal: false }
+            );
+
+            const data3 = await Reviewer.findOneAndUpdate(
+              {
+                _id: lecturers[i]._id,
+              },
+              {
+                $set: { proposalList: arr },
+              },
+              { returnOriginal: false }
+            );
+            return { proposal: data2, reviewer: data3 };
+          }
+        }
+      }
+
+      for (let i = 0; i < assistantProfessors.length; i++) {
+        if (
+          assistantProfessors.length != 0 &&
+          proposal.developmentField == assistantProfessors[i].developmentField
+        ) {
+          if (
+            proposal.areaOfInterest.some((interest) =>
+              assistantProfessors[i].areaOfInterest.includes(interest)
+            )
+          ) {
+            let arr = assistantProfessors[i].proposalList;
+            arr.push(proposal._id);
+            const data2 = await Proposal.findOneAndUpdate(
+              { _id: proposal._id },
+              {
+                $set: {
+                  isAssigned: true,
+                },
+              },
+              { returnOriginal: false }
+            );
+
+            const data3 = await Reviewer.findOneAndUpdate(
+              {
+                _id: assistantProfessors[i]._id,
+              },
+              {
+                $set: { proposalList: arr },
+              },
+              { returnOriginal: false }
+            );
+            return { proposal: data2, reviewer: data3 };
+          }
+        }
+      }
+
+      for (let i = 0; i < pHDAssistantProfessors.length; i++) {
+        if (
+          pHDAssistantProfessors.length != 0 &&
+          proposal.developmentField ==
+            pHDAssistantProfessors[i].developmentField
+        ) {
+          if (
+            proposal.areaOfInterest.some((interest) =>
+              pHDAssistantProfessors[i].areaOfInterest.includes(interest)
+            )
+          ) {
+            let arr = pHDAssistantProfessors[i].proposalList;
+            arr.push(proposal._id);
+            const data2 = await Proposal.findOneAndUpdate(
+              { _id: proposal._id },
+              {
+                $set: {
+                  isAssigned: true,
+                },
+              },
+              { returnOriginal: false }
+            );
+
+            const data3 = await Reviewer.findOneAndUpdate(
+              {
+                _id: pHDAssistantProfessors[i]._id,
+              },
+              {
+                $set: { proposalList: arr },
+              },
+              { returnOriginal: false }
+            );
+            return { proposal: data2, reviewer: data3 };
+          }
+        }
+      }
+
+      for (let i = 0; i < associateProfessors.length; i++) {
+        if (
+          associateProfessors.length != 0 &&
+          proposal.developmentField == associateProfessors[i].developmentField
+        ) {
+          if (
+            proposal.areaOfInterest.some((interest) =>
+              associateProfessors[i].areaOfInterest.includes(interest)
+            )
+          ) {
+            let arr = associateProfessors[i].proposalList;
+            arr.push(proposal._id);
+            const data2 = await Proposal.findOneAndUpdate(
+              { _id: proposal._id },
+              {
+                $set: {
+                  isAssigned: true,
+                },
+              },
+              { returnOriginal: false }
+            );
+
+            const data3 = await Reviewer.findOneAndUpdate(
+              {
+                _id: associateProfessors[i]._id,
+              },
+              {
+                $set: { proposalList: arr },
+              },
+              { returnOriginal: false }
+            );
+            return { proposal: data2, reviewer: data3 };
+          }
+        }
+      }
+    })
+  );
+
+  console.log(data);
 };

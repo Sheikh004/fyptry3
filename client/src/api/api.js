@@ -422,6 +422,22 @@ export const getGroup = async (id) => {
     });
 };
 
+export const deleteGroup = async (id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .delete(`${url}/deleteGroup/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const createProposal = async (data) => {
   const token = sessionStorage.getItem("jwtToken");
   return await axios
