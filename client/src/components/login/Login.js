@@ -107,11 +107,9 @@ function Login(props) {
     setError("");
     if (!email) {
       setMailError("Email is required");
-    }
-    //  else if (!/^.+@cuilahore\.edu\.pk$/.test(email)) {
-    //   setMailError("Invalid email format");
-    // }
-    else if (!password) {
+    } else if (!/^.+@cuilahore\.edu\.pk$/.test(email)) {
+      setMailError("Invalid email format");
+    } else if (!password) {
       setPassError("Password is required");
     } else if (password.length < 8) {
       setPassError("Password must be at least 8 characters long");
@@ -141,6 +139,7 @@ function Login(props) {
     if (user != null) {
       if (user.type === "Supervisor") navigate("/supervisor-dashboard");
       if (user.type === "Student") navigate("/student-dashboard");
+      if (user.type === "FYPCommittee") navigate("/fyp-committee-dashboard");
     }
   }, [user, navigate]);
 

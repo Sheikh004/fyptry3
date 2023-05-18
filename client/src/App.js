@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedStudent from "./components/protected/ProtectedStudent";
 import ProtectedSupervisor from "./components/protected/ProtectedSupervisor";
 import ProtectedUser from "./components/protected/ProtectedUser";
+import ProtectedFYPCommittee from "./components/protected/ProtectedFYPCommittee";
 import ChatProvider from "./context/ChatProvider";
 import ForgotPassword from "./components/login/ForgotPassword";
 import ResetPassword from "./components/login/ResetPassword";
@@ -24,6 +25,7 @@ import GroupProposals from "./components/proposal-management/GroupProposals";
 import EditGroup from "./components/group-management/EditGroup";
 import Submission from "./components/proposal-management/Submission";
 import SupervisorDashboard from "./components/dashboards/SupervisorDashboard";
+import FYPComHome from "./components/fyp-committee-panel/FYPComHome";
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -145,6 +147,14 @@ function App() {
                 <ProtectedSupervisor>
                   <SupervisorDashboard />
                 </ProtectedSupervisor>
+              }
+            />
+            <Route
+              path="/fyp-committee-dashboard"
+              element={
+                <ProtectedFYPCommittee>
+                  <FYPComHome />
+                </ProtectedFYPCommittee>
               }
             />
             <Route path="*" element={<Login />} />
