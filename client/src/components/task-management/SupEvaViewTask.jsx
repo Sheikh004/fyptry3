@@ -14,7 +14,7 @@ function SupEvaViewTask(props) {
       <SupervisorNavbar />
       <Box
         sx={{
-          bgcolor: "#0B2B40",
+          bgcolor: "#0490db",
           color: "white",
           minHeight: "100vh",
           display: "flex",
@@ -25,7 +25,7 @@ function SupEvaViewTask(props) {
       >
         <Box
           sx={{
-            bgcolor: "purple",
+            bgcolor: "#052f72",
             marginTop: "10px",
             padding: "20px",
             textAlign: "center",
@@ -33,21 +33,27 @@ function SupEvaViewTask(props) {
             maxWidth: "500px",
           }}
         >
-          <Typography>Title</Typography>
-          <Typography>{location.state.title}</Typography>
-          <Typography>Description</Typography>
-          <Typography>{location.state.description}</Typography>
-          <Typography>Due Date</Typography>
-          <Typography>Date: {formatDate2(location.state.deadline)}</Typography>
+          <Typography
+            variant="h6"
+            sx={{ marginBottom: "10px", fontWeight: "bold" }}
+          >
+            "{location.state.title}""
+          </Typography>
+
+          <Typography sx={{ marginTop: "10px", marginBottom: "10px" }}>
+            Description: {location.state.description}
+          </Typography>
+
           <Typography>
-            Time: {formatTimeAMPM2(location.state.deadline)}
+            Due: {formatDate2(location.state.deadline)},{" "}
+            {formatTimeAMPM2(location.state.deadline)}
           </Typography>
         </Box>
         <Box
           sx={{
             marginTop: "10px",
             textAlign: "center",
-            bgcolor: "purple",
+            bgcolor: "#052f72",
             padding: "10px",
             width: "80%",
             maxWidth: "500px",

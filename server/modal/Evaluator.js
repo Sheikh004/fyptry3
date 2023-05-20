@@ -18,8 +18,8 @@ const evaluatorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    isHOD: {
-      type: Boolean,
+    role: {
+      type: String,
     },
     areaOfInterest: [
       {

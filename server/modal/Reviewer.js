@@ -24,8 +24,8 @@ const reviewerSchema = new mongoose.Schema(
         ref: "Proposal",
       },
     ],
-    isHOD: {
-      type: Boolean,
+    role: {
+      type: String,
     },
     areaOfInterest: [
       {

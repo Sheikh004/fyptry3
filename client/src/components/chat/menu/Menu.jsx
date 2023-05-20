@@ -11,7 +11,7 @@ const Menu = () => {
   const [text, setText] = useState("");
 
   return (
-    <Box style={{ backgroundColor: "#0b2b40" }}>
+    <Box style={{ backgroundColor: "#052f72" }}>
       <Search setText={setText} />
       <Conversations text={text} />
     </Box>

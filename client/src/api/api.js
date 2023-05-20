@@ -438,6 +438,25 @@ export const deleteGroup = async (id) => {
     });
 };
 
+export const removeFile = async (id, name) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .delete(`${url}/removeFile/${id}/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        name: name,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const createProposal = async (data) => {
   const token = sessionStorage.getItem("jwtToken");
   return await axios
@@ -448,6 +467,52 @@ export const createProposal = async (data) => {
     })
     .then((response) => {
       // console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const registerSupervisor = async (data) => {
+  return await axios
+    .get(`${url}/register-supervisor/${data}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+      return error;
+    });
+};
+
+export const createNotification = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/createNotification`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getNotifications = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/getNotifications`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log(response);
       return response.data;
     })
     .catch((error) => {

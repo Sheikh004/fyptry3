@@ -5,14 +5,14 @@ import { Box, styled, InputBase } from "@mui/material";
 
 const Container = styled(Box)`
   height: 100%;
-  background: #ededed;
+  background: #052f72;
   width: 100%;
   display: flex;
   align-items: center;
   padding: 0 15px;
   & > * {
     margin: 5px;
-    color: #919191;
+    color: white;
   }
   padding-left: 90px;
 `;

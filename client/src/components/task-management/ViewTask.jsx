@@ -8,19 +8,22 @@ import {
   updateTask,
   setPendingTask,
   setCompletedTask,
+  removeFile,
 } from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
 import NavBar from "../NavBar";
 function ViewTask(props) {
   const location = useLocation();
   const [taskFiles, setTaskFiles] = useState();
-  const [uploadedData, setUploadedData] = useState("");
+
   const [tasks, setTasks] = useState();
+
   const { user } = useContext(ChatContext);
 
   useEffect(() => {
     setTasks(location.state);
   }, [location]);
+
   const handleUnUploadTask = async () => {
     let data3 = await setPendingTask({ id: location.state._id });
     setTasks(data3);
@@ -35,23 +38,11 @@ function ViewTask(props) {
 
     console.log(result2);
   };
-  useEffect(() => {
-    const updateFilePaths = async () => {
-      if (uploadedData && uploadedData != "") {
-        let result = await updateTask({
-          id: location.state._id,
-          filesNameArr: uploadedData,
-        });
-        setTasks(result);
-        setUploadedData("");
-        console.log(result);
-      }
-    };
-    updateFilePaths();
-  }, [uploadedData]);
+
   const onFileChange = async (e) => {
     setTaskFiles(e.target.files);
   };
+
   useEffect(() => {
     const uploadTaskFiles = async () => {
       if (taskFiles) {
@@ -65,11 +56,25 @@ function ViewTask(props) {
         console.log(formData);
 
         let data2 = await handleUploadTasks(formData);
-        if (data2) setUploadedData(data2);
+        if (data2 && data2 !== "") {
+          let result = await updateTask({
+            id: location.state._id,
+            filesNameArr: data2,
+          });
+          setTasks(result);
+
+          console.log(result);
+        }
       }
     };
     uploadTaskFiles();
   }, [taskFiles]);
+
+  const handleRemoveFile = async (task_id, file_name) => {
+    const data = await removeFile(task_id, file_name);
+    if (data) setTasks(data);
+  };
+
   return (
     <Box sx={{ bgcolor: "#0B2B40", color: "white", minHeight: "100vh" }}>
       <NavBar />
@@ -93,7 +98,7 @@ function ViewTask(props) {
         <Typography>
           Time: {formatTimeAMPM2(location.state.deadline)}
         </Typography>
-        {user.type === "Student" && tasks && tasks.taskStatus == "Pending" && (
+        {user.type === "Student" && tasks && tasks.taskStatus === "Pending" && (
           <Box>
             {" "}
             <label htmlFor="fileInput">Upload</label>
@@ -109,12 +114,12 @@ function ViewTask(props) {
             </form>
           </Box>
         )}
-        {user.type === "Student" && tasks && tasks.taskStatus == "Pending" && (
+        {user.type === "Student" && tasks && tasks.taskStatus === "Pending" && (
           <Button onClick={handleUploadTask}>Submit Task</Button>
         )}{" "}
         {user.type === "Student" &&
           tasks &&
-          tasks.taskStatus == "Completed" && (
+          tasks.taskStatus === "Completed" && (
             <Button onClick={handleUnUploadTask}>Unsubmit Task</Button>
           )}
         <Box>
@@ -122,9 +127,21 @@ function ViewTask(props) {
             tasks.filespaths.length !== 0 &&
             tasks.filespaths.map((task, index) => {
               return (
-                <Link href={task} target="_blank" rel="noopener" key={index}>
-                  {task.split("--").pop()}
-                </Link>
+                <Box>
+                  <Link href={task} target="_blank" rel="noopener" key={index}>
+                    {task.split("--").pop()}
+                  </Link>
+                  {tasks.taskStatus === "Pending" && (
+                    <Button
+                      key={"remove file" + index}
+                      onClick={() => {
+                        handleRemoveFile(tasks._id, task);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  )}
+                </Box>
               );
             })}
         </Box>

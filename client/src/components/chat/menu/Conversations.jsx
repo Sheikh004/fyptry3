@@ -88,7 +88,7 @@ const Conversations = ({ text }) => {
       if (receiver) {
         console.log(groupList);
         if (groupList.includes(receiver.name)) {
-          console.log("hI GROUP");
+          // console.log("hI GROUP");
           const groupChatDetails = await setGroupChat({
             sender: user.id,
             groupId: receiver.id,

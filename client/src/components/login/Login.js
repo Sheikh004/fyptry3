@@ -14,76 +14,86 @@ import {
   Button,
 } from "@mui/material";
 
-// Create a styled component for the login container
+const Heading = styled(Typography)(({ theme }) => ({
+  position: "absolute",
+  top: "2rem",
+  left: "50%",
+  transform: "translateX(-50%)",
+  color: "black",
+  fontSize: "2rem",
+  fontWeight: "bold",
+  fontFamily: "Lucida Bright",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.5rem",
+    top: "1rem",
+    fontWeight: "normal",
+  },
+}));
+
+const AvatarImage = styled("img")({
+  width: "5rem",
+  height: "5rem",
+  borderRadius: "50%",
+  marginRight: "1rem",
+});
+
 const LoginContainer = styled(Box)({
   width: "100vw",
   height: "100vh",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  backgroundColor: "#0b2b40",
+  backgroundImage:
+    "url('https://i0.wp.com/jaamiah.com/wp-content/uploads/2018/12/CUI-LHR.jpg')",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
 });
 
-// Create a styled component for the login box
 const LoginBox = styled(Box)({
-  width: "70%",
+  width: "90%",
+  maxWidth: "400px",
   display: "flex",
-  flexDirection: "row",
-  border: "2px solid black",
-  borderRadius: "10px",
+  flexDirection: "column",
+  borderRadius: "20px",
   overflow: "hidden",
+  boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
 });
 
-// Create a styled component for the login form
 const LoginForm = styled("form")({
-  width: "70%",
+  width: "100%",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyContent: "center",
-  backgroundColor: "#81007f",
+  backgroundColor: "rgba(255, 255, 255, 0.8)",
+  backdropFilter: "blur",
   padding: "2rem",
 });
 
-// Create a styled component for the error messages
 const ErrorMessage = styled("p")({
   color: "red",
 });
 
-// Create a styled component for the submit button
 const SubmitButton = styled(Button)({
-  width: "20%",
+  width: "100%",
   marginTop: "1rem",
-  backgroundColor: "#0b2b40", // Set a custom background color
-  color: "white", // Set a custom text color
-  borderRadius: "5px", // Add rounded corners
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)", // Add a subtle box shadow
-  transition: "background-color 0.3s ease", // Add a smooth transition effect
+  backgroundColor: "#052f72",
+  color: "white",
+  borderRadius: "5px",
+  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+  transition: "background-color 0.3s ease",
   "&:hover": {
-    backgroundColor: "#D5004E", // Change background color on hover
+    backgroundColor: "#38CBFC",
   },
 });
 
-// Create a styled component for the image container
-const ImageContainer = styled(Box)({
-  width: "30%",
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-});
-
-// Create a styled component for the image
-const Image = styled("img")({
-  width: "100%",
-  height: "80%",
-});
-
 const ForgotPasswordButton = styled(Button)({
-  fontSize: "0.8rem",
-  color: "white",
-  transition: "background-color 0.3s ease", // Add a smooth transition effect
+  fontSize: "1rem",
+  fontFamily: "Optima",
+  color: "#0490db",
+  transition: "background-color 0.3s ease",
   "&:hover": {
-    color: "#D5004E", // Change background color on hover
+    color: "#D5004E",
   },
 });
 
@@ -124,10 +134,11 @@ function Login(props) {
       let user2 = await getUser(data);
 
       if (user2 != null) {
-        await setUser(user2.data);
+        if (user2.data) await setUser(user2.data);
         // localStorage.setItem("user", JSON.stringify(user2.data));
-      } else {
-        setError(user2);
+        else {
+          setError(user2);
+        }
       }
     }
   };
@@ -145,6 +156,13 @@ function Login(props) {
 
   return (
     <LoginContainer>
+      <Heading variant="h1">
+        <AvatarImage
+          src="https://upload.wikimedia.org/wikipedia/commons/c/c0/COMSATS_new_logo.jpg"
+          alt="Avatar"
+        />
+        E-FYP Portal
+      </Heading>
       <LoginBox>
         <LoginForm onSubmit={handleSubmit}>
           {mailError && <ErrorMessage>{mailError}</ErrorMessage>}
@@ -170,6 +188,7 @@ function Login(props) {
                 backgroundColor: "white",
                 marginTop: 10,
                 borderRadius: 10,
+                width: 300,
               },
             }}
           />
@@ -199,6 +218,7 @@ function Login(props) {
                 backgroundColor: "white",
                 marginTop: 10,
                 borderRadius: 10,
+                width: 300,
               },
             }}
           />
@@ -210,6 +230,7 @@ function Login(props) {
               width: "40%",
               backgroundColor: "white",
               borderRadius: 10,
+              width: 300,
             }}
           >
             <InputLabel id="demo-simple-select-label" variant="filled">
@@ -238,13 +259,15 @@ function Login(props) {
           <ForgotPasswordButton variant="outlined" onClick={forgotPassword}>
             Forgot Password
           </ForgotPasswordButton>
+          <ForgotPasswordButton
+            variant="outlined"
+            onClick={() => {
+              navigate("/register-supervisor");
+            }}
+          >
+            Register as supervisor
+          </ForgotPasswordButton>
         </LoginForm>
-        <ImageContainer>
-          <Image
-            src="https://play-lh.googleusercontent.com/dR5oRHZkctNt4p7YqMsPDDSTNRUoZ-V92rOoBTSpoB8o2AtuLVpPuwEOfMhpQwKX6wg"
-            alt="Image"
-          />
-        </ImageContainer>
       </LoginBox>
     </LoginContainer>
   );

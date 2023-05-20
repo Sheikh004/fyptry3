@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import FYPCommittee from "../modal/FYPCommittee.js";
 import Group from "../modal/Group.js";
+import message from "../modal/Message.js";
 
 export const getUser = async (request, response) => {
   let passFlag;
@@ -333,5 +334,35 @@ export const getStChatters = async (req, res) => {
     return res.send({ user });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const registerSupervisor = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const data = await Faculty.findOne({ email: id });
+    if (!data) {
+      return res.status(550).json({ message: "No such faculty member exists" });
+    }
+    const supervisorExist = await Supervisor.findOne({ email: id });
+    if (supervisorExist) {
+      return res
+        .status(403)
+        .json({ message: "Supervisor is already registered" });
+    }
+    const newSupervisor = new Supervisor({
+      facultyId: data._id,
+      name: data.name,
+      email: data.email,
+      title: data.title,
+      role: data.role,
+      areaOfInterest: data.areaOfInterest,
+      developmentField: data.developmentField,
+    });
+    await newSupervisor.save();
+    res.status(200).json({ message: "Supervisor registered successfully" });
+  } catch (error) {
+    res.send(error);
   }
 };

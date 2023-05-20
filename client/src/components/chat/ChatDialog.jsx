@@ -16,11 +16,14 @@ const Component = styled(Box)`
   @media (max-width: 768px) {
     height: 100vh;
   }
+  padding: 20;
 `;
 
 const LeftComponent = styled(Box)`
   min-width: 400px;
-
+  background-color: #052f72;
+  padding: 1rem;
+  min-height: 100px;
   @media (max-width: 768px) {
     min-width: unset;
   }
@@ -31,6 +34,8 @@ const RightComponent = styled(Box)`
   min-width: 300px;
   height: 100vh;
   border-left: 1px solid rgba(0, 0, 0, 0.14);
+  background-color: #12222f;
+  padding: 1rem;
 
   @media (max-width: 768px) {
     border-left: none;

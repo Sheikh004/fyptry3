@@ -1,12 +1,20 @@
 import React, { useEffect, useState, useContext } from "react";
 import NavBar from "../NavBar";
-import { uploadFile, getGroup, createProposal } from "../../api/api";
+import {
+  uploadFile,
+  getGroup,
+  createProposal,
+  createNotification,
+} from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
 function Submission(props) {
   const [proposal, setProposal] = useState();
   const [proposalPath, setProposalPath] = useState();
   const { user } = useContext(ChatContext);
   const [group, setGroup] = useState();
+  const [notification, setNotification] = useState("");
+  const [noti, setNoti] = useState(false);
+  const [submissionStatus, setSubmissionStatus] = useState(false);
   const onFileChange = (e) => {
     setProposal(e.target.files[0]);
   };
@@ -34,38 +42,76 @@ function Submission(props) {
   }, [proposal]);
   useEffect(() => {
     const makeProposal = async () => {
-      if (proposalPath && group) {
+      if (proposalPath && group && submissionStatus === true) {
         const data2 = await createProposal({
           groupsId: group._id,
+          groupName: group.name,
           supervisorsId: group.supervisorId,
           proposalsPath: proposalPath,
         });
-        console.log(data2);
+        console.log(data2.proposal);
+        setNotification(data2.message);
+        setNoti(!noti);
+        setSubmissionStatus(false);
       }
     };
     makeProposal();
-  }, [proposalPath, group]);
-
+  }, [proposalPath, group, submissionStatus]);
+  useEffect(() => {
+    const handleNotification = async () => {
+      if (notification) {
+        console.log(notification);
+        const notif = await createNotification({
+          notification: notification,
+          createdBy: group._id,
+          createdFor: group.supervisorId,
+        });
+        console.log(notif);
+      }
+    };
+    handleNotification();
+  }, [notification, noti]);
   return (
-    <div style={{ backgroundColor: "#0b2b40", minHeight: "100vh" }}>
+    <div style={{ backgroundColor: "#0490db", minHeight: "100vh" }}>
       <NavBar />
-      <h1 style={{ color: "white", textAlign: "center", marginTop: 80 }}>
-        FYP Proposal
-      </h1>
       <div
         style={{
-          backgroundColor: "#81007f",
+          backgroundColor: "#052f72",
           width: "400px",
-          height: "200px",
           margin: "0 auto",
           marginTop: "50px",
           display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          padding: "20px",
+          borderRadius: "10px",
         }}
       >
-        <form method="post" encType="multipart/form-data">
-          <label htmlFor="fileInput2">Upload</label>
+        <h1 style={{ color: "white" }}>FYP Proposal</h1>
+        <br />
+
+        <form
+          method="post"
+          encType="multipart/form-data"
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <label
+            htmlFor="fileInput2"
+            style={{
+              backgroundColor: "#0490db",
+              marginRight: "10px",
+              color: "white",
+              padding: "8px 16px",
+              borderRadius: "4px",
+            }}
+          >
+            Upload
+          </label>
           <input
             type="file"
             name="files"
@@ -75,25 +121,29 @@ function Submission(props) {
           />
           <br />
           <br />
-          <button
-            type="submit"
-            style={{
-              backgroundColor: "black",
-              color: "white",
-              borderRadius: 10,
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = "white";
-              e.target.style.color = "black";
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = "black";
-              e.target.style.color = "white";
-            }}
-          >
-            Submit
-          </button>
+
+          {/* {/* {proposalPath && <p>{proposalPath}</p>} */}
         </form>
+        <button
+          onClick={() => {
+            setSubmissionStatus(true);
+          }}
+          style={{
+            backgroundColor: "black",
+            color: "white",
+            borderRadius: 10,
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.backgroundColor = "white";
+            e.target.style.color = "black";
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.backgroundColor = "black";
+            e.target.style.color = "white";
+          }}
+        >
+          Submit
+        </button>
       </div>
     </div>
   );

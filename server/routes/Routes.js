@@ -4,6 +4,7 @@ import {
   getUser,
   getChatters,
   getStChatters,
+  registerSupervisor,
 } from "../controllers/userController.js";
 import {
   setChat,
@@ -37,6 +38,7 @@ import {
   updateTask,
   setPendingTask,
   setCompletedTask,
+  removeFile,
 } from "../controllers/task-controller.js";
 import {
   getSupervisorProposals,
@@ -44,7 +46,7 @@ import {
   updateProposalStatus,
   unUpdateProposalStatus,
 } from "../controllers/proposal-controller.js";
-
+import { createNotification } from "../controllers/notification-controller.js";
 const route = express.Router();
 route.post("/getUser", getUser);
 route.post("/getChatters", verifyToken, getChatters);
@@ -73,6 +75,7 @@ route.get("/getSupervisorGroups/:id", verifyToken, getSupervisorGroups);
 route.get("/getSupervisorProposals/:id", verifyToken, getSupervisorProposals);
 route.get("/getGroupLeader/:id", verifyToken, getGroupLeader);
 route.get("/getGroup/:id", verifyToken, getGroup);
+route.get("/register-supervisor/:id", registerSupervisor);
 route.get(
   "/updateProposalStatus/:approvalProposal",
   verifyToken,
@@ -86,4 +89,6 @@ route.get(
 route.post("/createProposal", verifyToken, createProposal);
 route.post("/updateGroupMembers", verifyToken, updateGroupMembers);
 route.delete("/deleteGroup/:id", verifyToken, deleteGroup);
+route.post("/createNotification", verifyToken, createNotification);
+route.delete("/removeFile/:id", verifyToken, removeFile);
 export default route;

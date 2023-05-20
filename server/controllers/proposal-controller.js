@@ -41,7 +41,7 @@ export const unUpdateProposalStatus = async (req, res) => {
       { _id: unApprovalProposal },
       {
         $set: {
-          status: "Pending",
+          status: "Disapproved",
         },
       },
       { returnOriginal: false }
@@ -70,7 +70,10 @@ export const createProposal = async (req, res) => {
         },
         { returnOriginal: false }
       );
-      res.send({ updateProposal });
+      res.send({
+        proposal: updateProposal,
+        message: `${req.body.groupName} have updated the proposal`,
+      });
     } else {
       const newProposal = new Proposal({
         supervisorId: req.body.supervisorsId,
@@ -80,7 +83,10 @@ export const createProposal = async (req, res) => {
       });
       await newProposal.save();
       console.log(newProposal);
-      res.send({ newProposal });
+      res.send({
+        proposal: newProposal,
+        message: `${req.body.groupName} have submitted the proposal`,
+      });
     }
   } catch (err) {
     console.log(err);

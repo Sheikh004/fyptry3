@@ -14,9 +14,7 @@ function StudentDetails(props) {
   const handleNavigateToStudentTask = (value) => {
     navigate("/sup-eva-view-task", { state: value });
   };
-  const navigateAssignTask = () => {
-    navigate("/assign-task", { state: location.state });
-  };
+
   useEffect(() => {
     const getTask = async () => {
       let data = await getTasks({
@@ -28,27 +26,46 @@ function StudentDetails(props) {
     getTask();
   }, [location.state._id, user.id]);
   return (
-    <Box sx={{ bgcolor: "#0B2B40", color: "white", minHeight: "100vh" }}>
+    <Box sx={{ bgcolor: "#0490db", color: "white", minHeight: "100vh" }}>
       <SupervisorNavbar />
-      <Typography>Name: {location.state.name}</Typography>
-      <Box sx={{ bgcolor: "purple", padding: "20px", marginBottom: "10px" }}>
-        <Typography>Completed Tasks</Typography>
+      <br />
+      {/* <Typography>Name: {location.state.name}</Typography> */}
+
+      <Box sx={{ bgcolor: "#052f72", padding: "20px", marginBottom: "10px" }}>
+        <Typography variant="h6">Completed Tasks</Typography>
 
         {tasks &&
           tasks.map((value, index) => {
-            if (value.taskStatus == "Completed") {
+            if (value.taskStatus === "Completed") {
               return (
                 <Box key={index} sx={{ marginBottom: "10px" }}>
-                  <Typography key={"title" + index}>{value.title}</Typography>
-
-                  <Typography key={"deadline" + index}>
-                    Date: {formatDate2(value.deadline)}
-                    Time: {formatTimeAMPM2(value.deadline)}
+                  <Typography variant="body1" sx={{ marginBottom: "5px" }}>
+                    "{value.title}"
                   </Typography>
+
+                  <Typography variant="body2" sx={{ marginBottom: "5px" }}>
+                    Date: {formatDate2(value.deadline)} | Time:{" "}
+                    {formatTimeAMPM2(value.deadline)}
+                  </Typography>
+
                   <Button
-                    key={"button" + index}
                     onClick={() => {
                       handleNavigateToStudentTask(value);
+                    }}
+                    variant="outlined"
+                    sx={{
+                      bgcolor: "white",
+                      color: "#052f72",
+                      border: "1px solid #052f72",
+                      borderRadius: "4px",
+                      padding: "8px 16px",
+                      fontWeight: "bold",
+                      textTransform: "uppercase",
+                      transition: "background-color 0.3s ease",
+                      "&:hover": {
+                        bgcolor: "#052f72",
+                        color: "white",
+                      },
                     }}
                   >
                     View
@@ -58,23 +75,42 @@ function StudentDetails(props) {
             }
           })}
       </Box>
-      <Box sx={{ bgcolor: "purple", padding: "20px", marginBottom: "10px" }}>
-        <Typography>Pending Tasks</Typography>
+
+      <Box sx={{ bgcolor: "#052f72", padding: "20px", marginBottom: "10px" }}>
+        <Typography variant="h6">Pending Tasks</Typography>
+
         {tasks &&
           tasks.map((value, index) => {
-            if (value.taskStatus == "Pending") {
+            if (value.taskStatus === "Pending") {
               return (
                 <Box key={index} sx={{ marginBottom: "10px" }}>
-                  <Typography key={"title" + index}>{value.title}</Typography>
-
-                  <Typography key={"deadline" + index}>
-                    Date: {formatDate2(value.deadline)}
-                    Time: {formatTimeAMPM2(value.deadline)}
+                  <Typography variant="body1" sx={{ marginBottom: "5px" }}>
+                    "{value.title}"
                   </Typography>
+
+                  <Typography variant="body2" sx={{ marginBottom: "5px" }}>
+                    Date: {formatDate2(value.deadline)} | Time:{" "}
+                    {formatTimeAMPM2(value.deadline)}
+                  </Typography>
+
                   <Button
-                    key={"button" + index}
                     onClick={() => {
                       handleNavigateToStudentTask(value);
+                    }}
+                    variant="outlined"
+                    sx={{
+                      bgcolor: "white",
+                      color: "#052f72",
+                      border: "1px solid #052f72",
+                      borderRadius: "4px",
+                      padding: "8px 16px",
+                      fontWeight: "bold",
+                      textTransform: "uppercase",
+                      transition: "background-color 0.3s ease",
+                      "&:hover": {
+                        bgcolor: "#052f72",
+                        color: "white",
+                      },
                     }}
                   >
                     View
@@ -84,25 +120,6 @@ function StudentDetails(props) {
             }
           })}
       </Box>
-      <Button
-        onClick={navigateAssignTask}
-        sx={{
-          bgcolor: "purple",
-          color: "white",
-          border: "1px solid white",
-          borderRadius: "4px",
-          padding: "8px 16px",
-          fontWeight: "bold",
-          textTransform: "uppercase",
-          transition: "background-color 0.3s ease",
-          "&:hover": {
-            bgcolor: "white",
-            color: "purple",
-          },
-        }}
-      >
-        Assign New Task
-      </Button>
     </Box>
   );
 }

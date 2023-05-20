@@ -26,6 +26,7 @@ import EditGroup from "./components/group-management/EditGroup";
 import Submission from "./components/proposal-management/Submission";
 import SupervisorDashboard from "./components/dashboards/SupervisorDashboard";
 import FYPComHome from "./components/fyp-committee-panel/FYPComHome";
+import RegisterSupervisor from "./components/login/RegisterSupervisor";
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -51,6 +52,10 @@ function App() {
             />
             <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route
+              path="/register-supervisor"
+              element={<RegisterSupervisor />}
+            />
             <Route
               path="/view-groups"
               element={

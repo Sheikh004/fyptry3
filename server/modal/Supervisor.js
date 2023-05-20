@@ -18,12 +18,9 @@ const supervisorSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    groupCount: {
-      type: Number,
-      required: true,
-    },
-    isHOD: {
-      type: Boolean,
+
+    role: {
+      type: String,
     },
     areaOfInterest: [
       {

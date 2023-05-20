@@ -18,6 +18,7 @@ import {
   getSupervisorProposals,
   updateProposalStatus,
   unUpdateProposalStatus,
+  // createNotification,
 } from "../../api/api";
 function GroupProposals(props) {
   const { user } = useContext(ChatContext);
@@ -26,7 +27,7 @@ function GroupProposals(props) {
   const [groupProposals, setGroupProposals] = useState();
   const [approvalProposal, setApprovalProposal] = useState();
   const [unApprovalProposal, setUnApprovalProposal] = useState();
-
+  const [existingValue, setExistingValue] = useState();
   const [reRun, setReRun] = useState(false);
   const setApprove = (proposalId) => {
     setApprovalProposal(proposalId);
@@ -37,9 +38,22 @@ function GroupProposals(props) {
     setUnApprovalProposal(proposalId);
     setApprovalProposal();
   };
+
+  const handleRadio = (value, propoId) => {
+    setExistingValue(value);
+    if (value == "Approved") setApprove(propoId);
+    if (value == "Disapproved") setUnApprove(propoId);
+  };
   useEffect(() => {
     const unUpdateApproval = async () => {
-      await unUpdateProposalStatus(unApprovalProposal);
+      const response = await unUpdateProposalStatus(unApprovalProposal);
+      // if (response)
+      //   await createNotification({
+      //     notification:
+      //       "Your proposal has been disapproved. You may contact your supervisor",
+      //     // createdBy: group._id,
+      //     // createdFor: group.supervisorId,
+      //   });
       setReRun(!reRun);
     };
     if (unApprovalProposal) {
@@ -48,7 +62,13 @@ function GroupProposals(props) {
   }, [unApprovalProposal]);
   useEffect(() => {
     const updateApproval = async () => {
-      await updateProposalStatus(approvalProposal);
+      const response = await updateProposalStatus(approvalProposal);
+      // if (response)
+      //   await createNotification({
+      //     notification: "Your proposal has been approved",
+      //     // createdBy: group._id,
+      //     // createdFor: group.supervisorId,
+      //   });
       setReRun(!reRun);
     };
     if (approvalProposal) {
@@ -87,6 +107,7 @@ function GroupProposals(props) {
   }, [supervisorGroups, supervisorProposals]);
   return (
     <Box>
+      {console.log(groupProposals)}
       <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 1 }}>
         <SupervisorNavbar />
       </div>
@@ -139,7 +160,7 @@ function GroupProposals(props) {
                     )}
                   </TableCell>
                   <TableCell>
-                    {group.proposalStatus === "Approved" && (
+                    {/* {group.proposalStatus === "Approved" && (
                       <Button
                         onClick={() => {
                           setUnApprove(group.proposalId);
@@ -180,6 +201,35 @@ function GroupProposals(props) {
                       >
                         Approve
                       </Button>
+                    )} */}
+                    {group && group.proposalStatus && (
+                      <div>
+                        <label>
+                          <input
+                            key={"radio1" + index}
+                            type="radio"
+                            value="Approved"
+                            checked={group.proposalStatus === "Approved"}
+                            onChange={(e) =>
+                              handleRadio(e.target.value, group.proposalId)
+                            }
+                          />
+                          Approve
+                        </label>
+                        <label>
+                          <input
+                            key={"radio2" + index}
+                            type="radio"
+                            value="Disapproved"
+                            checked={group.proposalStatus === "Disapproved"}
+                            onChange={(e) =>
+                              handleRadio(e.target.value, group.proposalId)
+                            }
+                          />
+                          Disapprove
+                        </label>
+                        {/* Render other radio buttons as needed */}
+                      </div>
                     )}
                   </TableCell>
                 </TableRow>

@@ -6,7 +6,7 @@ import { Search, MoreVert } from "@mui/icons-material";
 
 const Header = styled(Box)`
   height: 44px;
-  background: #ededed;
+  background: #052f72;
   display: flex;
   padding: 8px 16px;
   align-items: center;
@@ -53,7 +53,7 @@ const ChatHeader = ({ receiver }) => {
       <Box style={{ width: "90%" }}>
         <Name style={{ fontSize: 20 }}>{receiver.name}</Name>
       </Box>
-      <VideoCameraBackIcon style={{ width: "10%" }} />
+      <VideoCameraBackIcon style={{ width: "10%", color: "White" }} />
     </Header>
   );
 };

@@ -106,36 +106,36 @@ export const updateTask = async (request, response) => {
 };
 
 export const setPendingTask = async (request, response) => {
-  function removeFiles(fileNames) {
-    fileNames.forEach((fileName) => {
-      if (
-        fileName.split(".").pop() === "jpeg" ||
-        fileName.split(".").pop() === "png" ||
-        fileName.split(".").pop() === "jpg"
-      ) {
-        fs.unlink(`./uploads/images/${fileName.split("/").pop()}`, (err) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
+  // function removeFiles(fileNames) {
+  //   fileNames.forEach((fileName) => {
+  //     if (
+  //       fileName.split(".").pop() === "jpeg" ||
+  //       fileName.split(".").pop() === "png" ||
+  //       fileName.split(".").pop() === "jpg"
+  //     ) {
+  //       fs.unlink(`./uploads/images/${fileName.split("/").pop()}`, (err) => {
+  //         if (err) {
+  //           console.error(err);
+  //           return;
+  //         }
 
-          console.log(`${fileName} has been removed from the server.`);
-        });
-      } else {
-        fs.unlink(`./uploads/files/${fileName.split("/").pop()}`, (err) => {
-          if (err) {
-            console.error(err);
-            return;
-          }
+  //         console.log(`${fileName} has been removed from the server.`);
+  //       });
+  //     } else {
+  //       fs.unlink(`./uploads/files/${fileName.split("/").pop()}`, (err) => {
+  //         if (err) {
+  //           console.error(err);
+  //           return;
+  //         }
 
-          console.log(`${fileName} has been removed from the server.`);
-        });
-      }
-    });
-  }
+  //         console.log(`${fileName} has been removed from the server.`);
+  //       });
+  //     }
+  //   });
+  // }
   try {
     const filepaths = await Task.findOne({ _id: request.body.id });
-    removeFiles(filepaths.filespaths);
+    // removeFiles(filepaths.filespaths);
     const data = await Task.findOneAndUpdate(
       {
         _id: request.body.id,
@@ -143,7 +143,6 @@ export const setPendingTask = async (request, response) => {
       {
         $set: {
           taskStatus: "Pending",
-          filespaths: "",
         },
       },
       { returnOriginal: false }
@@ -152,6 +151,61 @@ export const setPendingTask = async (request, response) => {
   } catch (error) {
     console.log(error);
     response.send(error);
+  }
+};
+
+export const removeFile = async (req, res) => {
+  const id = req.params.id;
+  const name = req.body.name;
+  console.log(id);
+  function removeSingleFile(fileName) {
+    if (
+      fileName.split(".").pop() === "jpeg" ||
+      fileName.split(".").pop() === "png" ||
+      fileName.split(".").pop() === "jpg"
+    ) {
+      fs.unlink(`./uploads/images/${fileName.split("/").pop()}`, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        console.log(`${fileName} has been removed from the server.`);
+      });
+    } else {
+      fs.unlink(`./uploads/files/${fileName.split("/").pop()}`, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        console.log(`${fileName} has been removed from the server.`);
+      });
+    }
+  }
+
+  try {
+    const task = await Task.findOne({ _id: id });
+    if (task) {
+      const updatedfilePaths = task.filespaths.filter((fileName) => {
+        if (fileName !== name) return fileName;
+      });
+      removeSingleFile(name);
+      const updatedTask = await Task.findOneAndUpdate(
+        { _id: id },
+        {
+          $set: {
+            filespaths: updatedfilePaths,
+          },
+        },
+        {
+          returnOriginal: false,
+        }
+      );
+      res.status(200).json(updatedTask);
+    }
+  } catch (err) {
+    res.send(err);
   }
 };
 

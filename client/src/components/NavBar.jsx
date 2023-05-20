@@ -27,7 +27,7 @@ function NavBar(props) {
         collapseOnSelect
         expand="lg"
         variant="dark"
-        style={{ backgroundColor: "purple" }}
+        style={{ backgroundColor: "#052f72" }}
       >
         <Container>
           <Navbar.Brand href="#home">
@@ -60,15 +60,15 @@ function NavBar(props) {
               <Nav.Link as={NavLink} to="/discussion">
                 Discussion
               </Nav.Link>
-              <Nav.Link as={NavLink} to="">
+              {/* <Nav.Link as={NavLink} to="">
                 Announcement
-              </Nav.Link>
+              </Nav.Link> */}
               <Nav.Link as={NavLink} to="/view-help">
                 Help
               </Nav.Link>
-              <Nav.Link as={NavLink} to="">
+              {/* <Nav.Link as={NavLink} to="">
                 Resources
-              </Nav.Link>
+              </Nav.Link> */}
             </Nav>
             <Nav>
               <Navbar.Text>

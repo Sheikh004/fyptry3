@@ -22,37 +22,91 @@ function AssignTask(props) {
     setDueDate(value);
   };
   const assignNewTask = async () => {
-    let data = await assignTask({
-      title: title,
-      description: description,
-      dueDate: dueDate,
-      assignedBy: user.id,
-      assignedTo: location.state._id,
-    });
-    console.log(data);
+    if (!title || !description || !dueDate) {
+      alert("Please fill in all the fields"); // Display an alert message
+      return;
+    } else {
+      let data = await assignTask({
+        title: title,
+        description: description,
+        dueDate: dueDate,
+        assignedBy: user.id,
+        assignedTo: location.state._id,
+      });
+
+      alert("Task has been assigned");
+    }
   };
   return (
-    <Box>
+    <Box sx={{ bgcolor: "#0490db", color: "white", minHeight: "100vh" }}>
       <SupervisorNavbar />
-      <Typography>Enter Title of Task</Typography>
-      <TextField
-        multiline
-        rows={1}
-        onChange={handleTitleChange}
-        style={{ width: "50vw" }}
-      />
 
-      <Typography>Enter Task Description</Typography>
-      <TextField
-        multiline
-        rows={13}
-        style={{ width: "50vw", height: "45vh" }}
-        onChange={handleDescriptionChange}
-      />
+      <Box
+        sx={{
+          bgcolor: "#052f72",
+          color: "white",
+          padding: "20px",
+          width: { xs: "100%", sm: "90%", md: "70%", lg: "70%" },
+          margin: "20px auto",
+          borderRadius: "15px", // Added borderRadius property
+        }}
+      >
+        <Typography variant="h6">Enter Title of Task</Typography>
+        <TextField
+          multiline
+          rows={1}
+          onChange={handleTitleChange}
+          sx={{
+            width: "100%",
+            marginBottom: "10px",
+            bgcolor: "white",
+            borderRadius: "15px",
+          }} // Added borderRadius property
+        />
 
-      <Typography>Enter Due Date of Task</Typography>
-      <DateTimePicker onChange={handleDueDateChange} />
-      <Button onClick={assignNewTask}>Assign</Button>
+        <Typography variant="h6">Enter Task Description</Typography>
+        <TextField
+          multiline
+          rows={13}
+          onChange={handleDescriptionChange}
+          sx={{
+            width: "100%",
+            marginBottom: "10px",
+            bgcolor: "white",
+            borderRadius: "15px",
+          }} // Added borderRadius property
+        />
+
+        <Typography variant="h6">Enter Due Date of Task</Typography>
+        <DateTimePicker
+          onChange={handleDueDateChange}
+          sx={{
+            width: "100%",
+            marginBottom: "10px",
+            bgcolor: "white",
+            borderRadius: "15px",
+          }} // Added borderRadius property
+        />
+        <Button
+          style={{
+            backgroundColor: "#0490db",
+            color: "white",
+            border: "1px solid #0490db",
+            borderRadius: "4px",
+            padding: "8px 16px",
+            textTransform: "uppercase",
+            transition: "background-color 0.3s ease",
+
+            "&:hover": {
+              backgroundColor: "#0477af",
+            },
+          }}
+          onClick={assignNewTask}
+          sx={{ marginBottom: "10px", borderRadius: "15px" }}
+        >
+          Assign
+        </Button>
+      </Box>
     </Box>
   );
 }

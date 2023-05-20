@@ -3,13 +3,15 @@ import { ChatContext } from "../../../context/ChatProvider";
 import { styled, Box, Typography } from "@mui/material";
 
 import { formatDate } from "../../../utils/common-utils";
-
+import PersonIcon from "@mui/icons-material/Person";
 const Component = styled(Box)`
   height: 45px;
   display: flex;
   align-items: center;
   padding: 0 16px;
   cursor: pointer;
+
+  borderradius: 10px;
 `;
 const ChatName = styled(Typography)`
   display: block;
@@ -23,14 +25,20 @@ const GroupChatName = styled(Typography)`
   font-size: 15px;
   margin-left: 20px;
   color: white;
+  font-weight: bold;
+  fontfamily: "Geneva";
 `;
 
 const PersonalChatName = styled(Typography)`
-  display: block;
+  display: flex;
+  align-items: center;
   color: rgba(0, 0, 0, 0.6);
   font-size: 15px;
-  margin-left: 30px;
+  // margin-left: 30px;
   color: white;
+  border-radius: 50%;
+  padding: 5px;
+  width: 20vw;
 `;
 // const Image = styled("img")({
 //   width: 50,
@@ -50,6 +58,10 @@ const PersonalChatName = styled(Typography)`
 //   color: #00000099;
 //   margin-right: 20px;
 // `;
+
+const Logo = styled(PersonIcon)`
+  margin-right: 5px;
+`;
 
 const Text = styled(Typography)`
   display: block;
@@ -79,12 +91,15 @@ const Conversation = ({ chatter, groups }) => {
   return (
     <>
       <Component onClick={() => getChatter()}>
-        <Box style={{ width: "100%" }}>
+        <Box style={{ width: "100%", height: "100%" }}>
           <Component>
             {groups.includes(chatter.name) ? (
               <GroupChatName>{chatter.name}</GroupChatName>
             ) : (
-              <PersonalChatName>{chatter.name}</PersonalChatName>
+              <PersonalChatName>
+                <Logo />
+                {chatter.name}
+              </PersonalChatName>
             )}
             {/* {message?.text && (
              <Timestamp>{formatDate(message?.timestamp)}</Timestamp>

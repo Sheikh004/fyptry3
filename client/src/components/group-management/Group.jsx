@@ -6,7 +6,12 @@ function Group({ group }) {
   return (
     <Box>
       {group.studentID.map((student, key) => {
-        return <GroupMember student={student} key={key} />;
+        return (
+          <Box>
+            <GroupMember student={student} key={key} />
+            {console.log(student._id)}
+          </Box>
+        );
       })}
     </Box>
   );

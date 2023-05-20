@@ -3,7 +3,7 @@ import { Container, Col, Row } from "react-bootstrap";
 import NavBar from "../NavBar";
 const StudentDashboard = () => {
   return (
-    <div style={{ backgroundColor: "#0B2B40", height: "847px" }}>
+    <div style={{ backgroundColor: "#0490db", height: "847px" }}>
       <NavBar />
       <Container>
         <Row>
@@ -21,40 +21,112 @@ const StudentDashboard = () => {
             <Col
               style={{
                 height: "350px",
-                backgroundColor: "purple",
+                backgroundColor: "#052f72",
                 color: "white",
                 marginTop: "100px",
+                borderRadius: "15px",
+                boxShadow: "8px 8px 10px rgba(0, 0, 0, 0.25)", // Add box shadow
+                padding: "20px",
               }}
             >
-              <h3 style={{ marginTop: "15px" }}>Notice Board</h3>
+              <h3 style={{ marginTop: "15px", textAlign: "center" }}>
+                Notice Board
+              </h3>
               <p
                 style={{
                   backgroundColor: "white",
                   color: "black",
-                  height: "30px",
+                  borderRadius: "0px",
+                  paddingLeft: "8px",
+                  height: "200px",
+                  overflow: "auto",
+                  borderRadius: "15px",
                 }}
               >
-                You have 26 announcements
+                You have{" "}
+                <span style={{ color: "red", fontWeight: "bold" }}> 26 </span>{" "}
+                announcements
+                <br /> hi
+                <br />
+                hi
+                <br />
+                You have{" "}
+                <span style={{ color: "red", fontWeight: "bold" }}>
+                  {" "}
+                  26{" "}
+                </span>{" "}
+                announcements
+                <br /> hi
+                <br />
+                hi <br /> hi <br />
+                hi <br />
+                hi <br />
+                hi <br />
+                hi hi
               </p>
+            </Col>
 
-              <h3>Supervisor</h3>
-              <ul
+            <Col
+              style={{
+                height: "350px",
+                backgroundColor: "#052f72",
+                color: "white",
+                marginTop: "100px",
+                borderRadius: "15px",
+                boxShadow: "8px 8px 10px rgba(0, 0, 0, 0.25)", // Add box shadow
+                padding: "20px",
+                marginLeft: "30px",
+              }}
+            >
+              <h3 style={{ marginTop: "12px", textAlign: "center" }}>
+                Supervisor
+              </h3>
+
+              <div
                 style={{
-                  backgroundColor: "white",
-                  color: "black",
-                  height: "30px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <li>Maam Mahwish Waqas</li>
-              </ul>
+                <ul
+                  style={{
+                    backgroundColor: "white",
+                    color: "black",
+                    height: "30px",
+                    borderRadius: "5px",
+                    width: "500px",
+                    fontSize: "20px",
+                  }}
+                >
+                  <li>Miss Mahwish Waqas</li>
+                </ul>
+              </div>
 
-              <h3>Team Members</h3>
-
-              <ul style={{ backgroundColor: "white", color: "black" }}>
-                <li>First item</li>
-                <li>Second item</li>
-                <li>Third item</li>
-              </ul>
+              <h3 style={{ marginTop: "12px", textAlign: "center" }}>
+                Team Members
+              </h3>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <ul
+                  style={{
+                    backgroundColor: "white",
+                    color: "black",
+                    borderRadius: "5px",
+                    width: "500px",
+                    fontSize: "20px",
+                  }}
+                >
+                  <li>Muhammad Irfan</li>
+                  <li>Areeb Zaman</li>
+                  <li>Abdul Raheem</li>
+                </ul>
+              </div>
             </Col>
           </Row>
         </Container>

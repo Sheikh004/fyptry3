@@ -22,13 +22,18 @@ const SupervisorDashboard = () => {
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
-          backgroundColor: "#0b2b40",
+          backgroundColor: "#0490db",
           flexDirection: "column",
         }}
       >
         <Typography
           variant="h5"
-          sx={{ color: "white", padding: 2, borderRadius: 4 }}
+          sx={{
+            color: "white",
+            padding: 2,
+            borderRadius: 4,
+            fontWeight: "bold",
+          }}
         >
           Welcome to the E-FYP portal
         </Typography>
@@ -39,12 +44,15 @@ const SupervisorDashboard = () => {
             textAlign: "left",
             maxWidth: "600px",
             width: "90%",
-            backgroundColor: "#81007f",
+            backgroundColor: "#052f72",
             color: "white",
             borderRadius: 4,
           }}
         >
-          <Typography variant="h6" sx={{ marginY: "16px" }}>
+          <Typography
+            variant="h6"
+            sx={{ marginY: "16px", fontFamily: "Geneva", fontWeight: "bold" }}
+          >
             Notifications
           </Typography>
 
@@ -60,7 +68,10 @@ const SupervisorDashboard = () => {
           >
             You have {notifications} notifications
           </Typography>
-          <Typography variant="h6" sx={{ marginY: "16px" }}>
+          <Typography
+            variant="h6"
+            sx={{ marginY: "16px", fontFamily: "Geneva", fontWeight: "bold" }}
+          >
             Registered Groups
           </Typography>
           {groups.map((group) => (
@@ -68,17 +79,19 @@ const SupervisorDashboard = () => {
               key={group.name}
               sx={{
                 marginY: "8px",
-                backgroundColor: "#ccc",
+                // backgroundColor: "#ccc",
                 padding: "4px",
                 borderRadius: 4,
               }}
             >
-              <Typography variant="subtitle2">{group.name}</Typography>
+              <Typography variant="subtitle2" style={{ fontweight: "bold" }}>
+                <u>{group.name}</u>
+              </Typography>
               {group.members.map((member, index) => (
                 <Typography
                   key={index}
                   variant="body2"
-                  sx={{ color: "#666", display: "block" }}
+                  sx={{ color: "white", display: "block" }}
                 >
                   {member}
                 </Typography>
