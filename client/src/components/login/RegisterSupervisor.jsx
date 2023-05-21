@@ -19,7 +19,9 @@ const Container = styled(Box)({
   height: "100vh",
   backgroundColor: "#0b2b40",
 });
-
+const ErrorMessage = styled("p")({
+  color: "red",
+});
 const FormContainer = styled(Box)({
   backgroundColor: "#81007f",
   justifyContent: "center",
@@ -48,21 +50,32 @@ const SubmitButton = styled(Button)({
 
 function RegisterSupervisor(props) {
   const [sEmail, setSEmail] = useState("");
+  const [sPassword, setSPassword] = useState("");
   const [sEmailError, setSEmailError] = useState("");
+  const [sPassError, setSPassError] = useState("");
+  const [sError, setSError] = useState("");
   const handleRegisterSupervisor = async (e) => {
     e.preventDefault();
+    setSError("");
     setSEmailError("");
     if (!sEmail) {
       setSEmailError("Email is required");
     } else if (!/^.+@cuilahore\.edu\.pk$/.test(sEmail)) {
       setSEmailError("Invalid email format");
+    } else if (!sPassword) {
+      setSPassError("Password is required");
+    } else if (sPassword.length < 8) {
+      setSPassError("Password must be at least 8 characters long");
     } else {
-      let data = sEmail;
-      let isSupervisor = await registerSupervisor(data);
-      if (isSupervisor) {
-        console.log(isSupervisor);
+      let isSupervisor = await registerSupervisor({
+        email: sEmail,
+        password: sPassword,
+      });
+      if (isSupervisor.status === 200) {
+        console.log(isSupervisor.data.message);
       } else {
-        console.log(isSupervisor);
+        console.log(isSupervisor.response.data.message);
+        setSError(isSupervisor.response.data.message);
       }
     }
   };
@@ -70,7 +83,7 @@ function RegisterSupervisor(props) {
     <Container>
       <FormContainer>
         <form onSubmit={handleRegisterSupervisor}>
-          {sEmailError && <p>{sEmailError}</p>}
+          {sEmailError && <ErrorMessage>{sEmailError}</ErrorMessage>}
           <TextField
             id="filled-basic"
             label="Email Address"
@@ -92,7 +105,38 @@ function RegisterSupervisor(props) {
             }}
           />
           <br />
+          {sPassError && <ErrorMessage>{sPassError}</ErrorMessage>}
+          {/* <Typography>Password</Typography> */}
+          <TextField
+            id="outlined-password-input"
+            label="Password"
+            type="password"
+            variant="filled"
+            autoComplete="current-password"
+            onChange={(event) => {
+              setSPassword(event.target.value);
+              setSPassError("");
+            }}
+            InputLabelProps={{
+              style: {
+                textAlign: "center",
+                marginTop: 10,
+              },
+            }}
+            InputProps={{
+              classes: {
+                root: "rounded-input",
+              },
+              style: {
+                backgroundColor: "white",
 
+                borderRadius: 10,
+              },
+            }}
+          />
+          <br />
+          {sError && <p>{sError}</p>}
+          {/* {console.log(sError.message)} */}
           <SubmitButton variant="contained" type="submit">
             Submit
           </SubmitButton>

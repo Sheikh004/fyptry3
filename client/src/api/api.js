@@ -457,6 +457,25 @@ export const removeFile = async (id, name) => {
     });
 };
 
+export const removeProposal = async (id, name) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .delete(`${url}/removeProposal/${id}/`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      data: {
+        name: name,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
 export const createProposal = async (data) => {
   const token = sessionStorage.getItem("jwtToken");
   return await axios
@@ -476,12 +495,13 @@ export const createProposal = async (data) => {
 
 export const registerSupervisor = async (data) => {
   return await axios
-    .get(`${url}/register-supervisor/${data}`)
+    .post(`${url}/register-supervisor`, data)
     .then((response) => {
-      return response.data;
+      // console.log(response.data.message);
+      return response;
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error.response.data.message);
       return error;
     });
 };

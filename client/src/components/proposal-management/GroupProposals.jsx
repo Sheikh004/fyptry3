@@ -202,7 +202,7 @@ function GroupProposals(props) {
                         Approve
                       </Button>
                     )} */}
-                    {group && group.proposalStatus && (
+                    {group && group.proposalStatus && group.filepath != "" && (
                       <div>
                         <label>
                           <input

@@ -14,7 +14,6 @@ const proposalSchema = new mongoose.Schema(
 
     filepath: {
       type: String,
-      required: true,
     },
     status: {
       type: String,

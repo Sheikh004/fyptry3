@@ -1,6 +1,7 @@
 import proposal from "../modal/Proposal.js";
 import Proposal from "../modal/Proposal.js";
 import Reviewer from "../modal/Reviewer.js";
+import fs from "fs";
 export const getSupervisorProposals = async (req, res) => {
   const { id } = req.params;
   try {
@@ -55,11 +56,38 @@ export const unUpdateProposalStatus = async (req, res) => {
 };
 
 export const createProposal = async (req, res) => {
+  function removeSingleFile(fileName) {
+    if (
+      fileName.split(".").pop() === "jpeg" ||
+      fileName.split(".").pop() === "png" ||
+      fileName.split(".").pop() === "jpg"
+    ) {
+      fs.unlink(`./uploads/images/${fileName.split("/").pop()}`, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        console.log(`${fileName} has been removed from the server.`);
+      });
+    } else {
+      fs.unlink(`./uploads/files/${fileName.split("/").pop()}`, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        console.log(`${fileName} has been removed from the server.`);
+      });
+    }
+  }
   try {
     const existProposal = await Proposal.findOne({
       groupId: req.body.groupsId,
     });
     if (existProposal) {
+      if (existProposal.filepath != "")
+        removeSingleFile(existProposal.filepath);
       const updateProposal = await Proposal.findOneAndUpdate(
         { groupId: req.body.groupsId },
         {
@@ -265,4 +293,57 @@ export const assignProposals = async (req, res) => {
   );
 
   console.log(data);
+};
+
+export const removeProposal = async (req, res) => {
+  const id = req.params.id;
+  const name = req.body.name;
+  console.log(id);
+  function removeSingleFile(fileName) {
+    if (
+      fileName.split(".").pop() === "jpeg" ||
+      fileName.split(".").pop() === "png" ||
+      fileName.split(".").pop() === "jpg"
+    ) {
+      fs.unlink(`./uploads/images/${fileName.split("/").pop()}`, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        console.log(`${fileName} has been removed from the server.`);
+      });
+    } else {
+      fs.unlink(`./uploads/files/${fileName.split("/").pop()}`, (err) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+
+        console.log(`${fileName} has been removed from the server.`);
+      });
+    }
+  }
+
+  try {
+    const proposal = await Proposal.findOne({ _id: id });
+
+    if (proposal) {
+      removeSingleFile(name);
+      const updatedProposal = await Proposal.findOneAndUpdate(
+        { _id: id },
+        {
+          $set: {
+            filepath: "",
+          },
+        },
+        {
+          returnOriginal: false,
+        }
+      );
+      res.status(200).json(updatedProposal);
+    }
+  } catch (err) {
+    res.send(err);
+  }
 };

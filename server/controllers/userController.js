@@ -339,30 +339,60 @@ export const getStChatters = async (req, res) => {
 
 export const registerSupervisor = async (req, res) => {
   try {
-    const { id } = req.params;
+    const email = req.body.email;
+    const password = req.body.password;
 
-    const data = await Faculty.findOne({ email: id });
+    const data = await Faculty.findOne({ email: email });
     if (!data) {
-      return res.status(550).json({ message: "No such faculty member exists" });
+      return res.status(404).json({ message: "No such faculty member exists" });
     }
-    const supervisorExist = await Supervisor.findOne({ email: id });
-    if (supervisorExist) {
+    // bcrypt.compare(password, data.password, async (err, result) => {
+    //   if (err) {
+    //     console.log("error in encrypt password comparing", err);
+    //     return;
+    //   } else if (result == true) {
+    //     const supervisorExist = await Supervisor.findOne({
+    //       facultyId: data._id,
+    //     });
+    //     if (supervisorExist) {
+    //       return res
+    //         .status(403)
+    //         .json({ message: "Supervisor is already registered" });
+    //     }
+    //     const newSupervisor = new Supervisor({
+    //       facultyId: data._id,
+    //     });
+    //     await newSupervisor.save();
+    //     res.status(200).json({ message: "Supervisor registered successfully" });
+    //   } else {
+    //     console.log("Incorrect password");
+    //     return res.status(401).json({ message: "Incorrect password" });
+    //   }
+    // }); //commenting for bypassing purposes.
+
+    //remove this code and uncomment above code later on
+    if (password === data.password) {
+      const supervisorExist = await Supervisor.findOne({ facultyId: data._id });
+      if (supervisorExist) {
+        return res
+          .status(403)
+          .json({ message: "Supervisor is already registered" });
+      }
+      const newSupervisor = new Supervisor({
+        facultyId: data._id,
+        email: data.email,
+      });
+      await newSupervisor.save();
       return res
-        .status(403)
-        .json({ message: "Supervisor is already registered" });
+        .status(200)
+        .json({ message: "Supervisor registered successfully" });
+    } else {
+      console.log("Incorrect password");
+      return res.status(401).json({ message: "Incorrect password" });
     }
-    const newSupervisor = new Supervisor({
-      facultyId: data._id,
-      name: data.name,
-      email: data.email,
-      title: data.title,
-      role: data.role,
-      areaOfInterest: data.areaOfInterest,
-      developmentField: data.developmentField,
-    });
-    await newSupervisor.save();
-    res.status(200).json({ message: "Supervisor registered successfully" });
+    //remove this code and uncomment above code later on
   } catch (error) {
-    res.send(error);
+    console.error("An error occurred during supervisor registration:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

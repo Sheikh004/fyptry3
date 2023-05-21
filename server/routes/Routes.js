@@ -45,6 +45,7 @@ import {
   createProposal,
   updateProposalStatus,
   unUpdateProposalStatus,
+  removeProposal,
 } from "../controllers/proposal-controller.js";
 import { createNotification } from "../controllers/notification-controller.js";
 const route = express.Router();
@@ -75,7 +76,7 @@ route.get("/getSupervisorGroups/:id", verifyToken, getSupervisorGroups);
 route.get("/getSupervisorProposals/:id", verifyToken, getSupervisorProposals);
 route.get("/getGroupLeader/:id", verifyToken, getGroupLeader);
 route.get("/getGroup/:id", verifyToken, getGroup);
-route.get("/register-supervisor/:id", registerSupervisor);
+route.post("/register-supervisor", registerSupervisor);
 route.get(
   "/updateProposalStatus/:approvalProposal",
   verifyToken,
@@ -91,4 +92,5 @@ route.post("/updateGroupMembers", verifyToken, updateGroupMembers);
 route.delete("/deleteGroup/:id", verifyToken, deleteGroup);
 route.post("/createNotification", verifyToken, createNotification);
 route.delete("/removeFile/:id", verifyToken, removeFile);
+route.delete("/removeProposal/:id", verifyToken, removeProposal);
 export default route;

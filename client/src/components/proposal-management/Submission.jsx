@@ -5,8 +5,10 @@ import {
   getGroup,
   createProposal,
   createNotification,
+  removeProposal,
 } from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
+import { Box, Button, Link } from "@mui/material";
 function Submission(props) {
   const [proposal, setProposal] = useState();
   const [proposalPath, setProposalPath] = useState();
@@ -14,10 +16,29 @@ function Submission(props) {
   const [group, setGroup] = useState();
   const [notification, setNotification] = useState("");
   const [noti, setNoti] = useState(false);
-  const [submissionStatus, setSubmissionStatus] = useState(false);
+  const [submittedProposal, setSubmittedProposal] = useState();
+  const [isRemove, setIsRemove] = useState(false);
   const onFileChange = (e) => {
     setProposal(e.target.files[0]);
   };
+
+  useEffect(() => {
+    const handleRemoval = async () => {
+      if (submittedProposal && isRemove === true) {
+        console.log(submittedProposal._id, submittedProposal.filepath);
+        const response = await removeProposal(
+          submittedProposal._id,
+          submittedProposal.filepath
+        );
+        if (response) console.log(response);
+        setIsRemove(false);
+        setProposal(null);
+        setProposalPath("");
+      }
+    };
+    handleRemoval();
+  }, [submittedProposal, isRemove]);
+
   useEffect(() => {
     const findGroup = async () => {
       const data0 = await getGroup(user.id);
@@ -34,7 +55,8 @@ function Submission(props) {
         data.append("file", proposal);
 
         const response = await uploadFile(data);
-        // console.log(response.data);
+        if (response && response.data);
+        // console.log(response);
         setProposalPath(response.data);
       }
     };
@@ -42,21 +64,20 @@ function Submission(props) {
   }, [proposal]);
   useEffect(() => {
     const makeProposal = async () => {
-      if (proposalPath && group && submissionStatus === true) {
+      if (proposalPath && group) {
         const data2 = await createProposal({
           groupsId: group._id,
           groupName: group.name,
           supervisorsId: group.supervisorId,
           proposalsPath: proposalPath,
         });
-        console.log(data2.proposal);
+        setSubmittedProposal(data2.proposal);
         setNotification(data2.message);
         setNoti(!noti);
-        setSubmissionStatus(false);
       }
     };
     makeProposal();
-  }, [proposalPath, group, submissionStatus]);
+  }, [proposalPath, group]);
   useEffect(() => {
     const handleNotification = async () => {
       if (notification) {
@@ -90,7 +111,20 @@ function Submission(props) {
       >
         <h1 style={{ color: "white" }}>FYP Proposal</h1>
         <br />
-
+        {proposalPath && (
+          <Box>
+            <Link href={proposalPath} target="_blank" rel="noopener">
+              {proposalPath.split("--").pop()}
+            </Link>
+            <Button
+              onClick={() => {
+                setIsRemove(true);
+              }}
+            >
+              Delete
+            </Button>
+          </Box>
+        )}
         <form
           method="post"
           encType="multipart/form-data"
@@ -121,29 +155,7 @@ function Submission(props) {
           />
           <br />
           <br />
-
-          {/* {/* {proposalPath && <p>{proposalPath}</p>} */}
         </form>
-        <button
-          onClick={() => {
-            setSubmissionStatus(true);
-          }}
-          style={{
-            backgroundColor: "black",
-            color: "white",
-            borderRadius: 10,
-          }}
-          onMouseEnter={(e) => {
-            e.target.style.backgroundColor = "white";
-            e.target.style.color = "black";
-          }}
-          onMouseLeave={(e) => {
-            e.target.style.backgroundColor = "black";
-            e.target.style.color = "white";
-          }}
-        >
-          Submit
-        </button>
       </div>
     </div>
   );
