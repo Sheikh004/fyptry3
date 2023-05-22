@@ -539,3 +539,26 @@ export const getNotifications = async (data) => {
       console.error(error);
     });
 };
+
+export const updateTaskApproval = async (value, id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .patch(
+      `${url}/updateTaskApproval/${id}`,
+      {
+        taskValue: value,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};

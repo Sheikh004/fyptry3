@@ -15,6 +15,7 @@ export const assignTask = async (request, response) => {
       assignedBy: assignedBy,
       assignedTo: assignedTo,
       taskStatus: "Pending",
+      taskApproval: "Pending",
     });
     await task.save();
     response.send(task);
@@ -143,6 +144,7 @@ export const setPendingTask = async (request, response) => {
       {
         $set: {
           taskStatus: "Pending",
+          taskApproval: "Pending",
         },
       },
       { returnOriginal: false }
@@ -226,5 +228,30 @@ export const setCompletedTask = async (request, response) => {
   } catch (error) {
     console.log(error);
     response.send(error);
+  }
+};
+
+export const updateTaskApproval = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const value = req.body.taskValue;
+    const updatedTask = await Task.findOneAndUpdate(
+      { _id: id },
+      {
+        $set: {
+          taskApproval: value,
+        },
+      },
+      { returnOriginal: false }
+    );
+
+    if (updatedTask) {
+      return res
+        .status(200)
+        .json({ message: "Task status has been updated", data: updatedTask });
+    } else console.log("Issue");
+  } catch (error) {
+    console.error("An error occurred during task approval update:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };

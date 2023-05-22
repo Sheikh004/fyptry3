@@ -77,6 +77,11 @@ function StudentTasksView(props) {
               >
                 Action
               </TableCell>
+              <TableCell
+                sx={{ fontSize: "15px", fontWeight: "Bold", color: "white" }}
+              >
+                Approval Status
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -99,6 +104,9 @@ function StudentTasksView(props) {
                         >
                           <VisibilityIcon />
                         </IconButton>
+                      </TableCell>
+                      <TableCell sx={{ color: "white" }}>
+                        {value.taskApproval}
                       </TableCell>
                     </TableRow>
                   );

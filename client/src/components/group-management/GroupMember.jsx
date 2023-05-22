@@ -19,7 +19,7 @@ function GroupMember({ student }) {
           navigateStudentDetails(student);
         }}
       >
-        View Details
+        View Tasks
       </Button>
       <Button
         onClick={navigateAssignTask}

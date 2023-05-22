@@ -14,8 +14,8 @@ function Submission(props) {
   const [proposalPath, setProposalPath] = useState();
   const { user } = useContext(ChatContext);
   const [group, setGroup] = useState();
-  const [notification, setNotification] = useState("");
-  const [noti, setNoti] = useState(false);
+  // const [notification, setNotification] = useState("");
+  // const [noti, setNoti] = useState(false);
   const [submittedProposal, setSubmittedProposal] = useState();
   const [isRemove, setIsRemove] = useState(false);
   const onFileChange = (e) => {
@@ -72,26 +72,26 @@ function Submission(props) {
           proposalsPath: proposalPath,
         });
         setSubmittedProposal(data2.proposal);
-        setNotification(data2.message);
-        setNoti(!noti);
+        // setNotification(data2.message);
+        // setNoti(!noti);
       }
     };
     makeProposal();
   }, [proposalPath, group]);
-  useEffect(() => {
-    const handleNotification = async () => {
-      if (notification) {
-        console.log(notification);
-        const notif = await createNotification({
-          notification: notification,
-          createdBy: group._id,
-          createdFor: group.supervisorId,
-        });
-        console.log(notif);
-      }
-    };
-    handleNotification();
-  }, [notification, noti]);
+  // useEffect(() => {
+  //   const handleNotification = async () => {
+  //     if (notification) {
+  //       console.log(notification);
+  //       const notif = await createNotification({
+  //         notification: notification,
+  //         createdBy: group._id,
+  //         createdFor: group.supervisorId,
+  //       });
+  //       console.log(notif);
+  //     }
+  //   };
+  //   handleNotification();
+  // }, [notification, noti]);
   return (
     <div style={{ backgroundColor: "#0490db", minHeight: "100vh" }}>
       <NavBar />

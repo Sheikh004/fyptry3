@@ -39,6 +39,7 @@ import {
   setPendingTask,
   setCompletedTask,
   removeFile,
+  updateTaskApproval,
 } from "../controllers/task-controller.js";
 import {
   getSupervisorProposals,
@@ -93,4 +94,5 @@ route.delete("/deleteGroup/:id", verifyToken, deleteGroup);
 route.post("/createNotification", verifyToken, createNotification);
 route.delete("/removeFile/:id", verifyToken, removeFile);
 route.delete("/removeProposal/:id", verifyToken, removeProposal);
+route.patch("/updateTaskApproval/:id", verifyToken, updateTaskApproval);
 export default route;

@@ -36,7 +36,10 @@ function StudentDetails(props) {
 
         {tasks &&
           tasks.map((value, index) => {
-            if (value.taskStatus === "Completed") {
+            if (
+              value.taskStatus === "Completed" &&
+              value.taskApproval === "Approved"
+            ) {
               return (
                 <Box key={index} sx={{ marginBottom: "10px" }}>
                   <Typography variant="body1" sx={{ marginBottom: "5px" }}>
@@ -82,6 +85,54 @@ function StudentDetails(props) {
         {tasks &&
           tasks.map((value, index) => {
             if (value.taskStatus === "Pending") {
+              return (
+                <Box key={index} sx={{ marginBottom: "10px" }}>
+                  <Typography variant="body1" sx={{ marginBottom: "5px" }}>
+                    "{value.title}"
+                  </Typography>
+
+                  <Typography variant="body2" sx={{ marginBottom: "5px" }}>
+                    Date: {formatDate2(value.deadline)} | Time:{" "}
+                    {formatTimeAMPM2(value.deadline)}
+                  </Typography>
+
+                  <Button
+                    onClick={() => {
+                      handleNavigateToStudentTask(value);
+                    }}
+                    variant="outlined"
+                    sx={{
+                      bgcolor: "white",
+                      color: "#052f72",
+                      border: "1px solid #052f72",
+                      borderRadius: "4px",
+                      padding: "8px 16px",
+                      fontWeight: "bold",
+                      textTransform: "uppercase",
+                      transition: "background-color 0.3s ease",
+                      "&:hover": {
+                        bgcolor: "#052f72",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    View
+                  </Button>
+                </Box>
+              );
+            }
+          })}
+      </Box>
+      <Box sx={{ bgcolor: "#052f72", padding: "20px", marginBottom: "10px" }}>
+        <Typography variant="h6">Unapproved Tasks</Typography>
+
+        {tasks &&
+          tasks.map((value, index) => {
+            if (
+              value.taskStatus === "Completed" &&
+              (value.taskApproval === "Pending" ||
+                value.taskApproval === "Disapproved")
+            ) {
               return (
                 <Box key={index} sx={{ marginBottom: "10px" }}>
                   <Typography variant="body1" sx={{ marginBottom: "5px" }}>

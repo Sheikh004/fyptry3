@@ -16,6 +16,9 @@ const taskSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    taskApproval: {
+      type: String,
+    },
     assignedBy: {
       type: Schema.Types.ObjectId,
       ref: "Supervisor",

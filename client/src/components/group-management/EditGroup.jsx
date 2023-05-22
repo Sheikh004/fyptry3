@@ -77,6 +77,7 @@ function EditGroup(props) {
   }, [actualList]);
   return (
     <div>
+      {console.log(modGroupLeader)}
       <SupervisorNavbar />
       <div style={{ backgroundColor: "#0b2b40", height: "100vh" }}>
         <div
@@ -90,11 +91,9 @@ function EditGroup(props) {
           <div style={{ backgroundColor: "#81007f", padding: "50px" }}>
             <FormControl component="fieldset">
               <RadioGroup
-                aria-label="gender"
-                name="gender1"
                 onChange={handleGroupLeader}
+                defaultValue={location.state.groupLeader}
               >
-                {/* <p>Group Name</p> */}
                 <TextField
                   id="mgroup-name"
                   variant="filled"
@@ -192,7 +191,6 @@ function EditGroup(props) {
                     {Array.from({ length: fieldNumber }, (_, i) => {
                       return (
                         <TableRow key={i.toString()}>
-                          {/* <p>Enter Email Address of Student</p> */}
                           <TableCell>
                             <TextField
                               key={i}
