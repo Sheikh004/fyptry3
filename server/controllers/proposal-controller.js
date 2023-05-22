@@ -335,6 +335,7 @@ export const removeProposal = async (req, res) => {
         {
           $set: {
             filepath: "",
+            status: "Pending",
           },
         },
         {

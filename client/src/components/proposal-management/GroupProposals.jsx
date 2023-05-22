@@ -7,6 +7,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
 
 import React, { useState } from "react";
@@ -141,6 +142,9 @@ function GroupProposals(props) {
               <TableCell style={{ color: "white", fontWeight: "bold" }}>
                 Status
               </TableCell>
+              <TableCell style={{ color: "white", fontWeight: "bold" }}>
+                Add Comments
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -232,6 +236,12 @@ function GroupProposals(props) {
                       </div>
                     )}
                   </TableCell>
+                  {group && group.proposalStatus && group.filepath != "" && (
+                    <TableCell>
+                      <TextField key={"comment" + index} />
+                      <Button key={"buttoncomment" + index}>Send</Button>
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
           </TableBody>

@@ -87,7 +87,38 @@ export const handleUploadTasks = async (request, response) => {
 };
 
 export const updateTask = async (request, response) => {
+  function removeFiles(fileNames) {
+    fileNames.forEach((fileName) => {
+      if (
+        fileName.split(".").pop() === "jpeg" ||
+        fileName.split(".").pop() === "png" ||
+        fileName.split(".").pop() === "jpg"
+      ) {
+        fs.unlink(`./uploads/images/${fileName.split("/").pop()}`, (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          console.log(`${fileName} has been removed from the server.`);
+        });
+      } else {
+        fs.unlink(`./uploads/files/${fileName.split("/").pop()}`, (err) => {
+          if (err) {
+            console.error(err);
+            return;
+          }
+
+          console.log(`${fileName} has been removed from the server.`);
+        });
+      }
+    });
+  }
   try {
+    const checkData = await Task.findOne({ _id: request.body.id });
+    if (checkData && checkData.filespaths.length !== 0) {
+      removeFiles(checkData.filespaths);
+    }
     const data = await Task.findOneAndUpdate(
       {
         _id: request.body.id,
