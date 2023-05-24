@@ -9,7 +9,8 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-
+import IconButton from "@mui/material/IconButton";
+import SendIcon from "@mui/icons-material/Send";
 import React, { useState } from "react";
 import { useContext, useEffect } from "react";
 import { ChatContext } from "../../context/ChatProvider";
@@ -107,31 +108,36 @@ function GroupProposals(props) {
     }
   }, [supervisorGroups, supervisorProposals]);
   return (
-    <Box>
-      {console.log(groupProposals)}
-      <div style={{ position: "fixed", top: 0, width: "100%", zIndex: 1 }}>
+    <Box display="flex">
+      <Box style={{ width: "20%", backgroundColor: "#28282B" }}>
         <SupervisorNavbar />
-      </div>
+      </Box>
 
       <Box
+        width="80%"
         style={{
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           height: "100vh",
-          backgroundColor: "#0b2b40",
-          flexDirection: "column",
+          backgroundColor: "lightgrey",
+          flexDirection: "row",
         }}
       >
         <Table
           style={{
             margin: "0 auto",
             border: "1px solid black",
-            backgroundColor: "#81007f",
-            width: "100vh",
+            backgroundColor: "white",
+            width: "90%",
+            border: "3px",
+            borderColor: "black" /* Border properties with black color */,
+            borderRadius: "20px" /* Border radius */,
+            boxShadow: "black",
+            hight: "100vh",
           }}
         >
-          <TableHead>
+          <TableHead style={{ backgroundColor: "#28282B" }}>
             <TableRow>
               <TableCell style={{ color: "white", fontWeight: "bold" }}>
                 Group Name
@@ -151,7 +157,7 @@ function GroupProposals(props) {
             {groupProposals &&
               groupProposals.map((group, index) => (
                 <TableRow key={index}>
-                  <TableCell style={{ color: "white" }}>{group.name}</TableCell>
+                  <TableCell style={{ color: "black" }}>{group.name}</TableCell>
                   <TableCell>
                     {group.filepath ? (
                       <div>
@@ -160,7 +166,9 @@ function GroupProposals(props) {
                         </a>
                       </div>
                     ) : (
-                      <p>Proposal Pending</p>
+                      <p style={{ color: "red", paddingTop: "17px" }}>
+                        Proposal Pending
+                      </p>
                     )}
                   </TableCell>
                   <TableCell>
@@ -208,7 +216,7 @@ function GroupProposals(props) {
                     )} */}
                     {group && group.proposalStatus && group.filepath != "" && (
                       <div>
-                        <label>
+                        <label style={{ marginRight: "10px" }}>
                           <input
                             key={"radio1" + index}
                             type="radio"
@@ -217,10 +225,14 @@ function GroupProposals(props) {
                             onChange={(e) =>
                               handleRadio(e.target.value, group.proposalId)
                             }
+                            style={{
+                              marginRight: "5px",
+                              transform: "scale(1.5)",
+                            }}
                           />
                           Approve
                         </label>
-                        <label>
+                        <label style={{ marginRight: "10px" }}>
                           <input
                             key={"radio2" + index}
                             type="radio"
@@ -229,6 +241,10 @@ function GroupProposals(props) {
                             onChange={(e) =>
                               handleRadio(e.target.value, group.proposalId)
                             }
+                            style={{
+                              marginRight: "5px",
+                              transform: "scale(1.5)",
+                            }}
                           />
                           Disapprove
                         </label>
@@ -238,8 +254,14 @@ function GroupProposals(props) {
                   </TableCell>
                   {group && group.proposalStatus && group.filepath != "" && (
                     <TableCell>
-                      <TextField key={"comment" + index} />
-                      <Button key={"buttoncomment" + index}>Send</Button>
+                      <div style={{ display: "flex", alignItems: "center" }}>
+                        <TextField key={"comment" + index} />
+                        <Button key={"buttoncomment" + index}>
+                          <IconButton title="Send">
+                            <SendIcon />
+                          </IconButton>
+                        </Button>
+                      </div>
                     </TableCell>
                   )}
                 </TableRow>

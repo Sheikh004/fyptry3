@@ -12,40 +12,85 @@ import {
 } from "@mui/material";
 import { registerSupervisor } from "../../api/api";
 
+const Heading = styled(Typography)(({ theme }) => ({
+  position: "absolute",
+  top: "2rem",
+  left: "50%",
+  transform: "translateX(-50%)",
+  color: "black",
+  fontSize: "2rem",
+  fontWeight: "bold",
+  fontFamily: "Lucida Bright",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.5rem",
+    top: "1rem",
+    fontWeight: "normal",
+  },
+}));
+
+const AvatarImage = styled("img")({
+  width: "5rem",
+  height: "5rem",
+  borderRadius: "50%",
+  marginRight: "1rem",
+});
+
+const LoginContainer = styled(Box)({
+  width: "100vw",
+  height: "100vh",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundImage:
+    "url('https://i0.wp.com/jaamiah.com/wp-content/uploads/2018/12/CUI-LHR.jpg')",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
+});
+
+const LoginBox = styled(Box)({
+  width: "90%",
+  maxWidth: "400px",
+  display: "flex",
+  flexDirection: "column",
+  borderRadius: "20px",
+  overflow: "hidden",
+  boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.2)",
+});
+
+const LoginForm = styled("form")({
+  width: "100%",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: "rgba(255, 255, 255, 0.8)",
+  backdropFilter: "blur",
+  padding: "2rem",
+});
+
+const ErrorMessage = styled("p")({
+  color: "red",
+});
+
+const SubmitButton = styled(Button)({
+  width: "100%",
+  marginTop: "1rem",
+  backgroundColor: "#052f72",
+  color: "white",
+  borderRadius: "5px",
+  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+  transition: "background-color 0.3s ease",
+  "&:hover": {
+    backgroundColor: "#38CBFC",
+  },
+});
+
 const Container = styled(Box)({
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
   height: "100vh",
   backgroundColor: "#0b2b40",
-});
-const ErrorMessage = styled("p")({
-  color: "red",
-});
-const FormContainer = styled(Box)({
-  backgroundColor: "#81007f",
-  justifyContent: "center",
-  alignItems: "center",
-  padding: "100px",
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-  maxWidth: "400px",
-  border: "2px solid black",
-  borderRadius: "10px",
-  overflow: "hidden",
-});
-
-const SubmitButton = styled(Button)({
-  width: "100%",
-
-  marginTop: "1rem",
-  backgroundColor: "#0b2b40", // Set a custom background color
-  color: "white", // Set a custom text color
-  borderRadius: "5px", // Add rounded corners
-  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)", // Add a subtle box shadow
-  transition: "background-color 0.3s ease", // Add a smooth transition effect
-  "&:hover": {
-    backgroundColor: "#D5004E", // Change background color on hover
-  },
 });
 
 function RegisterSupervisor(props) {
@@ -80,31 +125,43 @@ function RegisterSupervisor(props) {
     }
   };
   return (
-    <Container>
-      <FormContainer>
-        <form onSubmit={handleRegisterSupervisor}>
+    <LoginContainer>
+      <Heading variant="h1">
+        <AvatarImage
+          src="https://upload.wikimedia.org/wikipedia/commons/c/c0/COMSATS_new_logo.jpg"
+          alt="Avatar"
+        />
+        E-FYP Portal
+      </Heading>
+      <LoginBox>
+        <LoginForm onSubmit={handleRegisterSupervisor}>
           {sEmailError && <ErrorMessage>{sEmailError}</ErrorMessage>}
           <TextField
             id="filled-basic"
-            label="Email Address"
+            label="Email"
             variant="filled"
-            fullWidth
+            onChange={(event) => {
+              setSEmail(event.target.value);
+              setSEmailError("");
+            }}
+            InputLabelProps={{
+              style: {
+                textAlign: "center",
+                marginTop: 10,
+              },
+            }}
             InputProps={{
               classes: {
                 root: "rounded-input",
               },
               style: {
                 backgroundColor: "white",
-
+                marginTop: 10,
                 borderRadius: 10,
+                width: 300,
               },
             }}
-            onChange={(event) => {
-              setSEmail(event.target.value);
-              setSEmailError("");
-            }}
           />
-          <br />
           {sPassError && <ErrorMessage>{sPassError}</ErrorMessage>}
           {/* <Typography>Password</Typography> */}
           <TextField
@@ -129,20 +186,19 @@ function RegisterSupervisor(props) {
               },
               style: {
                 backgroundColor: "white",
-
+                marginTop: 10,
                 borderRadius: 10,
+                width: 300,
               },
             }}
           />
-          <br />
+
           {sError && <p>{sError}</p>}
-          {/* {console.log(sError.message)} */}
-          <SubmitButton variant="contained" type="submit">
-            Submit
-          </SubmitButton>
-        </form>
-      </FormContainer>
-    </Container>
+          <SubmitButton type="submit">Submit</SubmitButton>
+          <br />
+        </LoginForm>
+      </LoginBox>
+    </LoginContainer>
   );
 }
 

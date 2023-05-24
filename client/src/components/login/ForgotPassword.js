@@ -11,16 +11,52 @@ import {
   Button,
 } from "@mui/material";
 import { forgotPasswordEmail } from "../../api/api";
-const Container = styled(Box)({
+const Heading = styled(Typography)(({ theme }) => ({
   display: "flex",
-  justifyContent: "center",
   alignItems: "center",
+  position: "absolute",
+  top: "2rem",
+  left: "50%",
+  transform: "translateX(-50%)",
+  color: "black",
+  fontSize: "2rem",
+  fontWeight: "bold",
+  fontFamily: "Lucida Bright",
+  [theme.breakpoints.down("sm")]: {
+    fontSize: "1.5rem",
+    top: "1rem",
+    flexDirection: "column",
+    alignItems: "center",
+    textAlign: "center",
+  },
+}));
+
+const AvatarImage = styled("img")(({ theme }) => ({
+  width: "5rem",
+  height: "5rem",
+  borderRadius: "50%",
+  marginRight: "1rem",
+  [theme.breakpoints.down("sm")]: {
+    width: "3rem",
+    height: "3rem",
+  },
+}));
+
+const Container = styled(Box)({
+  width: "100vw",
   height: "100vh",
-  backgroundColor: "#0b2b40",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundImage:
+    "url('https://i0.wp.com/jaamiah.com/wp-content/uploads/2018/12/CUI-LHR.jpg')",
+  backgroundSize: "cover",
+  backgroundRepeat: "no-repeat",
 });
 
 const FormContainer = styled(Box)({
-  backgroundColor: "#81007f",
+  backgroundColor: "rgba(255, 255, 255, 0.8)",
+  backdropFilter: "blur",
   justifyContent: "center",
   alignItems: "center",
   padding: "100px",
@@ -36,13 +72,13 @@ const SubmitButton = styled(Button)({
   width: "100%",
 
   marginTop: "1rem",
-  backgroundColor: "#0b2b40", // Set a custom background color
+  backgroundColor: "#052f72", // Set a custom background color
   color: "white", // Set a custom text color
   borderRadius: "5px", // Add rounded corners
   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)", // Add a subtle box shadow
   transition: "background-color 0.3s ease", // Add a smooth transition effect
   "&:hover": {
-    backgroundColor: "#D5004E", // Change background color on hover
+    backgroundColor: "#0490db", // Change background color on hover
   },
 });
 
@@ -76,6 +112,13 @@ function ForgotPassword(props) {
   };
   return (
     <Container>
+      <Heading variant="h1">
+        <AvatarImage
+          src="https://upload.wikimedia.org/wikipedia/commons/c/c0/COMSATS_new_logo.jpg"
+          alt="Avatar"
+        />
+        E-FYP Portal
+      </Heading>
       <FormContainer>
         <form onSubmit={handleFSubmit}>
           {fEmailError && <p>{fEmailError}</p>}
@@ -107,7 +150,7 @@ function ForgotPassword(props) {
             fullWidth
             style={{ backgroundColor: "white", borderRadius: 10 }}
           >
-            <InputLabel id="demo-simple-select-label">Login Type</InputLabel>
+            <InputLabel id="demo-simple-select-label">Domain</InputLabel>
 
             <Select
               labelId="demo-simple-select-label"

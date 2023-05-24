@@ -38,14 +38,15 @@ function AssignTask(props) {
     }
   };
   return (
-    <Box sx={{ bgcolor: "#0490db", color: "white", minHeight: "100vh" }}>
-      <SupervisorNavbar />
-
+    <Box display="flex" backgroundColor="lightgrey">
+      <Box style={{ width: "20%", backgroundColor: "#28282B" }}>
+        <SupervisorNavbar />
+      </Box>
       <Box
         sx={{
-          bgcolor: "#052f72",
           color: "white",
           padding: "20px",
+          width: "80%",
           width: { xs: "100%", sm: "90%", md: "70%", lg: "70%" },
           margin: "20px auto",
           borderRadius: "15px", // Added borderRadius property

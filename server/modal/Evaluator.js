@@ -1,7 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 const evaluatorSchema = new mongoose.Schema(
   {
-    facultyId: {
+    _id: {
       type: Schema.Types.ObjectId,
       ref: "Faculty",
       required: true,

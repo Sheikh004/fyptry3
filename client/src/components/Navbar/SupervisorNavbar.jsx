@@ -6,58 +6,102 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/logo.png";
+
 function SupervisorNavbar(props) {
   return (
     <Navbar
       collapseOnSelect
       expand="lg"
       variant="dark"
-      style={{ backgroundColor: "#052f72" }}
+      style={{ backgroundColor: "#28282B", flexDirection: "column" }}
     >
-      <Container>
-        <Navbar.Brand href="#home">
-          <img
-            style={{ backgroundColor: "white" }}
-            src={logo} // Use your imported logo image here
-            width="40"
-            height="40"
-            className="d-inline-block align-top"
-            alt="Logo"
-          />{" "}
-        </Navbar.Brand>
-        <Navbar.Brand href="#home">E-FYP</Navbar.Brand>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          marginBottom: "16px",
+        }}
+      >
+        <img
+          src={logo} // Use your imported logo image here
+          width="40"
+          height="40"
+          className="d-inline-block align-top"
+          alt="Logo"
+          style={{ borderRadius: "80%" }}
+        />
+        <Navbar.Brand style={{ paddingTop: "8px" }}>E-FYP</Navbar.Brand>
+      </div>
+
+      <img
+        src="https://www.cornwallbusinessawards.co.uk/wp-content/uploads/2017/11/dummy450x450.jpg" // Use your imported logo image here
+        width="60"
+        height="60"
+        className="d-inline-block align-top"
+        alt="Logo"
+      />
+      <h6
+        style={{
+          paddingTop: "8px",
+          paddingBottom: "10px",
+          color: "white",
+          textAlign: "center",
+        }}
+      >
+        Welcome Mahwish Waqas
+      </h6>
+
+      <Container style={{ alignItems: "center" }}>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-            <Nav.Link as={NavLink} to="/supervisor-dashboard">
+          <Nav className="flex-column">
+            <Nav.Link
+              as={NavLink}
+              to="/supervisor-dashboard"
+              className="nav-link-card"
+              activeClassName="active"
+            >
               Home
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/view-groups">
+            <Nav.Link
+              as={NavLink}
+              to="/view-groups"
+              className="nav-link-card"
+              activeClassName="active"
+            >
               Groups
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/group-proposals">
+            <Nav.Link
+              as={NavLink}
+              to="/group-proposals"
+              className="nav-link-card"
+              activeClassName="active"
+            >
               Proposals
             </Nav.Link>
-            <Nav.Link as={NavLink} to="/discussion">
+            <Nav.Link
+              as={NavLink}
+              to="/discussion"
+              className="nav-link-card"
+              activeClassName="active"
+            >
               Discussion
             </Nav.Link>
             {/* <Nav.Link as={NavLink} to="">
               Announcement
             </Nav.Link> */}
-            <Nav.Link as={NavLink} to="/view-help">
+            <Nav.Link
+              as={NavLink}
+              to="/view-help"
+              className="nav-link-card"
+              activeClassName="active"
+            >
               Help
             </Nav.Link>
-            {/* <Nav.Link as={NavLink} to="">
-              Resources
-            </Nav.Link> */}
-          </Nav>
-          <Nav>
-            <Navbar.Text>
+            <Nav.Link eventKey={2} href="#memes" className="nav-link-card">
               <FontAwesomeIcon icon={faUser} className="me-2" />
-            </Navbar.Text>
-            <Nav.Link eventKey={2} href="#memes">
-              {" "}
-              Log out{" "}
+              Log out
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

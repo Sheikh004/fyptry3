@@ -3,8 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { getChatters, deleteGroup } from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
 import Group from "./Group";
-import { Box, Button, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import SupervisorNavbar from "../Navbar/SupervisorNavbar";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 function ViewGroups(props) {
   const { user } = useContext(ChatContext);
   const [registerBool, setRegisterBool] = useState();
@@ -50,77 +64,112 @@ function ViewGroups(props) {
     getGroups();
   }, [isDelete]);
   return (
-    <Box>
-      <SupervisorNavbar />
+    <Box style={{ display: "flex", height: "100vh" }}>
+      <div style={{ width: "20%", backgroundColor: "#28282B" }}>
+        <SupervisorNavbar />
+      </div>
       <Box
-        color={"white"}
-        sx={{
-          width: "100vw",
-          bgcolor: "#0B2B40",
-          minHeight: "100vh",
-          paddingTop: "20vh",
+        style={{
+          width: "80%",
+          backgroundColor: "lightgrey",
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            width: "100%",
-            height: "45vh",
-            bgcolor: "purple",
-            margin: "0 auto",
-            maxWidth: "50%",
-            overflow: "auto",
-            padding: "1rem",
-          }}
-        >
-          {groups &&
-            groups.map((group, key) => {
-              return (
-                <Box key={"Box" + key}>
-                  <Typography key={"TYpography" + key}>{group.name}</Typography>
-
-                  <Button
-                    key={"delete" + key}
-                    onClick={() => {
-                      deletingGroup(group._id);
-                    }}
-                  >
-                    Delete Group
-                  </Button>
-                  <Button
-                    key={"edit" + key}
-                    onClick={() => {
-                      navigateToEditPage(group);
-                    }}
-                  >
-                    Edit Group
-                  </Button>
-                  <Group group={group} key={key} />
-                </Box>
-              );
-            })}
-          {registerBool && (
-            <Button
-              variant="outlined"
+        <Grid container>
+          <Grid item xs={12}>
+            {/* Navbar */}
+            {/* Place your navbar component here */}
+          </Grid>
+          <Grid item xs={12}>
+            {/* Main content */}
+            <Box
               sx={{
-                bgcolor: "white",
-                color: "purple",
-                border: "1px solid purple",
-                borderRadius: "4px",
-                padding: "8px 16px",
-                fontWeight: "bold",
-                textTransform: "uppercase",
-                transition: "background-color 0.3s ease",
-                "&:hover": {
-                  bgcolor: "purple",
-                  color: "white",
-                },
+                height: "90vh",
+                bgcolor: "lightgrey",
+                maxWidth: "100%",
+                overflow: "auto",
+                padding: "1rem",
               }}
-              onClick={navigateRegisterGroup}
             >
-              Register Group
-            </Button>
-          )}
-        </Box>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead style={{ backgroundColor: "#28282B" }}>
+                    <TableRow>
+                      <TableCell style={{ fontWeight: "bold", color: "white" }}>
+                        Group Name
+                      </TableCell>
+                      <TableCell style={{ fontWeight: "bold", color: "white" }}>
+                        Action
+                      </TableCell>
+                      <TableCell style={{ fontWeight: "bold", color: "white" }}>
+                        Members
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {groups &&
+                      groups.map((group, key) => {
+                        return (
+                          <TableRow key={"TableRow" + key}>
+                            <TableCell key={"TableCell1" + key}>
+                              {group.name}
+                            </TableCell>
+                            <TableCell key={"TableCell2" + key}>
+                              <Button
+                                key={"delete" + key}
+                                onClick={() => {
+                                  deletingGroup(group._id);
+                                }}
+                              >
+                                <DeleteIcon style={{ color: "black" }} />
+                              </Button>
+                              <Button
+                                key={"edit" + key}
+                                onClick={() => {
+                                  navigateToEditPage(group);
+                                }}
+                              >
+                                <EditIcon style={{ color: "black" }} />
+                              </Button>
+                            </TableCell>
+
+                            <TableCell key={"TableCell3" + key}>
+                              <Group group={group} key={key} />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+              {registerBool && (
+                <Button
+                  variant="outlined"
+                  sx={{
+                    bgcolor: "white",
+                    color: "#28282B",
+                    border: "1px solid #28282B",
+                    borderRadius: "4px",
+                    padding: "8px 16px",
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                    transition: "background-color 0.3s ease",
+                    "&:hover": {
+                      bgcolor: "#28282B",
+                      color: "white",
+                    },
+                  }}
+                  onClick={navigateRegisterGroup}
+                >
+                  Register Group
+                </Button>
+              )}
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );

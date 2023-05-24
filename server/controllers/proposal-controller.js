@@ -1,4 +1,3 @@
-import proposal from "../modal/Proposal.js";
 import Proposal from "../modal/Proposal.js";
 import Reviewer from "../modal/Reviewer.js";
 import fs from "fs";

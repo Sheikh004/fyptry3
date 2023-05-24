@@ -1,4 +1,4 @@
-import { Box, Typography, Button } from "@mui/material";
+import { Box, Typography, Button, Modal } from "@mui/material";
 import React, { useEffect, useContext, useState } from "react";
 import { ChatContext } from "../../context/ChatProvider";
 import {
@@ -20,6 +20,7 @@ function StudentTasksView(props) {
   const { user } = useContext(ChatContext);
   const [studentTasks, setStudentTasks] = useState();
   const navigate = useNavigate();
+
   const handleTaskViewRoute = (task) => {
     navigate("/view-task", { state: task });
   };
@@ -34,164 +35,198 @@ function StudentTasksView(props) {
     fetchTask();
   }, [navigate]);
   return (
-    <Box sx={{ bgcolor: "#0490db", color: "white", minHeight: "100vh" }}>
-      <NavBar />
-
+    <Box sx={{ display: "flex", height: "100vh", background: "lightgrey" }}>
+      <Box sx={{ width: "20%", backgroundColor: "#28282B" }}>
+        <NavBar />
+      </Box>
       <Box
         sx={{
-          bgcolor: "#052f72",
-          color: "white",
-          padding: "20px",
-          width: { xs: "100%", sm: "100%", md: "100%", lg: "100%" },
-          margin: "20px auto",
-          marginBottom: "20px",
-          maxWidth: { xs: "100%", sm: "90%", md: "70%", lg: "50%" },
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "80%",
+          marginLeft: "20px",
+          marginRight: "20px",
         }}
       >
-        <h2
-          style={{
-            textAlign: "center",
-            marginBottom: "10px",
-            fontFamily: "bold",
+        <Box
+          sx={{
+            bgcolor: "white",
+            padding: "20px",
+            width: "100%",
+            margin: "20px auto",
+            marginBottom: "20px",
+            borderRadius: "10px",
+            boxShadow: "0 2px 4px green",
           }}
         >
-          Completed Tasks
-        </h2>
+          <Typography
+            sx={{
+              textAlign: "center",
+              marginBottom: "10px",
+              fontFamily: "bold",
+              color: "white",
+              bgcolor: "green",
+              borderRadius: "10px",
+              padding: "5px",
+            }}
+            variant="h4"
+          >
+            Completed Tasks
+          </Typography>
 
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell
-                sx={{ fontSize: "15px", fontWeight: "Bold", color: "white" }}
-              >
-                Title
-              </TableCell>
-              <TableCell
-                sx={{ fontSize: "15px", fontWeight: "Bold", color: "white" }}
-                align="center"
-              >
-                Due Date
-              </TableCell>
-              <TableCell
-                sx={{ fontSize: "15px", fontWeight: "Bold", color: "white" }}
-              >
-                Action
-              </TableCell>
-              <TableCell
-                sx={{ fontSize: "15px", fontWeight: "Bold", color: "white" }}
-              >
-                Approval Status
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {studentTasks &&
-              studentTasks.map((value, index) => {
-                if (value.taskStatus === "Completed") {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell sx={{ color: "white" }}>
-                        {value.title}
-                      </TableCell>
-                      <TableCell sx={{ color: "white" }} align="center">
-                        Due: {formatDate2(value.deadline)},{" "}
-                        {formatTimeAMPM2(value.deadline)}
-                      </TableCell>
-                      <TableCell>
-                        <IconButton
-                          sx={{ color: "white" }}
-                          onClick={() => handleTaskViewRoute(value)}
-                        >
-                          <VisibilityIcon />
-                        </IconButton>
-                      </TableCell>
-                      <TableCell sx={{ color: "white" }}>
-                        {value.taskApproval}
-                      </TableCell>
-                    </TableRow>
-                  );
-                }
-              })}
-          </TableBody>
-        </Table>
-      </Box>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Title
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                  }}
+                  align="center"
+                >
+                  Due Date
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Approval Status
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Action
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {studentTasks &&
+                studentTasks.map((value, index) => {
+                  if (value.taskStatus === "Completed") {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell>{value.title}</TableCell>
+                        <TableCell align="center">
+                          Due: {formatDate2(value.deadline)},{" "}
+                          {formatTimeAMPM2(value.deadline)}
+                        </TableCell>
+                        <TableCell>{value.taskApproval}</TableCell>
+                        <TableCell>
+                          <IconButton
+                            title="view"
+                            onClick={() => handleTaskViewRoute(value)}
+                          >
+                            <VisibilityIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                })}
+            </TableBody>
+          </Table>
+        </Box>
 
-      <Box
-        sx={{
-          bgcolor: "#052f72",
-          color: "white",
-          padding: "20px",
-          width: { xs: "100%", sm: "100%", md: "100%", lg: "100%" },
-          margin: "auto",
-          marginTop: "20px",
-          maxWidth: { xs: "100%", sm: "90%", md: "70%", lg: "50%" },
-        }}
-      >
-        <Typography
-          sx={{ textAlign: "center", marginBottom: "10px", fontFamily: "bold" }}
-          variant="h4"
+        <Box
+          sx={{
+            bgcolor: "white",
+            color: "black",
+            padding: "20px",
+            width: "100%",
+            margin: "auto",
+            marginTop: "20px",
+            boxShadow: "0 2px 4px red",
+            borderRadius: "10px",
+          }}
         >
-          Pending Tasks
-        </Typography>
+          <Typography
+            sx={{
+              textAlign: "center",
+              marginBottom: "10px",
+              fontFamily: "bold",
+              color: "white",
+              bgcolor: " #FF0000",
+              borderRadius: "10px",
+            }}
+            variant="h4"
+          >
+            Pending Tasks
+          </Typography>
 
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell
-                sx={{ fontSize: "15px", fontWeight: "Bold", color: "white" }}
-              >
-                Title
-              </TableCell>
-              <TableCell
-                align="center"
-                sx={{
-                  fontSize: "15px",
-                  fontWeight: "Bold",
-                  paddingLeft: "120px",
-                  color: "white",
-                }}
-              >
-                Due Date
-              </TableCell>
-              <TableCell
-                sx={{ fontSize: "15px", fontWeight: "Bold", color: "white" }}
-              >
-                Action
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {studentTasks &&
-              studentTasks.map((value, index) => {
-                if (value.taskStatus === "Pending") {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell>
-                        <Typography sx={{ color: "white" }} variant="bold">
-                          {value.title}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        sx={{ color: "white", paddingLeft: "120px" }}
-                        align="center"
-                      >
-                        Due: {formatDate2(value.deadline)},{" "}
-                        {formatTimeAMPM2(value.deadline)}
-                      </TableCell>
-                      <TableCell>
-                        <IconButton
-                          sx={{ color: "white" }}
-                          onClick={() => handleTaskViewRoute(value)}
-                        >
-                          <VisibilityIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  );
-                }
-              })}
-          </TableBody>
-        </Table>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell
+                  sx={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Title
+                </TableCell>
+                <TableCell
+                  align="center"
+                  sx={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                    paddingLeft: "120px",
+                  }}
+                >
+                  Due Date
+                </TableCell>
+                <TableCell
+                  sx={{
+                    fontSize: "15px",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Action
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {studentTasks &&
+                studentTasks.map((value, index) => {
+                  if (value.taskStatus === "Pending") {
+                    return (
+                      <TableRow key={index}>
+                        <TableCell>
+                          <Typography variant="bold">{value.title}</Typography>
+                        </TableCell>
+                        <TableCell sx={{ paddingLeft: "120px" }} align="center">
+                          Due: {formatDate2(value.deadline)},{" "}
+                          {formatTimeAMPM2(value.deadline)}
+                        </TableCell>
+                        <TableCell>
+                          <IconButton
+                            title="view"
+                            onClick={() => handleTaskViewRoute(value)}
+                          >
+                            <VisibilityIcon />
+                          </IconButton>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  }
+                })}
+            </TableBody>
+          </Table>
+        </Box>
       </Box>
     </Box>
   );

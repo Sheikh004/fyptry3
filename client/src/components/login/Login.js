@@ -95,6 +95,7 @@ const ForgotPasswordButton = styled(Button)({
   "&:hover": {
     color: "#D5004E",
   },
+  border: "none",
 });
 
 function Login(props) {
@@ -257,7 +258,7 @@ function Login(props) {
           <br />
 
           <ForgotPasswordButton variant="outlined" onClick={forgotPassword}>
-            Forgot Password
+            <u>Forgot Password</u>
           </ForgotPasswordButton>
           <ForgotPasswordButton
             variant="outlined"
@@ -265,7 +266,7 @@ function Login(props) {
               navigate("/register-supervisor");
             }}
           >
-            Register as supervisor
+            <u>Register as Supervisor</u>
           </ForgotPasswordButton>
         </LoginForm>
       </LoginBox>

@@ -103,7 +103,7 @@ export const getUser = async (request, response) => {
           return response.status(401).json({ message: "Incorrect password" });
         } //remove this code and uncomment above code later on
         if (passFlag == true) {
-          const userType = await Supervisor.findOne({ email: email });
+          const userType = await Supervisor.findOne({ _id: user._id });
           if (!userType) {
             console.log("User is not registered as Supervisor");
             return response
@@ -119,8 +119,8 @@ export const getUser = async (request, response) => {
               .status(200)
               .send({
                 id: userType._id,
-                name: userType.name,
-                email: userType.email,
+                name: user.name,
+                email: user.email,
                 type: request.body.type,
               });
           }
@@ -146,7 +146,7 @@ export const getUser = async (request, response) => {
           }
         });
         if (passFlag == true) {
-          const userType = await Evaluator.findOne({ email: email });
+          const userType = await Evaluator.findOne({ _id: user._id });
           if (!userType) {
             console.log("User is not registered as Evaluator");
             return response
@@ -162,8 +162,8 @@ export const getUser = async (request, response) => {
               .status(200)
               .send({
                 id: userType._id,
-                name: userType.name,
-                email: userType.email,
+                name: user.name,
+                email: user.email,
                 type: request.body.type,
               });
           }
@@ -196,7 +196,7 @@ export const getUser = async (request, response) => {
           return response.status(401).json({ message: "Incorrect password" });
         } //remove this code and uncomment above code later on
         if (passFlag == true) {
-          const userType = await FYPCommittee.findOne({ email: email });
+          const userType = await FYPCommittee.findOne({ _id: user._id });
           if (!userType) {
             console.log("User is not registered as FYPCommittee");
             return response
@@ -212,8 +212,8 @@ export const getUser = async (request, response) => {
               .status(200)
               .send({
                 id: userType._id,
-                name: userType.name,
-                email: userType.email,
+                name: user.name,
+                email: user.email,
                 type: request.body.type,
               });
           }
@@ -239,7 +239,7 @@ export const getUser = async (request, response) => {
           }
         });
         if (passFlag == true) {
-          const userType = await Reviewer.findOne({ email: email });
+          const userType = await Reviewer.findOne({ _id: user._id });
           if (!userType) {
             console.log("User is not registered as Reviewer");
             return response
@@ -255,8 +255,8 @@ export const getUser = async (request, response) => {
               .status(200)
               .send({
                 id: userType._id,
-                name: userType.name,
-                email: userType.email,
+                name: user.name,
+                email: user.email,
                 type: request.body.type,
               });
           }
@@ -296,12 +296,12 @@ export const getChatters = async (req, res) => {
       },
       {
         path: "supervisorId",
-        model: Supervisor,
+        model: Faculty,
         select: "name",
       },
       {
         path: "evaluatorID",
-        model: Evaluator,
+        model: Faculty,
         select: "name",
       },
     ]);
@@ -314,7 +314,7 @@ export const getChatters = async (req, res) => {
 
 export const getStChatters = async (req, res) => {
   try {
-    const user = await Group.find({ studentID: req.body.stId }).populate([
+    const user = await Group.findOne({ studentID: req.body.stId }).populate([
       {
         path: "studentID",
         model: Student,
@@ -322,12 +322,12 @@ export const getStChatters = async (req, res) => {
       },
       {
         path: "supervisorId",
-        model: Supervisor,
+        model: Faculty,
         select: "name",
       },
       {
         path: "evaluatorID",
-        model: Evaluator,
+        model: Faculty,
         select: "name",
       },
     ]);
@@ -372,15 +372,14 @@ export const registerSupervisor = async (req, res) => {
 
     //remove this code and uncomment above code later on
     if (password === data.password) {
-      const supervisorExist = await Supervisor.findOne({ facultyId: data._id });
+      const supervisorExist = await Supervisor.findOne({ _id: data._id });
       if (supervisorExist) {
         return res
           .status(403)
           .json({ message: "Supervisor is already registered" });
       }
       const newSupervisor = new Supervisor({
-        facultyId: data._id,
-        email: data.email,
+        _id: data._id,
       });
       await newSupervisor.save();
       return res

@@ -9,6 +9,8 @@ import {
 } from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
 import { Box, Button, Link } from "@mui/material";
+import FileUploadIcon from "@mui/icons-material/FileUpload";
+import CancelIcon from "@mui/icons-material/Cancel";
 function Submission(props) {
   const [proposal, setProposal] = useState();
   const [proposalPath, setProposalPath] = useState();
@@ -93,71 +95,96 @@ function Submission(props) {
   //   handleNotification();
   // }, [notification, noti]);
   return (
-    <div style={{ backgroundColor: "#0490db", minHeight: "100vh" }}>
-      <NavBar />
+    <Box sx={{ display: "flex", height: "100vh" }}>
+      <Box sx={{ width: "20%", backgroundColor: "#28282B" }}>
+        <NavBar />
+      </Box>
       <div
         style={{
-          backgroundColor: "#052f72",
-          width: "400px",
-          margin: "0 auto",
-          marginTop: "50px",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "20px",
-          borderRadius: "10px",
+          backgroundColor: "lightgray",
+          minHeight: "100vh",
+          width: "80%",
         }}
       >
-        <h1 style={{ color: "white" }}>FYP Proposal</h1>
-        <br />
-        {proposalPath && (
-          <Box>
-            <Link href={proposalPath} target="_blank" rel="noopener">
-              {proposalPath.split("--").pop()}
-            </Link>
-            <Button
-              onClick={() => {
-                setIsRemove(true);
-              }}
-            >
-              Delete
-            </Button>
-          </Box>
-        )}
-        <form
-          method="post"
-          encType="multipart/form-data"
+        <div
           style={{
-            display: "flex",
-            flexDirection: "row",
+            gcolor: "white",
+            color: "black",
+            padding: "20px",
+            width: "50%",
+            margin: "auto",
+            marginTop: "20%",
+            boxShadow: "0 2px 4px #28282B",
+            borderRadius: "10px",
+            justifyContent: "center",
             alignItems: "center",
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            padding: "20px",
+            borderRadius: "10px",
+            backgroundColor: "white",
           }}
         >
-          <label
-            htmlFor="fileInput2"
+          <h1 style={{ color: "Black", borderRadius: "5px", width: "100%" }}>
+            FYP Proposal
+          </h1>
+          <br />
+          {proposalPath && (
+            <Box>
+              <Link href={proposalPath} target="_blank" rel="noopener">
+                {proposalPath.split("--").pop()}
+              </Link>
+              <Button
+                onClick={() => {
+                  setIsRemove(true);
+                }}
+              >
+                <CancelIcon style={{ color: "red" }} />
+              </Button>
+            </Box>
+          )}
+          <form
+            method="post"
+            encType="multipart/form-data"
             style={{
-              backgroundColor: "#0490db",
-              marginRight: "10px",
-              color: "white",
-              padding: "8px 16px",
-              borderRadius: "4px",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
             }}
           >
-            Upload
-          </label>
-          <input
-            type="file"
-            name="files"
-            style={{ display: "none" }}
-            id="fileInput2"
-            onChange={(e) => onFileChange(e)}
-          />
-          <br />
-          <br />
-        </form>
+            <label
+              htmlFor="fileInput2"
+              style={{
+                backgroundColor: "#0490db",
+                marginRight: "10px",
+                color: "white",
+                padding: "8px 16px",
+                borderRadius: "4px",
+              }}
+            >
+              <FileUploadIcon
+                style={{
+                  marginRight: "4px",
+                }}
+              />
+              Upload
+            </label>
+            <input
+              type="file"
+              name="files"
+              style={{ display: "none" }}
+              id="fileInput2"
+              onChange={(e) => onFileChange(e)}
+            />
+            <br />
+            <br />
+          </form>
+        </div>
       </div>
-    </div>
+    </Box>
   );
 }
 

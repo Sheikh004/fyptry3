@@ -50,32 +50,35 @@ const Conversations = ({ text }) => {
         setGroups(filteredData);
       }
       if (user.type == "Student") {
-        let data = await getStChatters({ stId: user.id });
+        let chatter = await getStChatters({ stId: user.id });
 
         let filteredData = [];
         let groupList = [];
-        data.user.map((chatter) => {
-          groupList.push(chatter.name);
-          if (chatter.name.toLowerCase().includes(text.toLowerCase()))
-            filteredData.push({ id: chatter._id, name: chatter.name });
+        // data.user.map((chatter) => {
+        groupList.push(chatter.user.name);
 
-          if (
-            chatter.supervisorId.name.toLowerCase().includes(text.toLowerCase())
-          )
-            filteredData.push({
-              id: chatter.supervisorId._id,
-              name: chatter.supervisorId.name,
-            });
+        if (chatter.user.name.toLowerCase().includes(text.toLowerCase()))
+          filteredData.push({ id: chatter.user._id, name: chatter.user.name });
 
-          chatter.studentID.map((student) => {
-            if (student._id !== user.id) {
-              if (student.name.toLowerCase().includes(text.toLowerCase()))
-                filteredData.push({ id: student._id, name: student.name });
-            }
+        if (
+          chatter.user.supervisorId.name
+            .toLowerCase()
+            .includes(text.toLowerCase())
+        )
+          filteredData.push({
+            id: chatter.user.supervisorId._id,
+            name: chatter.user.supervisorId.name,
           });
 
-          setGroupList(groupList);
+        chatter.user.studentID.map((student) => {
+          if (student._id !== user.id) {
+            if (student.name.toLowerCase().includes(text.toLowerCase()))
+              filteredData.push({ id: student._id, name: student.name });
+          }
         });
+
+        setGroupList(groupList);
+        // });
         setGroups(filteredData);
       }
     };

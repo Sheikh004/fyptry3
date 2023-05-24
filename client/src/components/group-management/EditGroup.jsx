@@ -10,6 +10,10 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
+import UpdateIcon from "@mui/icons-material/Update";
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
@@ -76,20 +80,28 @@ function EditGroup(props) {
     update();
   }, [actualList]);
   return (
-    <div>
-      {console.log(modGroupLeader)}
-      <SupervisorNavbar />
-      <div style={{ backgroundColor: "#0b2b40", height: "100vh" }}>
+    <div style={{ display: "flex", height: "100vh" }}>
+      <div style={{ width: "20%", backgroundColor: "#28282B" }}>
+        <SupervisorNavbar />
+      </div>
+      <div
+        style={{
+          width: "80%",
+          backgroundColor: "lightgrey",
+          height: "100vh",
+        }}
+      >
         <div
           style={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
+            width: "100%",
+            margin: "20px",
+            backgroundColor: "white",
           }}
         >
-          <div style={{ backgroundColor: "#81007f", padding: "50px" }}>
-            <FormControl component="fieldset">
+          <div style={{ backgroundColor: "white", width: "100vw" }}>
+            <FormControl component="fieldset" style={{ width: "78vw" }}>
               <RadioGroup
                 onChange={handleGroupLeader}
                 defaultValue={location.state.groupLeader}
@@ -103,10 +115,10 @@ function EditGroup(props) {
                     setModGName(e.target.value);
                   }}
                   InputProps={{
-                    style: { color: "white" },
+                    style: { color: "black" },
                   }}
                   InputLabelProps={{
-                    style: { color: "white" },
+                    style: { color: "black" },
                   }}
                 ></TextField>
                 <Table>
@@ -114,7 +126,7 @@ function EditGroup(props) {
                     <TableRow>
                       <TableCell
                         style={{
-                          color: "white",
+                          color: "black",
                           fontWeight: "bold",
                           fontSize: 16,
                         }}
@@ -123,7 +135,7 @@ function EditGroup(props) {
                       </TableCell>
                       <TableCell
                         style={{
-                          color: "white",
+                          color: "black",
                           fontWeight: "bold",
                           fontSize: 16,
                         }}
@@ -132,7 +144,7 @@ function EditGroup(props) {
                       </TableCell>
                       <TableCell
                         style={{
-                          color: "white",
+                          color: "black",
                           fontWeight: "bold",
                           fontSize: 16,
                         }}
@@ -148,32 +160,24 @@ function EditGroup(props) {
                           <TableRow key={"key" + i}>
                             <TableCell
                               key={"key" + i}
-                              style={{ color: "white" }}
+                              style={{ color: "black" }}
                             >
                               {modMembers[i].email}
                             </TableCell>
                             <TableCell>
-                              <Button
+                              <IconButton
                                 key={"Button" + i}
                                 style={{
-                                  backgroundColor: "red",
-                                  color: "white",
-                                  borderRadius: 10,
-                                }}
-                                onMouseEnter={(e) => {
-                                  e.target.style.backgroundColor = "white";
-                                  e.target.style.color = "red";
-                                }}
-                                onMouseLeave={(e) => {
-                                  e.target.style.backgroundColor = "red";
-                                  e.target.style.color = "white";
+                                  color: "red",
+                                  backgroundColor: "transparent",
                                 }}
                                 onClick={() => {
                                   handleRemoveField(modMembers[i]._id);
                                 }}
+                                title="Delete"
                               >
-                                Delete
-                              </Button>
+                                <DeleteIcon />
+                              </IconButton>
                             </TableCell>
                             <TableCell>
                               <FormControlLabel
@@ -181,7 +185,6 @@ function EditGroup(props) {
                                 value={modMembers[i].email}
                                 control={<Radio />}
                                 label="Assign Group Leader"
-                                style={{ color: "white" }}
                               />
                             </TableCell>
                           </TableRow>
@@ -201,12 +204,35 @@ function EditGroup(props) {
                                 handleModInputFieldChange(i, e.target.value);
                               }}
                               InputProps={{
-                                style: { color: "white" },
+                                style: {
+                                  color: "black",
+                                  backgroundColor: "transparent",
+                                },
                               }}
                               InputLabelProps={{
-                                style: { color: "white" },
+                                style: {
+                                  color: "black",
+                                  backgroundColor: "transparent",
+                                },
                               }}
                             ></TextField>
+                          </TableCell>
+                          <TableCell>
+                            {" "}
+                            {fieldNumber > 0 && totalNum > 0 && (
+                              <IconButton
+                                style={{
+                                  color: "red",
+                                  backgroundColor: "transparent",
+                                }}
+                                onClick={() => {
+                                  handleRemoveField2();
+                                }}
+                                title="Delete"
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            )}
                           </TableCell>
                           <TableCell>
                             <FormControlLabel
@@ -220,70 +246,42 @@ function EditGroup(props) {
                     })}
                   </TableBody>
                 </Table>
-                {totalNum < 3 && (
-                  <Button
-                    style={{
-                      backgroundColor: "green",
-                      color: "white",
-                      borderRadius: 10,
-                      marginRight: "30px",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.backgroundColor = "white";
-                      e.target.style.color = "green";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.backgroundColor = "green";
-                      e.target.style.color = "white";
-                    }}
-                    onClick={handleAddField}
-                  >
-                    Add member
-                  </Button>
-                )}
-                {fieldNumber > 0 && totalNum > 0 && (
-                  <Button
-                    style={{
-                      backgroundColor: "red",
-                      color: "white",
-                      borderRadius: 10,
-                      marginRight: "30px",
-                    }}
-                    onMouseEnter={(e) => {
-                      e.target.style.backgroundColor = "white";
-                      e.target.style.color = "red";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.target.style.backgroundColor = "red";
-                      e.target.style.color = "white";
-                    }}
-                    onClick={() => {
-                      handleRemoveField2();
-                    }}
-                  >
-                    Delete
-                  </Button>
-                )}
+                <div style={{ display: "flex" }}>
+                  {totalNum < 3 && (
+                    <IconButton
+                      style={{
+                        backgroundColor: "transparent",
+                        color: "inherit",
+                        border: "none",
+                        marginRight: "30px",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.target.style.backgroundColor = "transparent";
+                        e.target.style.color = "green";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.target.style.backgroundColor = "transparent";
+                        e.target.style.color = "inherit";
+                      }}
+                      onClick={handleAddField}
+                      title="Add Member"
+                    >
+                      <AddIcon />
+                    </IconButton>
+                  )}
+                </div>
               </RadioGroup>
-              <Button
+              <IconButton
                 onClick={handleGroupUpdate}
                 style={{
-                  backgroundColor: "black",
-                  color: "white",
-                  borderRadius: 10,
-                  marginRight: "30px",
+                  backgroundColor: "transparent",
+                  color: "inherit",
+                  border: "none",
                 }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = "white";
-                  e.target.style.color = "black";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = "black";
-                  e.target.style.color = "white";
-                }}
+                title="Update"
               >
-                Update
-              </Button>
+                <UpdateIcon />
+              </IconButton>
             </FormControl>
           </div>
         </div>
