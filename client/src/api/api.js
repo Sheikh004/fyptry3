@@ -562,3 +562,99 @@ export const updateTaskApproval = async (value, id) => {
       return error;
     });
 };
+
+export const getUnAssignedProposals = async () => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getUnAssignedProposals`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getReviewers = async () => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getReviewers`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const unassignProposal = async (pid, rid) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .patch(
+      `${url}/unassignProposal/${pid}/${rid}`,
+      {},
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+export const assignProposal = async (pid, rid) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .patch(
+      `${url}/assignProposal/${pid}/${rid}`,
+      {},
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+
+export const getReviewerProposals = async (id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(
+      `${url}/getReviewerProposals/${id}`,
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};

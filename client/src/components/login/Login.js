@@ -152,6 +152,7 @@ function Login(props) {
       if (user.type === "Supervisor") navigate("/supervisor-dashboard");
       if (user.type === "Student") navigate("/student-dashboard");
       if (user.type === "FYPCommittee") navigate("/fyp-committee-dashboard");
+      if (user.type === "Reviewer") navigate("/reviewer-dashboard");
     }
   }, [user, navigate]);
 

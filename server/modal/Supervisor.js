@@ -6,27 +6,6 @@ const supervisorSchema = new mongoose.Schema(
       ref: "Faculty",
       required: true,
     },
-    name: {
-      type: String,
-    },
-    email: {
-      type: String,
-    },
-    title: {
-      type: String,
-    },
-
-    role: {
-      type: String,
-    },
-    areaOfInterest: [
-      {
-        type: String,
-      },
-    ],
-    developmentField: {
-      type: String,
-    },
   },
   {
     timestamps: true,

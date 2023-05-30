@@ -1,6 +1,8 @@
 import Proposal from "../modal/Proposal.js";
 import Reviewer from "../modal/Reviewer.js";
+import Faculty from "../modal/Faculty.js";
 import fs from "fs";
+import { faC } from "@fortawesome/free-solid-svg-icons";
 export const getSupervisorProposals = async (req, res) => {
   const { id } = req.params;
   try {
@@ -125,173 +127,256 @@ export const assignProposals = async (req, res) => {
   const proposals = await Proposal.find({
     $and: [{ status: "Approved" }, { isAssigned: false }],
   });
+  const faculty = await Faculty.find({ activeStatus: true });
 
-  const reviewers = await Reviewer.find();
-  let lecturers = reviewers.filter((reviewer) => {
-    if (reviewer.title == "Lecturer") return reviewer;
+  const reviewerList = await Reviewer.find({}, { _id: 1 });
+
+  const reviewers = [];
+
+  reviewerList.map((reviewer) => reviewers.push(reviewer._id.toString()));
+
+  const filteredFaculty = faculty.filter((member) => {
+    if (!reviewers.includes(member._id.toString())) return member;
   });
 
-  const assistantProfessors = reviewers.filter((reviewer) => {
-    if (reviewer.title == "Assistant Professor") return reviewer;
-  });
-
-  const pHDAssistantProfessors = reviewers.filter((reviewer) => {
-    if (reviewer.title == "PHD Assistant Professor") return reviewer;
-  });
-  const associateProfessors = reviewers.filter((reviewer) => {
-    if (reviewer.title == "Associate Professor" && reviewer.isHOD == false)
-      return reviewer;
-  });
-  const data = await Promise.all(
-    proposals.map(async (proposal) => {
-      for (let i = 0; i < lecturers.length; i++) {
-        if (
-          lecturers.length != 0 &&
-          proposal.developmentField == lecturers[i].developmentField
-        ) {
-          if (
-            proposal.areaOfInterest.some((interest) =>
-              lecturers[i].areaOfInterest.includes(interest)
-            )
-          ) {
-            let arr = lecturers[i].proposalList;
-            arr.push(proposal._id);
-            const data2 = await Proposal.findOneAndUpdate(
-              { _id: proposal._id },
-              {
-                $set: {
-                  isAssigned: true,
-                },
-              },
-              { returnOriginal: false }
-            );
-
-            const data3 = await Reviewer.findOneAndUpdate(
-              {
-                _id: lecturers[i]._id,
-              },
-              {
-                $set: { proposalList: arr },
-              },
-              { returnOriginal: false }
-            );
-            return { proposal: data2, reviewer: data3 };
-          }
-        }
-      }
-
-      for (let i = 0; i < assistantProfessors.length; i++) {
-        if (
-          assistantProfessors.length != 0 &&
-          proposal.developmentField == assistantProfessors[i].developmentField
-        ) {
-          if (
-            proposal.areaOfInterest.some((interest) =>
-              assistantProfessors[i].areaOfInterest.includes(interest)
-            )
-          ) {
-            let arr = assistantProfessors[i].proposalList;
-            arr.push(proposal._id);
-            const data2 = await Proposal.findOneAndUpdate(
-              { _id: proposal._id },
-              {
-                $set: {
-                  isAssigned: true,
-                },
-              },
-              { returnOriginal: false }
-            );
-
-            const data3 = await Reviewer.findOneAndUpdate(
-              {
-                _id: assistantProfessors[i]._id,
-              },
-              {
-                $set: { proposalList: arr },
-              },
-              { returnOriginal: false }
-            );
-            return { proposal: data2, reviewer: data3 };
-          }
-        }
-      }
-
-      for (let i = 0; i < pHDAssistantProfessors.length; i++) {
-        if (
-          pHDAssistantProfessors.length != 0 &&
-          proposal.developmentField ==
-            pHDAssistantProfessors[i].developmentField
-        ) {
-          if (
-            proposal.areaOfInterest.some((interest) =>
-              pHDAssistantProfessors[i].areaOfInterest.includes(interest)
-            )
-          ) {
-            let arr = pHDAssistantProfessors[i].proposalList;
-            arr.push(proposal._id);
-            const data2 = await Proposal.findOneAndUpdate(
-              { _id: proposal._id },
-              {
-                $set: {
-                  isAssigned: true,
-                },
-              },
-              { returnOriginal: false }
-            );
-
-            const data3 = await Reviewer.findOneAndUpdate(
-              {
-                _id: pHDAssistantProfessors[i]._id,
-              },
-              {
-                $set: { proposalList: arr },
-              },
-              { returnOriginal: false }
-            );
-            return { proposal: data2, reviewer: data3 };
-          }
-        }
-      }
-
-      for (let i = 0; i < associateProfessors.length; i++) {
-        if (
-          associateProfessors.length != 0 &&
-          proposal.developmentField == associateProfessors[i].developmentField
-        ) {
-          if (
-            proposal.areaOfInterest.some((interest) =>
-              associateProfessors[i].areaOfInterest.includes(interest)
-            )
-          ) {
-            let arr = associateProfessors[i].proposalList;
-            arr.push(proposal._id);
-            const data2 = await Proposal.findOneAndUpdate(
-              { _id: proposal._id },
-              {
-                $set: {
-                  isAssigned: true,
-                },
-              },
-              { returnOriginal: false }
-            );
-
-            const data3 = await Reviewer.findOneAndUpdate(
-              {
-                _id: associateProfessors[i]._id,
-              },
-              {
-                $set: { proposalList: arr },
-              },
-              { returnOriginal: false }
-            );
-            return { proposal: data2, reviewer: data3 };
-          }
-        }
-      }
+  const result = await Promise.all(
+    filteredFaculty.map(async (faculty) => {
+      let addReviewer = new Reviewer({
+        _id: faculty._id,
+      });
+      await addReviewer.save();
+      return addReviewer;
     })
   );
+  if (result) {
+    const aggregatedReviewer = await Reviewer.aggregate([
+      {
+        $addFields: {
+          proposalNo: { $size: "$proposalList" },
+        },
+      },
+      {
+        $sort: { proposalNo: 1 },
+      },
+      {
+        $lookup: {
+          from: "faculties", // Name of the referenced collection
+          localField: "_id",
+          foreignField: "_id",
+          as: "populatedFaculty",
+        },
+      },
+    ]);
+    console.log(aggregatedReviewer);
+    const lecturers = aggregatedReviewer.filter((reviewer) => {
+      if (
+        reviewer.populatedFaculty[0].title == "Lecturer" &&
+        reviewer.populatedFaculty[0].role !== "HOD" &&
+        reviewer.populatedFaculty[0].role !== "DCO"
+      )
+        //   console.log(reviewer.proposalNo);
+        // reviewer.proposalNo += 1;
+        return reviewer;
+    });
+    // console.log(lecturers);
+    const assistantProfessors = aggregatedReviewer.filter((reviewer) => {
+      if (
+        reviewer.populatedFaculty[0].title == "Assistant Professor" &&
+        reviewer.populatedFaculty[0].role !== "HOD" &&
+        reviewer.populatedFaculty[0].role !== "DCO"
+      )
+        return reviewer;
+    });
 
-  console.log(data);
+    const pHDAssistantProfessors = aggregatedReviewer.filter((reviewer) => {
+      if (
+        reviewer.populatedFaculty[0].title == "PHD Assistant Professor" &&
+        reviewer.populatedFaculty[0].role !== "HOD" &&
+        reviewer.populatedFaculty[0].role !== "DCO"
+      )
+        return reviewer;
+    });
+    const associateProfessors = aggregatedReviewer.filter((reviewer) => {
+      if (
+        reviewer.populatedFaculty[0].title == "Associate Professor" &&
+        reviewer.populatedFaculty[0].role !== "HOD" &&
+        reviewer.populatedFaculty[0].role !== "DCO"
+      )
+        return reviewer;
+    });
+    const allReviewers = [
+      ...lecturers,
+      ...assistantProfessors,
+      ...pHDAssistantProfessors,
+      ...associateProfessors,
+    ];
+    console.log(allReviewers);
+    const data = await Promise.all(
+      proposals.map(async (proposal) => {
+        allReviewers.sort((a, b) => a.proposalNo - b.proposalNo);
+        console.log(allReviewers);
+        for (let i = 0; i < allReviewers.length; i++) {
+          if (
+            allReviewers.length != 0 &&
+            allReviewers[i].populatedFaculty[0].developmentField.includes(
+              proposal.developmentArea
+            )
+          ) {
+            if (
+              proposal.areaOfInterest.some((interest) =>
+                allReviewers[i].populatedFaculty[0].areaOfInterest.includes(
+                  interest
+                )
+              )
+            ) {
+              let arr = allReviewers[i].proposalList;
+              arr.push(proposal._id);
+              let data2 = await Proposal.findOneAndUpdate(
+                { _id: proposal._id },
+                {
+                  $set: {
+                    isAssigned: true,
+                  },
+                },
+                { returnOriginal: false }
+              );
+
+              let data3 = await Reviewer.findOneAndUpdate(
+                {
+                  _id: allReviewers[i].populatedFaculty[0]._id,
+                },
+                {
+                  $set: { proposalList: arr },
+                },
+                { returnOriginal: false }
+              );
+              allReviewers[i].proposalNo += 1;
+              return { proposal: data2, reviewer: data3 };
+            }
+          }
+        }
+
+        // for (let i = 0; i < assistantProfessors.length; i++) {
+        //   if (
+        //     assistantProfessors.length != 0 &&
+        //     proposal.developmentField ==
+        //       assistantProfessors[i].populatedFaculty[0].developmentField
+        //   ) {
+        //     if (
+        //       proposal.areaOfInterest.some((interest) =>
+        //         assistantProfessors[
+        //           i
+        //         ].populatedFaculty[0].areaOfInterest.includes(interest)
+        //       )
+        //     ) {
+        //       let arr = assistantProfessors[i].proposalList;
+        //       arr.push(proposal._id);
+        //       let data2 = await Proposal.findOneAndUpdate(
+        //         { _id: proposal._id },
+        //         {
+        //           $set: {
+        //             isAssigned: true,
+        //           },
+        //         },
+        //         { returnOriginal: false }
+        //       );
+
+        //       let data3 = await Reviewer.findOneAndUpdate(
+        //         {
+        //           _id: assistantProfessors[i].populatedFaculty[0]._id,
+        //         },
+        //         {
+        //           $set: { proposalList: arr },
+        //         },
+        //         { returnOriginal: false }
+        //       );
+        //       return { proposal: data2, reviewer: data3 };
+        //     }
+        //   }
+        // }
+
+        // for (let i = 0; i < pHDAssistantProfessors.length; i++) {
+        //   if (
+        //     pHDAssistantProfessors.length != 0 &&
+        //     proposal.developmentField ==
+        //       pHDAssistantProfessors[i].populatedFaculty[0].developmentField
+        //   ) {
+        //     if (
+        //       proposal.areaOfInterest.some((interest) =>
+        //         pHDAssistantProfessors[
+        //           i
+        //         ].populatedFaculty[0].areaOfInterest.includes(interest)
+        //       )
+        //     ) {
+        //       let arr = pHDAssistantProfessors[i].proposalList;
+        //       arr.push(proposal._id);
+        //       let data2 = await Proposal.findOneAndUpdate(
+        //         { _id: proposal._id },
+        //         {
+        //           $set: {
+        //             isAssigned: true,
+        //           },
+        //         },
+        //         { returnOriginal: false }
+        //       );
+
+        //       let data3 = await Reviewer.findOneAndUpdate(
+        //         {
+        //           _id: pHDAssistantProfessors[i].populatedFaculty[0]._id,
+        //         },
+        //         {
+        //           $set: { proposalList: arr },
+        //         },
+        //         { returnOriginal: false }
+        //       );
+        //       return { proposal: data2, reviewer: data3 };
+        //     }
+        //   }
+        // }
+
+        // for (let i = 0; i < associateProfessors.length; i++) {
+        //   if (
+        //     associateProfessors.length != 0 &&
+        //     proposal.developmentField ==
+        //       associateProfessors[i].populatedFaculty[0].developmentField
+        //   ) {
+        //     if (
+        //       proposal.areaOfInterest.some((interest) =>
+        //         associateProfessors[
+        //           i
+        //         ].populatedFaculty[0].areaOfInterest.includes(interest)
+        //       )
+        //     ) {
+        //       let arr = associateProfessors[i].proposalList;
+        //       arr.push(proposal._id);
+        //       let data2 = await Proposal.findOneAndUpdate(
+        //         { _id: proposal._id },
+        //         {
+        //           $set: {
+        //             isAssigned: true,
+        //           },
+        //         },
+        //         { returnOriginal: false }
+        //       );
+
+        //       let data3 = await Reviewer.findOneAndUpdate(
+        //         {
+        //           _id: associateProfessors[i].populatedFaculty[0]._id,
+        //         },
+        //         {
+        //           $set: { proposalList: arr },
+        //         },
+        //         { returnOriginal: false }
+        //       );
+        //       console.log(data3);
+        //       return { proposal: data2, reviewer: data3 };
+        //     }
+        //   }
+        // }
+      })
+    );
+    // console.log(data);
+  }
 };
 
 export const removeProposal = async (req, res) => {
@@ -345,5 +430,110 @@ export const removeProposal = async (req, res) => {
     }
   } catch (err) {
     res.send(err);
+  }
+};
+
+export const getUnAssignedProposals = async (req, res) => {
+  try {
+    const proposalList = await Proposal.find({ isAssigned: false });
+    return res.status(200).json(proposalList);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const getReviewers = async (req, res) => {
+  try {
+    const reviewerList = await Reviewer.find().populate([
+      {
+        path: "_id",
+        model: Faculty,
+        select: "name title areaOfInterest developmentField role ",
+      },
+      {
+        path: "proposalList",
+        model: Proposal,
+        select: "filepath areaOfInterest developmentArea",
+      },
+    ]);
+    console.log(reviewerList);
+    return res.status(200).json(reviewerList);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const assignProposal = async (req, res) => {
+  const { pid, rid } = req.params;
+
+  try {
+    const result = await Proposal.updateOne(
+      { _id: pid },
+      {
+        $set: {
+          isAssigned: true,
+        },
+      }
+    );
+
+    const result2 = await Reviewer.updateOne(
+      { _id: rid },
+      {
+        $push: {
+          proposalList: pid,
+        },
+      }
+    );
+    return res.status(200).json({ result, result2 });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const unassignProposal = async (req, res) => {
+  const { pid, rid } = req.params;
+  console.log(pid, rid);
+  try {
+    const result = await Proposal.updateOne(
+      { _id: pid },
+      {
+        $set: {
+          isAssigned: false,
+        },
+      }
+    );
+
+    const result2 = await Reviewer.updateOne(
+      { _id: rid },
+      {
+        $pull: {
+          proposalList: pid,
+        },
+      }
+    );
+    return res.status(200).json({ result, result2 });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const getReviewerProposals = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const reviewer = await Reviewer.findOne({ _id: id }).populate([
+      {
+        path: "proposalList",
+        model: Proposal,
+        select: "filepath reviewerStatus",
+      },
+    ]);
+    return res.status(200).json(reviewer);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
   }
 };

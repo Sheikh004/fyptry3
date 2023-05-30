@@ -6,35 +6,13 @@ const reviewerSchema = new mongoose.Schema(
       ref: "Faculty",
       required: true,
     },
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
+
     proposalList: [
       {
         type: Schema.Types.ObjectId,
         ref: "Proposal",
       },
     ],
-    role: {
-      type: String,
-    },
-    areaOfInterest: [
-      {
-        type: String,
-      },
-    ],
-    developmentField: {
-      type: String,
-    },
   },
   {
     timestamps: true,

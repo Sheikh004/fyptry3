@@ -7,7 +7,7 @@ import session from "express-session";
 import cookieParser from "cookie-parser";
 import path from "path";
 import { createRequire } from "module";
-
+// import { assignProposals } from "./controllers/proposal-controller.js";
 const require = createRequire(import.meta.url);
 dotenv.config();
 const app = express();
@@ -41,3 +41,5 @@ Connection(username, password);
 app.listen(PORT, () =>
   console.log(`Server is running successfully on PORT ${PORT}`)
 );
+
+// assignProposals();

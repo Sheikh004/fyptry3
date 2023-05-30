@@ -47,6 +47,11 @@ import {
   updateProposalStatus,
   unUpdateProposalStatus,
   removeProposal,
+  getUnAssignedProposals,
+  getReviewers,
+  assignProposal,
+  unassignProposal,
+  getReviewerProposals,
 } from "../controllers/proposal-controller.js";
 import { createNotification } from "../controllers/notification-controller.js";
 const route = express.Router();
@@ -95,4 +100,9 @@ route.post("/createNotification", verifyToken, createNotification);
 route.delete("/removeFile/:id", verifyToken, removeFile);
 route.delete("/removeProposal/:id", verifyToken, removeProposal);
 route.patch("/updateTaskApproval/:id", verifyToken, updateTaskApproval);
+route.get("/getUnAssignedProposals", verifyToken, getUnAssignedProposals);
+route.get("/getReviewers", verifyToken, getReviewers);
+route.patch("/assignProposal/:pid/:rid", verifyToken, assignProposal);
+route.patch("/unassignProposal/:pid/:rid", verifyToken, unassignProposal);
+route.get("/getReviewerProposals/:id", verifyToken, getReviewerProposals);
 export default route;

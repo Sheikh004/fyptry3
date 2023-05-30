@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+const enumOptions = ["Approved", "Disapproved", "Pending"];
 const proposalSchema = new mongoose.Schema(
   {
     groupId: {
@@ -17,6 +18,8 @@ const proposalSchema = new mongoose.Schema(
     },
     status: {
       type: String,
+      enum: enumOptions,
+      default: "Pending",
     },
     isAssigned: {
       type: Boolean,
@@ -27,8 +30,13 @@ const proposalSchema = new mongoose.Schema(
         type: String,
       },
     ],
-    developmentField: {
+    developmentArea: {
       type: String,
+    },
+    reviewerStatus: {
+      type: String,
+      enum: enumOptions,
+      default: "Pending",
     },
   },
 

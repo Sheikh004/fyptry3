@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedStudent from "./components/protected/ProtectedStudent";
 import ProtectedSupervisor from "./components/protected/ProtectedSupervisor";
 import ProtectedUser from "./components/protected/ProtectedUser";
+import ProtectedReviewer from "./components/protected/ProtectedReviewer";
 import ProtectedFYPCommittee from "./components/protected/ProtectedFYPCommittee";
 import ChatProvider from "./context/ChatProvider";
 import ForgotPassword from "./components/login/ForgotPassword";
@@ -27,6 +28,9 @@ import Submission from "./components/proposal-management/Submission";
 import SupervisorDashboard from "./components/dashboards/SupervisorDashboard";
 import FYPComHome from "./components/fyp-committee-panel/FYPComHome";
 import RegisterSupervisor from "./components/login/RegisterSupervisor";
+import ReviewerManagement from "./components/fyp-committee-panel/ReviewerManagement";
+import ReviewerDashboard from "./components/dashboards/ReviewerDashboard";
+import ReviewerGroupProposals from "./components/proposal-management/ReviewerGroupProposals";
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -160,6 +164,30 @@ function App() {
                 <ProtectedFYPCommittee>
                   <FYPComHome />
                 </ProtectedFYPCommittee>
+              }
+            />
+            <Route
+              path="/reviewer-management"
+              element={
+                <ProtectedFYPCommittee>
+                  <ReviewerManagement />
+                </ProtectedFYPCommittee>
+              }
+            />
+            <Route
+              path="/reviewer-dashboard"
+              element={
+                <ProtectedReviewer>
+                  <ReviewerDashboard />
+                </ProtectedReviewer>
+              }
+            />
+            <Route
+              path="/reviewer-group-proposals"
+              element={
+                <ProtectedReviewer>
+                  <ReviewerGroupProposals />
+                </ProtectedReviewer>
               }
             />
             <Route path="*" element={<Login />} />

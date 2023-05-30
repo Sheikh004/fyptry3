@@ -6,18 +6,6 @@ const fypcommitteeSchema = new mongoose.Schema(
       ref: "Faculty",
       required: true,
     },
-    name: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-
-    department: {
-      type: String,
-    },
   },
   {
     timestamps: true,

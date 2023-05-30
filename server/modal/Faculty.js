@@ -28,8 +28,13 @@ const facultySchema = new mongoose.Schema(
         type: String,
       },
     ],
-    developmentField: {
-      type: String,
+    developmentField: [
+      {
+        type: String,
+      },
+    ],
+    activeStatus: {
+      type: Boolean,
     },
   },
   {
