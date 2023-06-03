@@ -51,8 +51,12 @@ function Submission(props) {
     const getExistingProposal = async () => {
       if (group) {
         const proposal = await getGroupProposal(group._id);
-        // console.log(proposal.data.filepath);
-        if (proposal.status === 200 && proposal.data.filepath) {
+
+        if (
+          proposal.status === 200 &&
+          proposal.data &&
+          proposal.data.filepath
+        ) {
           setProposalPath(proposal.data.filepath);
           setCurrentProposalId(proposal.data._id);
         }
