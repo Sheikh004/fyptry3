@@ -1,21 +1,36 @@
 import React, { useEffect, useState, useContext } from "react";
 import NavBar from "../NavBar";
+
 import {
   uploadFile,
   getGroup,
   createProposal,
   createNotification,
   removeProposal,
+  getGroupProposal,
+  getGroupComments,
 } from "../../api/api";
+import { formatDate2, formatTimeAMPM2 } from "../../utils/common-utils";
 import { ChatContext } from "../../context/ChatProvider";
-import { Box, Button, Link } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonBase,
+  Link,
+  Typography,
+  Modal,
+} from "@mui/material";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CancelIcon from "@mui/icons-material/Cancel";
+
 function Submission(props) {
   const [proposal, setProposal] = useState();
   const [proposalPath, setProposalPath] = useState();
   const { user } = useContext(ChatContext);
   const [group, setGroup] = useState();
+  const [open, setOpen] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [currentProposalId, setCurrentProposalId] = useState();
   // const [notification, setNotification] = useState("");
   // const [noti, setNoti] = useState(false);
   const [submittedProposal, setSubmittedProposal] = useState();
@@ -23,6 +38,41 @@ function Submission(props) {
   const onFileChange = (e) => {
     setProposal(e.target.files[0]);
   };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    const getExistingProposal = async () => {
+      if (group) {
+        const proposal = await getGroupProposal(group._id);
+        // console.log(proposal.data.filepath);
+        if (proposal.status === 200 && proposal.data.filepath) {
+          setProposalPath(proposal.data.filepath);
+          setCurrentProposalId(proposal.data._id);
+        }
+      }
+    };
+    getExistingProposal();
+  }, [group]);
+
+  useEffect(() => {
+    const fetchGroupComments = async () => {
+      if (currentProposalId) {
+        const gComments = await getGroupComments(currentProposalId);
+        console.log(gComments);
+        if (gComments.status === 200) {
+          setComments(gComments.data);
+        }
+      }
+    };
+    fetchGroupComments();
+  }, [currentProposalId]);
 
   useEffect(() => {
     const handleRemoval = async () => {
@@ -32,10 +82,13 @@ function Submission(props) {
           submittedProposal._id,
           submittedProposal.filepath
         );
-        if (response) console.log(response);
-        setIsRemove(false);
-        setProposal(null);
-        setProposalPath("");
+        if (response) {
+          console.log(response);
+          setIsRemove(false);
+          setProposal(null);
+          setProposalPath("");
+          setCurrentProposalId("");
+        }
       }
     };
     handleRemoval();
@@ -74,6 +127,7 @@ function Submission(props) {
           proposalsPath: proposalPath,
         });
         setSubmittedProposal(data2.proposal);
+        setCurrentProposalId(data2.proposal._id);
         // setNotification(data2.message);
         // setNoti(!noti);
       }
@@ -182,6 +236,58 @@ function Submission(props) {
             <br />
             <br />
           </form>
+          {proposalPath && <Button onClick={handleOpen}>View Comments</Button>}
+
+          <Modal
+            open={open}
+            onClose={handleClose}
+            style={{
+              overflowY: "auto",
+              height: "50%",
+              width: "80%",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                width: 400,
+                bgcolor: "background.paper",
+                boxShadow: 24,
+                p: 4,
+              }}
+            >
+              <Typography variant="h5" gutterBottom>
+                Comments
+              </Typography>
+
+              <div>
+                {comments.length !== 0 &&
+                  comments.map((comment, index) => (
+                    <Box key={"Box" + index}>
+                      {comment.senderId === group.supervisorId ? (
+                        <Typography key={"sup" + index}>Supervisor</Typography>
+                      ) : (
+                        <Typography key={"rev" + index}>Reviewer</Typography>
+                      )}
+                      <Typography
+                        key={"text" + index}
+                        variant="body1"
+                        gutterBottom
+                      >
+                        {comment.text}
+                      </Typography>
+                      <Typography key={"time" + index}>
+                        {formatTimeAMPM2(comment.createdAt)},
+                        {formatDate2(comment.createdAt)}
+                      </Typography>
+                    </Box>
+                  ))}
+              </div>
+            </div>
+          </Modal>
         </div>
       </div>
     </Box>

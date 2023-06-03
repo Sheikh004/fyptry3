@@ -52,7 +52,16 @@ import {
   assignProposal,
   unassignProposal,
   getReviewerProposals,
+  updateProposalReviewerStatus,
+  getGroupProposal,
 } from "../controllers/proposal-controller.js";
+import {
+  createComment,
+  getComments,
+  deleteComment,
+  getGroupComments,
+  createTaskComment,
+} from "../controllers/commentController.js";
 import { createNotification } from "../controllers/notification-controller.js";
 const route = express.Router();
 route.post("/getUser", getUser);
@@ -105,4 +114,16 @@ route.get("/getReviewers", verifyToken, getReviewers);
 route.patch("/assignProposal/:pid/:rid", verifyToken, assignProposal);
 route.patch("/unassignProposal/:pid/:rid", verifyToken, unassignProposal);
 route.get("/getReviewerProposals/:id", verifyToken, getReviewerProposals);
+route.patch(
+  "/updateProposalReviewerStatus/:pid/:value",
+  verifyToken,
+  updateProposalReviewerStatus
+);
+route.post("/createComment", verifyToken, createComment);
+route.post("/createTaskComment", verifyToken, createTaskComment);
+route.get("/getComments/:pid/:fid", verifyToken, getComments);
+route.delete("/deleteComment/:cid", verifyToken, deleteComment);
+route.get("/getGroupProposal/:gid", verifyToken, getGroupProposal);
+route.get("/getGroupComments/:pid", verifyToken, getGroupComments);
+
 export default route;

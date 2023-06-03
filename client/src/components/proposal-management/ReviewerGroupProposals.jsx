@@ -1,14 +1,75 @@
 import React, { useEffect, useContext, useState } from "react";
 import { ChatContext } from "../../context/ChatProvider";
-import { getReviewerProposals } from "../../api/api";
-import { Box, Typography, Link } from "@mui/material";
+import {
+  getReviewerProposals,
+  updateProposalReviewerStatus,
+  createComment,
+  getComments,
+  deleteComment,
+} from "../../api/api";
+import { Box, Typography, Link, Button, Modal, TextField } from "@mui/material";
+import { formatTimeAMPM2, formatDate2 } from "../../utils/common-utils";
 function ReviewerGroupProposals(props) {
   const { user } = useContext(ChatContext);
   const [proposalList, setProposalList] = useState();
-  const [approval, setApproval] = useState();
-  const handleRadio = () => {
-    setApproval();
+  const [refresh, setRefresh] = useState(false);
+  const [currentProposal, setCurrentProposal] = useState();
+  const [open, setOpen] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [submit, setSubmit] = useState(false);
+  const [refresh2, setRefresh2] = useState(false);
+  const [commentValue, setCommentValue] = useState("");
+
+  const handleOpen = (pid) => {
+    setOpen(true);
+    setCurrentProposal(pid);
   };
+  const handleDeleteComment = async (cid) => {
+    const deleteResult = await deleteComment(cid);
+    if (deleteResult) setRefresh2(!refresh2);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setComments([]);
+    setCurrentProposal(null);
+    setCommentValue("");
+    setSubmit(false);
+  };
+  useEffect(() => {
+    const sendComment = async () => {
+      if (currentProposal && submit === true && commentValue !== "") {
+        const result = await createComment({
+          fid: user.id,
+          pid: currentProposal,
+          commentText: commentValue,
+        });
+        setSubmit(false);
+        setCommentValue("");
+        console.log(result);
+      } else setSubmit(false);
+    };
+    sendComment();
+  }, [submit, currentProposal]);
+
+  const handleRadio = async (proposalId, value) => {
+    const data2 = await updateProposalReviewerStatus(proposalId, value);
+    console.log(data2);
+    if (data2) setRefresh(!refresh);
+  };
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      console.log(commentValue);
+      if (currentProposal && submit === false) {
+        const proposalComments = await getComments(currentProposal, user.id);
+        console.log(proposalComments);
+
+        setComments(proposalComments);
+      }
+    };
+    fetchComments();
+  }, [currentProposal, submit, commentValue, refresh2]);
+
   useEffect(() => {
     const getReviewerProposalList = async () => {
       const data = await getReviewerProposals(user.id);
@@ -16,29 +77,31 @@ function ReviewerGroupProposals(props) {
       console.log(data.data.proposalList);
     };
     getReviewerProposalList();
-  }, []);
+  }, [refresh]);
   return (
     <Box>
+      <Typography>Pending Proposals</Typography>
       {proposalList &&
-        proposalList.map((proposal) => {
+        proposalList.map((proposal, index) => {
           return (
-            <Box>
-              <Typography>Pending Proposals</Typography>
+            <Box key={"PMainBox" + index}>
               {proposal && proposal.reviewerStatus === "Pending" && (
-                <Box>
-                  <Link href={proposal.filepath}>
+                <Box key={"PBox1" + index}>
+                  <Link href={proposal.filepath} key={"PLink1" + index}>
                     {proposal.filepath.split("--").pop()}
                   </Link>
-                  <div>
-                    <label style={{ marginRight: "10px" }}>
+                  <div key={"Pdiv1" + index}>
+                    <label
+                      style={{ marginRight: "10px" }}
+                      key={"Plabel" + index}
+                    >
                       <input
-                        // key={"radio1" + index}
-                        name={`proposalStatus_forApproval${proposal._id}`}
+                        key={"Pradio1" + index}
                         type="radio"
                         value="Approved"
                         checked={proposal.reviewerStatus === "Approved"}
                         onChange={(e) =>
-                          handleRadio(e.target.value, proposal._id)
+                          handleRadio(proposal._id, e.target.value)
                         }
                         style={{
                           marginRight: "5px",
@@ -47,105 +110,17 @@ function ReviewerGroupProposals(props) {
                       />
                       Approve
                     </label>
-                    <label style={{ marginRight: "10px" }}>
+                    <label
+                      key={"Plabel2" + index}
+                      style={{ marginRight: "10px" }}
+                    >
                       <input
-                        // key={"radio2" + index}
-                        name={`proposalStatus_forDisapproval${proposal._id}`}
+                        key={"Pradio2" + index}
                         type="radio"
                         value="Disapproved"
                         checked={proposal.reviewerStatus === "Disapproved"}
                         onChange={(e) =>
-                          handleRadio(e.target.value, proposal._id)
-                        }
-                        style={{
-                          marginRight: "5px",
-                          transform: "scale(1.5)",
-                        }}
-                      />
-                      Disapprove
-                    </label>
-                    {/* Render other radio buttons as needed */}
-                  </div>
-                </Box>
-              )}
-              <Typography>Disapproved Proposals</Typography>
-              {proposal && proposal.reviewerStatus === "Disapproved" && (
-                <Box>
-                  <Link href={proposal.filepath}>
-                    {proposal.filepath.split("--").pop()}
-                  </Link>
-                  <div>
-                    <label style={{ marginRight: "10px" }}>
-                      <input
-                        // key={"radio1" + index}
-                        name={`proposalStatus_forApproval${proposal._id}`}
-                        type="radio"
-                        value="Approved"
-                        checked={proposal.reviewerStatus === "Approved"}
-                        onChange={(e) =>
-                          handleRadio(e.target.value, proposal._id)
-                        }
-                        style={{
-                          marginRight: "5px",
-                          transform: "scale(1.5)",
-                        }}
-                      />
-                      Approve
-                    </label>
-                    <label style={{ marginRight: "10px" }}>
-                      <input
-                        // key={"radio2" + index}
-                        name={`proposalStatus_forDisapproval${proposal._id}`}
-                        type="radio"
-                        value="Disapproved"
-                        checked={proposal.reviewerStatus === "Disapproved"}
-                        onChange={(e) =>
-                          handleRadio(e.target.value, proposal._id)
-                        }
-                        style={{
-                          marginRight: "5px",
-                          transform: "scale(1.5)",
-                        }}
-                      />
-                      Disapprove
-                    </label>
-                    {/* Render other radio buttons as needed */}
-                  </div>
-                </Box>
-              )}
-              <Typography>Approved Proposals</Typography>
-              {proposal && proposal.reviewerStatus === "Approved" && (
-                <Box>
-                  <Link href={proposal.filepath}>
-                    {proposal.filepath.split("--").pop()}
-                  </Link>
-                  <div>
-                    <label style={{ marginRight: "10px" }}>
-                      <input
-                        // key={"radio1" + index}
-                        name={`proposalStatus_forApproval${proposal._id}`}
-                        type="radio"
-                        value="Approved"
-                        checked={proposal.reviewerStatus === "Approved"}
-                        onChange={(e) =>
-                          handleRadio(e.target.value, proposal._id)
-                        }
-                        style={{
-                          marginRight: "5px",
-                          transform: "scale(1.5)",
-                        }}
-                      />
-                      Approve
-                    </label>
-                    <label style={{ marginRight: "10px" }}>
-                      <input
-                        // key={"radio2" + index}
-                        name={`proposalStatus_forDisapproval${proposal._id}`}
-                        type="radio"
-                        value="Disapproved"
-                        checked={proposal.reviewerStatus === "Disapproved"}
-                        onChange={(e) =>
-                          handleRadio(e.target.value, proposal._id)
+                          handleRadio(proposal._id, e.target.value)
                         }
                         style={{
                           marginRight: "5px",
@@ -161,82 +136,208 @@ function ReviewerGroupProposals(props) {
             </Box>
           );
         })}
+      <Typography>Approved Proposals</Typography>
+      {proposalList &&
+        proposalList.map((proposal, index) => {
+          return (
+            <Box key={"Abox1" + index}>
+              {/* <Typography>Approved Proposals</Typography> */}
+              {proposal && proposal.reviewerStatus === "Approved" && (
+                <Box key={"Abox2" + index}>
+                  <Link href={proposal.filepath} key={"ALink1" + index}>
+                    {proposal.filepath.split("--").pop()}
+                  </Link>
+                  <div key={"ADiv" + index}>
+                    <label
+                      style={{ marginRight: "10px" }}
+                      key={"ALabel" + index}
+                    >
+                      <input
+                        key={"Aradio1" + index}
+                        type="radio"
+                        value="Approved"
+                        checked={proposal.reviewerStatus === "Approved"}
+                        onChange={(e) =>
+                          handleRadio(proposal._id, e.target.value)
+                        }
+                        style={{
+                          marginRight: "5px",
+                          transform: "scale(1.5)",
+                        }}
+                      />
+                      Approve
+                    </label>
+                    <label
+                      style={{ marginRight: "10px" }}
+                      key={"Alabel2" + index}
+                    >
+                      <input
+                        key={"Aradio2" + index}
+                        type="radio"
+                        value="Disapproved"
+                        checked={proposal.reviewerStatus === "Disapproved"}
+                        onChange={(e) =>
+                          handleRadio(proposal._id, e.target.value)
+                        }
+                        style={{
+                          marginRight: "5px",
+                          transform: "scale(1.5)",
+                        }}
+                      />
+                      Disapprove
+                    </label>
+                    {/* Render other radio buttons as needed */}
+                  </div>
+                  <Button
+                    key={"Abutton1" + index}
+                    onClick={() => {
+                      handleOpen(proposal._id);
+                    }}
+                  >
+                    Comments
+                  </Button>
+                </Box>
+              )}
+            </Box>
+          );
+        })}
+      <Typography>Disapproved Proposals</Typography>
+      {proposalList &&
+        proposalList.map((proposal, index) => {
+          return (
+            <Box key={"MainDBox" + index}>
+              {/* <Typography>Disapproved Proposals</Typography> */}
+              {proposal && proposal.reviewerStatus === "Disapproved" && (
+                <Box key={"DBox1" + index}>
+                  <Link href={proposal.filepath} key={"DLink1" + index}>
+                    {proposal.filepath.split("--").pop()}
+                  </Link>
+                  <div key={"Ddiv1" + index}>
+                    <label
+                      style={{ marginRight: "10px" }}
+                      key={"DLabel1" + index}
+                    >
+                      <input
+                        key={"Dradio1" + index}
+                        type="radio"
+                        value="Approved"
+                        checked={proposal.reviewerStatus === "Approved"}
+                        onChange={(e) =>
+                          handleRadio(proposal._id, e.target.value)
+                        }
+                        style={{
+                          marginRight: "5px",
+                          transform: "scale(1.5)",
+                        }}
+                      />
+                      Approve
+                    </label>
+                    <label
+                      key={"DLabel2" + index}
+                      style={{ marginRight: "10px" }}
+                    >
+                      <input
+                        key={"Dradio2" + index}
+                        type="radio"
+                        value="Disapproved"
+                        checked={proposal.reviewerStatus === "Disapproved"}
+                        onChange={(e) =>
+                          handleRadio(proposal._id, e.target.value)
+                        }
+                        style={{
+                          marginRight: "5px",
+                          transform: "scale(1.5)",
+                        }}
+                      />
+                      Disapprove
+                    </label>
+                    {/* Render other radio buttons as needed */}
+                  </div>
+                  <Button
+                    key={"DButton1" + index}
+                    onClick={() => {
+                      handleOpen(proposal._id);
+                    }}
+                  >
+                    Comments
+                  </Button>
+                </Box>
+              )}
+            </Box>
+          );
+        })}
+      <Modal open={open} onClose={handleClose}>
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 400,
+            bgcolor: "background.paper",
+            boxShadow: 24,
+            p: 4,
+          }}
+        >
+          <Typography variant="h5" gutterBottom>
+            Comments
+          </Typography>
+
+          <div>
+            {comments.length !== 0 &&
+              comments.map((comment, index) => (
+                <Box key={"Box" + index}>
+                  {comment.senderId === user.id ? (
+                    <Typography key={"idenme" + index}>Me</Typography>
+                  ) : (
+                    <Typography key={"idenother" + index}>
+                      Supervisor
+                    </Typography>
+                  )}
+                  <Typography key={"text" + index} variant="body1" gutterBottom>
+                    {comment.text}
+                  </Typography>
+                  <Typography key={"time" + index}>
+                    {formatTimeAMPM2(comment.createdAt)},
+                    {formatDate2(comment.createdAt)}
+                  </Typography>
+                  <Button
+                    key={"delete" + index}
+                    onClick={() => {
+                      handleDeleteComment(comment._id);
+                    }}
+                  >
+                    Delete
+                  </Button>
+                </Box>
+              ))}
+          </div>
+
+          <TextField
+            name="comment"
+            label="Add a comment"
+            variant="outlined"
+            fullWidth
+            value={commentValue}
+            margin="normal"
+            onChange={(e) => {
+              setCommentValue(e.target.value);
+            }}
+          />
+
+          <Button
+            onClick={() => {
+              setSubmit(true);
+            }}
+            variant="contained"
+            color="primary"
+          >
+            Add Comment
+          </Button>
+        </div>
+      </Modal>
     </Box>
   );
 }
 
 export default ReviewerGroupProposals;
-
-// import React, { useState } from "react";
-// import { Button, Modal, TextField, Typography } from "@mui/material";
-
-// const CommentsModal = () => {
-//   const [open, setOpen] = useState(false);
-//   const [comments, setComments] = useState([]);
-
-//   const handleOpen = () => {
-//     setOpen(true);
-//   };
-
-//   const handleClose = () => {
-//     setOpen(false);
-//   };
-
-//   const handleSubmit = (e) => {
-//     e.preventDefault();
-//     const comment = e.target.comment.value;
-//     setComments([...comments, comment]);
-//     e.target.reset();
-//   };
-
-//   return (
-//     <div>
-//       <Button variant="contained" onClick={handleOpen}>
-//         Open Modal
-//       </Button>
-
-//       <Modal open={open} onClose={handleClose}>
-//         <div
-//           style={{
-//             position: "absolute",
-//             top: "50%",
-//             left: "50%",
-//             transform: "translate(-50%, -50%)",
-//             width: 400,
-//             bgcolor: "background.paper",
-//             boxShadow: 24,
-//             p: 4,
-//           }}
-//         >
-//           <Typography variant="h5" gutterBottom>
-//             Comments
-//           </Typography>
-
-//           <div>
-//             {comments.map((comment, index) => (
-//               <Typography key={index} variant="body1" gutterBottom>
-//                 {comment}
-//               </Typography>
-//             ))}
-//           </div>
-
-//           <form onSubmit={handleSubmit}>
-//             <TextField
-//               name="comment"
-//               label="Add a comment"
-//               variant="outlined"
-//               fullWidth
-//               margin="normal"
-//             />
-
-//             <Button type="submit" variant="contained" color="primary">
-//               Add Comment
-//             </Button>
-//           </form>
-//         </div>
-//       </Modal>
-//     </div>
-//   );
-// };
-
-// export default CommentsModal;

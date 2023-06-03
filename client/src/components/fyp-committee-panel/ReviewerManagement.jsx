@@ -13,9 +13,9 @@ function ReviewerManagement(props) {
   const [open, setOpen] = useState(false);
   const [reviewers, setReviewers] = useState();
   const [bool, setBool] = useState(false);
-  const handleOpen = (proposalId) => {
+  const handleOpen = (proposal) => {
     setOpen(true);
-    setCurrentProposal(proposalId);
+    setCurrentProposal(proposal);
   };
   const handleClose = () => setOpen(false);
   const style = {
@@ -33,12 +33,15 @@ function ReviewerManagement(props) {
     pb: 3,
     overflowY: "auto",
   };
-  const handleAssign = async (proposalId, reviewerId) => {
-    const result = await assignProposal(proposalId, reviewerId);
+  const handleAssign = async (proposal, reviewerId) => {
+    const result = await assignProposal(proposal._id, reviewerId);
     if (result.status === 200) {
       setBool(!bool);
+    } else if (result.status === 403) {
+      console.log(result.message);
+    } else {
+      console.log(result);
     }
-    console.log(result);
   };
   const handleUnassign = async (proposalId, reviewerId) => {
     const result2 = await unassignProposal(proposalId, reviewerId);
@@ -128,7 +131,7 @@ function ReviewerManagement(props) {
 
               <Button
                 onClick={() => {
-                  handleOpen(proposal._id);
+                  handleOpen(proposal);
                 }}
               >
                 Assign To
@@ -145,6 +148,7 @@ function ReviewerManagement(props) {
                     reviewers.map((reviewer) => {
                       {
                         return (
+                          reviewer._id._id !== currentProposal.supervisorId &&
                           reviewer._id.title === "Lecturer" && (
                             <Box>
                               <Typography
@@ -195,6 +199,7 @@ function ReviewerManagement(props) {
                     reviewers.map((reviewer) => {
                       {
                         return (
+                          reviewer._id._id !== currentProposal.supervisorId &&
                           reviewer._id.title === "Assistant Professor" && (
                             <Box>
                               <Typography
@@ -245,6 +250,7 @@ function ReviewerManagement(props) {
                     reviewers.map((reviewer) => {
                       {
                         return (
+                          reviewer._id._id !== currentProposal.supervisorId &&
                           reviewer._id.title === "PHD Assistant Professor" && (
                             <Box>
                               <Typography
@@ -295,6 +301,7 @@ function ReviewerManagement(props) {
                     reviewers.map((reviewer) => {
                       {
                         return (
+                          reviewer._id._id !== currentProposal.supervisorId &&
                           reviewer._id.title === "Associate Professor" && (
                             <Box>
                               <Typography

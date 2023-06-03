@@ -218,6 +218,7 @@ export const assignProposals = async (req, res) => {
         for (let i = 0; i < allReviewers.length; i++) {
           if (
             allReviewers.length != 0 &&
+            allReviewers[i]._id !== proposal.supervisorId &&
             allReviewers[i].populatedFaculty[0].developmentField.includes(
               proposal.developmentArea
             )
@@ -469,24 +470,32 @@ export const assignProposal = async (req, res) => {
   const { pid, rid } = req.params;
 
   try {
-    const result = await Proposal.updateOne(
-      { _id: pid },
-      {
-        $set: {
-          isAssigned: true,
-        },
-      }
-    );
+    const checkR = await Reviewer.findOne({ _id: rid });
+    const checkP = await Proposal.findOne({ _id: pid });
+    if (checkR._id === checkP.supervisorId) {
+      return res
+        .status(403)
+        .json({ message: "Supervisor and Reviewer cannot be same" });
+    } else {
+      const result2 = await Reviewer.updateOne(
+        { _id: rid },
+        {
+          $push: {
+            proposalList: pid,
+          },
+        }
+      );
 
-    const result2 = await Reviewer.updateOne(
-      { _id: rid },
-      {
-        $push: {
-          proposalList: pid,
-        },
-      }
-    );
-    return res.status(200).json({ result, result2 });
+      const result = await Proposal.updateOne(
+        { _id: pid },
+        {
+          $set: {
+            isAssigned: true,
+          },
+        }
+      );
+      return res.status(200).json({ result, result2 });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
@@ -532,6 +541,35 @@ export const getReviewerProposals = async (req, res) => {
       },
     ]);
     return res.status(200).json(reviewer);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const updateProposalReviewerStatus = async (req, res) => {
+  const { pid, value } = req.params;
+  try {
+    const updatedProposal = await Proposal.updateOne(
+      { _id: pid },
+      {
+        $set: {
+          reviewerStatus: value,
+        },
+      }
+    );
+    return res.status(200).json(updatedProposal);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const getGroupProposal = async (req, res) => {
+  const { gid } = req.params;
+  try {
+    const proposal = await Proposal.findOne({ groupId: gid });
+    return res.status(200).json(proposal);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);

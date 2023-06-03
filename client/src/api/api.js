@@ -658,3 +658,121 @@ export const getReviewerProposals = async (id) => {
       return error;
     });
 };
+
+export const updateProposalReviewerStatus = async (pid, value) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .patch(
+      `${url}/updateProposalReviewerStatus/${pid}/${value}`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+
+export const createComment = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/createComment`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+export const createTaskComment = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/createTaskComment`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getComments = async (pid, fid) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getComments/${pid}/${fid}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const deleteComment = async (cid) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .delete(`${url}/deleteComment/${cid}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getGroupProposal = async (gid) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getGroupProposal/${gid}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getGroupComments = async (pid) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getGroupComments/${pid}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};

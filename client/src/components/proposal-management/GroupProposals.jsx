@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   TextField,
+  Modal,
 } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import SendIcon from "@mui/icons-material/Send";
@@ -15,11 +16,16 @@ import React, { useState } from "react";
 import { useContext, useEffect } from "react";
 import { ChatContext } from "../../context/ChatProvider";
 import SupervisorNavbar from "../Navbar/SupervisorNavbar";
+import { formatTimeAMPM2, formatDate2 } from "../../utils/common-utils";
 import {
   getSupervisorGroups,
   getSupervisorProposals,
   updateProposalStatus,
   unUpdateProposalStatus,
+  deleteComment,
+  createComment,
+  getGroupComments,
+
   // createNotification,
 } from "../../api/api";
 function GroupProposals(props) {
@@ -29,8 +35,33 @@ function GroupProposals(props) {
   const [groupProposals, setGroupProposals] = useState();
   const [approvalProposal, setApprovalProposal] = useState();
   const [unApprovalProposal, setUnApprovalProposal] = useState();
+  const [comments, setComments] = useState([]);
+  const [commentValue, setCommentValue] = useState("");
+  const [refresh2, setRefresh2] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [submit, setSubmit] = useState(false);
+  const [currentProposal, setCurrentProposal] = useState();
   const [existingValue, setExistingValue] = useState();
   const [reRun, setReRun] = useState(false);
+
+  const handleOpen = (pid) => {
+    setOpen(true);
+    setCurrentProposal(pid);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setComments([]);
+    setCurrentProposal(null);
+    setCommentValue("");
+    setSubmit(false);
+  };
+
+  const handleDeleteComment = async (cid) => {
+    const deleteResult = await deleteComment(cid);
+    if (deleteResult) setRefresh2(!refresh2);
+  };
+
   const setApprove = (proposalId) => {
     setApprovalProposal(proposalId);
     setUnApprovalProposal();
@@ -62,6 +93,36 @@ function GroupProposals(props) {
       unUpdateApproval();
     }
   }, [unApprovalProposal]);
+
+  useEffect(() => {
+    const fetchComments = async () => {
+      console.log(commentValue);
+      if (currentProposal && submit === false) {
+        const proposalComments = await getGroupComments(currentProposal);
+        console.log(proposalComments.data);
+
+        setComments(proposalComments.data);
+      }
+    };
+    fetchComments();
+  }, [currentProposal, submit, commentValue, refresh2]);
+
+  useEffect(() => {
+    const sendComment = async () => {
+      if (currentProposal && submit === true && commentValue !== "") {
+        const result = await createComment({
+          fid: user.id,
+          pid: currentProposal,
+          commentText: commentValue,
+        });
+        setSubmit(false);
+        setCommentValue("");
+        console.log(result);
+      } else setSubmit(false);
+    };
+    sendComment();
+  }, [submit, currentProposal]);
+
   useEffect(() => {
     const updateApproval = async () => {
       const response = await updateProposalStatus(approvalProposal);
@@ -252,22 +313,97 @@ function GroupProposals(props) {
                       </div>
                     )}
                   </TableCell>
-                  {group && group.proposalStatus && group.filepath != "" && (
+                  {group && group.proposalStatus && group.filepath !== "" && (
                     <TableCell>
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <TextField key={"comment" + index} />
-                        <Button key={"buttoncomment" + index}>
-                          <IconButton title="Send">
-                            <SendIcon />
-                          </IconButton>
-                        </Button>
-                      </div>
+                      <Button
+                        onClick={() => {
+                          handleOpen(group.proposalId);
+                        }}
+                      >
+                        Add Comments
+                      </Button>
                     </TableCell>
                   )}
                 </TableRow>
               ))}
           </TableBody>
         </Table>
+        <Modal open={open} onClose={handleClose}>
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              width: 400,
+              bgcolor: "background.paper",
+              boxShadow: 24,
+              p: 4,
+            }}
+          >
+            <Typography variant="h5" gutterBottom>
+              Comments
+            </Typography>
+
+            <div>
+              {comments &&
+                comments.length !== 0 &&
+                comments.map((comment, index) => (
+                  <Box key={"Box" + index}>
+                    {comment.senderId === user.id ? (
+                      <Typography key={"idenme" + index}>Me</Typography>
+                    ) : (
+                      <Typography key={"idenother" + index}>
+                        Reviewer
+                      </Typography>
+                    )}
+
+                    <Typography
+                      key={"text" + index}
+                      variant="body1"
+                      gutterBottom
+                    >
+                      {comment.text}
+                    </Typography>
+                    <Typography key={"time" + index}>
+                      {formatTimeAMPM2(comment.createdAt)},
+                      {formatDate2(comment.createdAt)}
+                    </Typography>
+                    <Button
+                      key={"delete" + index}
+                      onClick={() => {
+                        handleDeleteComment(comment._id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </Box>
+                ))}
+            </div>
+
+            <TextField
+              name="comment"
+              label="Add a comment"
+              variant="outlined"
+              fullWidth
+              value={commentValue}
+              margin="normal"
+              onChange={(e) => {
+                setCommentValue(e.target.value);
+              }}
+            />
+
+            <Button
+              onClick={() => {
+                setSubmit(true);
+              }}
+              variant="contained"
+              color="primary"
+            >
+              Add Comment
+            </Button>
+          </div>
+        </Modal>
       </Box>
     </Box>
   );

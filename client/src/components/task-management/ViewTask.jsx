@@ -1,4 +1,12 @@
-import { Box, Button, Typography, styled, Input, Link } from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  styled,
+  Input,
+  Link,
+  TextField,
+} from "@mui/material";
 import { AttachFile } from "@mui/icons-material";
 import React, { useEffect, useState, useContext } from "react";
 import { useLocation } from "react-router-dom";
@@ -9,25 +17,58 @@ import {
   setPendingTask,
   setCompletedTask,
   removeFile,
+  getGroupComments,
+  deleteComment,
+  createTaskComment,
 } from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
 import NavBar from "../NavBar";
 function ViewTask(props) {
   const location = useLocation();
   const [taskFiles, setTaskFiles] = useState();
-
+  const [commentValue, setCommentValue] = useState("");
   const [tasks, setTasks] = useState();
-
+  const [submit, setSubmit] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [refresh2, setRefresh2] = useState(false);
   const { user } = useContext(ChatContext);
 
   useEffect(() => {
+    const sendComment = async () => {
+      if (submit === true && commentValue !== "") {
+        const result = await createTaskComment({
+          fid: user.id,
+          pid: location.state._id,
+          commentText: commentValue,
+        });
+        setSubmit(false);
+        setCommentValue("");
+        setRefresh2(!refresh2);
+      } else setSubmit(false);
+    };
+    sendComment();
+  }, [submit]);
+
+  useEffect(() => {
     setTasks(location.state);
-  }, [location]);
+    const fetchGroupComments = async () => {
+      const data = await getGroupComments(location.state._id);
+
+      if (data) {
+        setComments(data.data);
+      }
+    };
+    fetchGroupComments();
+  }, [location, refresh2]);
+
+  const handleDeleteComment = async (cid) => {
+    const deleteResult = await deleteComment(cid);
+    if (deleteResult) setRefresh2(!refresh2);
+  };
 
   const handleUnUploadTask = async () => {
     let data3 = await setPendingTask({ id: location.state._id });
     setTasks(data3);
-    console.log(data3);
   };
 
   const handleUploadTask = async () => {
@@ -35,8 +76,6 @@ function ViewTask(props) {
       id: location.state._id,
     });
     setTasks(result2);
-
-    console.log(result2);
   };
 
   const onFileChange = async (e) => {
@@ -53,7 +92,6 @@ function ViewTask(props) {
           formData.append("files", taskFiles[key]);
         }
         formData.append("files", taskFiles);
-        console.log(formData);
 
         let data2 = await handleUploadTasks(formData);
         if (data2 && data2 !== "") {
@@ -77,6 +115,7 @@ function ViewTask(props) {
 
   return (
     <Box sx={{ bgcolor: "#0B2B40", color: "white", minHeight: "100vh" }}>
+      {console.log(tasks)}
       <NavBar />
       <Box
         sx={{
@@ -144,6 +183,64 @@ function ViewTask(props) {
                 </Box>
               );
             })}
+        </Box>
+      </Box>
+      <Box sx={{ backgroundColor: "white" }}>
+        <Typography sx={{ color: "black" }}>Comments</Typography>
+        <Box>
+          <div>
+            {comments.length !== 0 &&
+              comments.map((comment, index) => (
+                <Box key={"Box" + index}>
+                  {comment.senderId === user.id && (
+                    <Typography color="black">{user.type}</Typography>
+                  )}
+                  <Typography
+                    key={"text" + index}
+                    variant="body1"
+                    gutterBottom
+                    color="black"
+                  >
+                    {comment.text}
+                  </Typography>
+                  <Typography key={"time" + index} color="black">
+                    {formatTimeAMPM2(comment.createdAt)},
+                    {formatDate2(comment.createdAt)}
+                  </Typography>
+                  {comment.senderId === user.id && (
+                    <Button
+                      key={"delete" + index}
+                      onClick={() => {
+                        handleDeleteComment(comment._id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  )}
+                </Box>
+              ))}
+          </div>
+
+          <TextField
+            name="comment"
+            label="Add a comment"
+            variant="outlined"
+            fullWidth
+            value={commentValue}
+            margin="normal"
+            onChange={(e) => {
+              setCommentValue(e.target.value);
+            }}
+          ></TextField>
+          <Button
+            onClick={() => {
+              setSubmit(true);
+            }}
+            variant="contained"
+            color="primary"
+          >
+            Add comment
+          </Button>
         </Box>
       </Box>
     </Box>
