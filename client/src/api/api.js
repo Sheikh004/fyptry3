@@ -776,3 +776,229 @@ export const getGroupComments = async (pid) => {
       console.error(error);
     });
 };
+
+// ,
+// ,
+// ,
+// ,
+// ,
+export const getUnAssignedGroupsOne = async () => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getUnAssignedGroupsOne`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+export const getUnAssignedPreGroups = async () => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getUnAssignedPreGroups`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+export const getUnAssignedGroupsTwo = async () => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getUnAssignedGroupsTwo`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const unassignGroupOne = async (gid, e_Id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .patch(
+      `${url}/unassignGroupOne/${gid}/${e_Id}`,
+      {},
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+export const assignGroupOne = async (gid, e_Id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .patch(
+      `${url}/assignGroupOne/${gid}/${e_Id}`,
+      {},
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+
+export const unassignPreGroup = async (gid, e_Id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .patch(
+      `${url}/unassignPreGroup/${gid}/${e_Id}`,
+      {},
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+export const assignPreGroup = async (gid, e_Id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .patch(
+      `${url}/assignPreGroup/${gid}/${e_Id}`,
+      {},
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+
+export const unassignGroupTwo = async (gid, e_Id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .patch(
+      `${url}/unassignGroupTwo/${gid}/${e_Id}`,
+      {},
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+export const assignGroupTwo = async (gid, e_Id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .patch(
+      `${url}/assignGroupTwo/${gid}/${e_Id}`,
+      {},
+
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    )
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+      return error;
+    });
+};
+
+export const getEvaluatorsOne = async () => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getEvaluatorsOne`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+export const getPreEvaluators = async () => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getPreEvaluators`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+export const getEvaluatorsTwo = async () => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getEvaluatorsTwo`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};

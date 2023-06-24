@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+const enumOptions = ["Approved", "Disapproved", "Pending"];
 const groupSchema = new mongoose.Schema(
   {
     name: {
@@ -10,6 +11,7 @@ const groupSchema = new mongoose.Schema(
     ],
     groupLeader: {
       type: String,
+      ref: "Student",
       required: true,
     },
     supervisorId: {
@@ -20,6 +22,33 @@ const groupSchema = new mongoose.Schema(
     evaluatorID: {
       type: Schema.Types.ObjectId,
       ref: "Evaluator",
+    },
+    isAssignedOne: {
+      type: Boolean,
+      default: false,
+    },
+    isApprovedOne: {
+      type: String,
+      enum: enumOptions,
+      default: "Pending",
+    },
+    isAssignedPre: {
+      type: Boolean,
+      default: false,
+    },
+    isApprovedPre: {
+      type: String,
+      enum: enumOptions,
+      default: "Pending",
+    },
+    isAssignedTwo: {
+      type: Boolean,
+      default: false,
+    },
+    isApprovedTwo: {
+      type: String,
+      enum: enumOptions,
+      default: "Pending",
     },
   },
   {

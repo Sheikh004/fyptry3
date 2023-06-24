@@ -118,6 +118,7 @@ function ReviewerManagement(props) {
         unAssignedProposals.map((proposal) => {
           return (
             <div>
+              {/* {console.log(currentProposal)} */}
               <p>Area of Interest:</p>
               {proposal.areaOfInterest.map((area) => {
                 return <p>{area}</p>;
@@ -148,7 +149,7 @@ function ReviewerManagement(props) {
                     reviewers.map((reviewer) => {
                       {
                         return (
-                          reviewer._id._id !== currentProposal.supervisorId &&
+                          reviewer._id._id !== currentProposal?.supervisorId &&
                           reviewer._id.title === "Lecturer" && (
                             <Box>
                               <Typography
@@ -199,7 +200,7 @@ function ReviewerManagement(props) {
                     reviewers.map((reviewer) => {
                       {
                         return (
-                          reviewer._id._id !== currentProposal.supervisorId &&
+                          reviewer._id._id !== currentProposal?.supervisorId &&
                           reviewer._id.title === "Assistant Professor" && (
                             <Box>
                               <Typography
@@ -250,7 +251,7 @@ function ReviewerManagement(props) {
                     reviewers.map((reviewer) => {
                       {
                         return (
-                          reviewer._id._id !== currentProposal.supervisorId &&
+                          reviewer._id._id !== currentProposal?.supervisorId &&
                           reviewer._id.title === "PHD Assistant Professor" && (
                             <Box>
                               <Typography
@@ -301,7 +302,7 @@ function ReviewerManagement(props) {
                     reviewers.map((reviewer) => {
                       {
                         return (
-                          reviewer._id._id !== currentProposal.supervisorId &&
+                          reviewer._id._id !== currentProposal?.supervisorId &&
                           reviewer._id.title === "Associate Professor" && (
                             <Box>
                               <Typography

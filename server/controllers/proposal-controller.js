@@ -167,7 +167,7 @@ export const assignProposals = async (req, res) => {
         },
       },
     ]);
-    console.log(aggregatedReviewer);
+    console.log(aggregatedReviewer[0].populatedFaculty);
     const lecturers = aggregatedReviewer.filter((reviewer) => {
       if (
         reviewer.populatedFaculty[0].title == "Lecturer" &&

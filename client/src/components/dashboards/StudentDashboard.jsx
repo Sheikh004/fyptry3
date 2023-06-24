@@ -136,13 +136,12 @@ const StudentDashboard = () => {
               overflow: "auto",
             }}
           >
-            You have {notifications} notifications
+            - You have {notifications} notifications
             <br />
-            gt
+            - Project proposal has been approved
             <br />
-            hyh
+            - Your task has been approved
             <br />
-            uju
           </Typography>
         </Box>
         {group && (

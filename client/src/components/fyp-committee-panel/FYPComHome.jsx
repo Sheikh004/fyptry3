@@ -13,6 +13,13 @@ function FYPComHome(props) {
       >
         Reviewer Management(Assign/Unassign Proposals)
       </Button>
+      <Button
+        onClick={() => {
+          navigate("/evaluator-management");
+        }}
+      >
+        Evaluator Management(Assign/Unassign Groups)
+      </Button>
     </div>
   );
 }

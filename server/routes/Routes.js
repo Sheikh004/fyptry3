@@ -29,6 +29,9 @@ import {
   getGroup,
   updateGroupMembers,
   deleteGroup,
+  getUnAssignedGroupsOne,
+  getUnAssignedPreGroups,
+  getUnAssignedGroupsTwo,
 } from "../controllers/group-controller.js";
 import {
   assignTask,
@@ -63,6 +66,18 @@ import {
   createTaskComment,
 } from "../controllers/commentController.js";
 import { createNotification } from "../controllers/notification-controller.js";
+import {
+  assignGroupOne,
+  unassignGroupOne,
+  assignPreGroup,
+  unassignPreGroup,
+  assignGroupTwo,
+  unassignGroupTwo,
+  getEvaluatorsOne,
+  getPreEvaluators,
+  getEvaluatorsTwo,
+} from "../controllers/evaluation-controller.js";
+
 const route = express.Router();
 route.post("/getUser", getUser);
 route.post("/getChatters", verifyToken, getChatters);
@@ -125,5 +140,18 @@ route.get("/getComments/:pid/:fid", verifyToken, getComments);
 route.delete("/deleteComment/:cid", verifyToken, deleteComment);
 route.get("/getGroupProposal/:gid", verifyToken, getGroupProposal);
 route.get("/getGroupComments/:pid", verifyToken, getGroupComments);
+
+route.get("/getUnAssignedGroupsOne", verifyToken, getUnAssignedGroupsOne);
+route.get("/getUnAssignedPreGroups", verifyToken, getUnAssignedPreGroups);
+route.get("/getUnAssignedGroupsTwo", verifyToken, getUnAssignedGroupsTwo);
+route.patch("/unassignGroupOne/:gid/:e_Id", verifyToken, unassignGroupOne);
+route.patch("/assignGroupOne/:gid/:e_Id", verifyToken, assignGroupOne);
+route.patch("/unassignPreGroup/:gid/:e_Id", verifyToken, unassignPreGroup);
+route.patch("/assignPreGroup/:gid/:e_Id", verifyToken, assignPreGroup);
+route.patch("/unassignGroupTwo/:gid/:e_Id", verifyToken, unassignGroupTwo);
+route.patch("/assignGroupTwo/:gid/:e_Id", verifyToken, assignGroupTwo);
+route.get("/getEvaluatorsOne", verifyToken, getEvaluatorsOne);
+route.get("/getPreEvaluators", verifyToken, getPreEvaluators);
+route.get("/getEvaluatorsTwo", verifyToken, getEvaluatorsTwo);
 
 export default route;

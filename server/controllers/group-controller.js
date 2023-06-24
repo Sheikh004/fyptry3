@@ -2,6 +2,8 @@ import Student from "../modal/Student.js";
 import Group from "../modal/Group.js";
 
 import Supervisor from "../modal/Supervisor.js";
+import Proposal from "../modal/Proposal.js";
+
 export const getGroupMembers = async (req, res) => {
   const students = req.body.groupMembers;
   let groupmemberIds = [];
@@ -142,3 +144,139 @@ export const updateGroupMembers = async (req, res) => {
     return res.send({ err });
   }
 };
+
+export const getUnAssignedGroupsOne = async (req, res) => {
+  try {
+    const proposals = await Proposal.find({
+      reviewerStatus: "Approved",
+    }).populate([
+      {
+        path: "groupId",
+        model: Group,
+        select: "name supervisorId",
+      },
+    ]);
+    // console.log(proposals);
+    const unAssignedOneGroups = await Group.find({ isAssignedOne: false });
+    const stringUnAssignedOneGroups = unAssignedOneGroups.map((item) => {
+      return item._id.toString();
+    });
+    const stringProposals = proposals.map((item) => {
+      return {
+        gId: item.groupId._id.toString(),
+        dArea: item.developmentArea,
+        aInterest: item.areaOfInterest,
+        gName: item.groupId.name,
+        gName: item.groupId,
+      };
+    });
+    const commonGroups = stringProposals.filter((item) => {
+      if (stringUnAssignedOneGroups.includes(item.gId)) return item;
+    });
+
+    res.status(200).json(commonGroups);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const getUnAssignedPreGroups = async (req, res) => {
+  try {
+    const proposals = await Proposal.find({
+      reviewerStatus: "Approved",
+    }).populate([
+      {
+        path: "groupId",
+        model: Group,
+        select: "name supervisorId",
+      },
+    ]);
+
+    const unAssignedPreGroups = await Group.find({
+      $and: [{ isAssignedPre: false }, { isApprovedOne: "Approved" }],
+    });
+    const stringUnAssignedPreGroups = unAssignedPreGroups.map((item) => {
+      return item._id.toString();
+    });
+    const stringProposals = proposals.map((item) => {
+      return {
+        gId: item.groupId._id.toString(),
+        dArea: item.developmentArea,
+        aInterest: item.areaOfInterest,
+        gName: item.groupId.name,
+      };
+    });
+    const commonGroups = stringProposals.filter((item) => {
+      if (stringUnAssignedPreGroups.includes(item.gId)) return item;
+    });
+
+    res.status(200).json(commonGroups);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const getUnAssignedGroupsTwo = async (req, res) => {
+  try {
+    const proposals = await Proposal.find({
+      reviewerStatus: "Approved",
+    }).populate([
+      {
+        path: "groupId",
+        model: Group,
+        select: "name supervisorId",
+      },
+    ]);
+
+    const unAssignedGroupsTwo = await Group.find({
+      $and: [{ isAssignedTwo: false }, { isApprovedPre: "Approved" }],
+    });
+    const stringUnAssignedGroupsTwo = unAssignedGroupsTwo.map((item) => {
+      return item._id.toString();
+    });
+    const stringProposals = proposals.map((item) => {
+      return {
+        gId: item.groupId._id.toString(),
+        dArea: item.developmentArea,
+        aInterest: item.areaOfInterest,
+        gName: item.groupId.name,
+      };
+    });
+    const commonGroups = stringProposals.filter((item) => {
+      if (stringUnAssignedGroupsTwo.includes(item.gId)) return item;
+    });
+
+    res.status(200).json(commonGroups);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+// export const getUnAssignedPreGroups = async (req, res) => {
+//   try {
+//     const unAssignedPreGroups = await Group.find({
+//       $and: [{ isAssignedPre: false }, { isApprovedOne: "Approved" }],
+//     });
+
+//     res.status(200).json(unAssignedPreGroups);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json(err);
+//   }
+// };
+
+// export const getUnAssignedGroupsTwo = async (req, res) => {
+//   try {
+//     const unAssignedGroupsTwo = await Group.find({
+//       $and: [{ isAssignedTwo: false }, { isApprovedPre: "Approved" }],
+//     });
+
+//     res.status(200).json(unAssignedGroupsTwo);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json(err);
+//   }
+// };

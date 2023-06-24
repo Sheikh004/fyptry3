@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-const evaluatorSchema = new mongoose.Schema(
+const evaluatorTwoSchema = new mongoose.Schema(
   {
     _id: {
       type: Schema.Types.ObjectId,
@@ -21,12 +21,5 @@ const evaluatorSchema = new mongoose.Schema(
   }
 );
 
-const evaluator = mongoose.model("evaluator", evaluatorSchema);
-export default evaluator;
-
-// groupList: [
-//   {
-//     type: Schema.Types.ObjectId,
-//     ref: "Group",
-//   },
-// ],
+const evaluatorTwo = mongoose.model("evaluatorTwo", evaluatorTwoSchema);
+export default evaluatorTwo;

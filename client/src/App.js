@@ -31,6 +31,7 @@ import RegisterSupervisor from "./components/login/RegisterSupervisor";
 import ReviewerManagement from "./components/fyp-committee-panel/ReviewerManagement";
 import ReviewerDashboard from "./components/dashboards/ReviewerDashboard";
 import ReviewerGroupProposals from "./components/proposal-management/ReviewerGroupProposals";
+import EvaluatorManagement from "./components/fyp-committee-panel/EvaluatorManagement";
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -171,6 +172,14 @@ function App() {
               element={
                 <ProtectedFYPCommittee>
                   <ReviewerManagement />
+                </ProtectedFYPCommittee>
+              }
+            />
+            <Route
+              path="/evaluator-management"
+              element={
+                <ProtectedFYPCommittee>
+                  <EvaluatorManagement />
                 </ProtectedFYPCommittee>
               }
             />
