@@ -1002,3 +1002,52 @@ export const getEvaluatorsTwo = async () => {
       console.error(error);
     });
 };
+
+export const createEvent = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .post(`${url}/createEvent`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      console.log(response);
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getEvents = async () => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getEvents`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const getEvaluatorGroups = async (e_ID) => {
+  const token = sessionStorage.getItem("jwtToken");
+  return await axios
+    .get(`${url}/getEvaluatorGroups/${e_ID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};

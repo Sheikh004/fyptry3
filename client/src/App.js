@@ -9,6 +9,7 @@ import ProtectedSupervisor from "./components/protected/ProtectedSupervisor";
 import ProtectedUser from "./components/protected/ProtectedUser";
 import ProtectedReviewer from "./components/protected/ProtectedReviewer";
 import ProtectedFYPCommittee from "./components/protected/ProtectedFYPCommittee";
+import ProtectedEvaluator from "./components/protected/ProtectedEvaluator";
 import ChatProvider from "./context/ChatProvider";
 import ForgotPassword from "./components/login/ForgotPassword";
 import ResetPassword from "./components/login/ResetPassword";
@@ -32,6 +33,8 @@ import ReviewerManagement from "./components/fyp-committee-panel/ReviewerManagem
 import ReviewerDashboard from "./components/dashboards/ReviewerDashboard";
 import ReviewerGroupProposals from "./components/proposal-management/ReviewerGroupProposals";
 import EvaluatorManagement from "./components/fyp-committee-panel/EvaluatorManagement";
+import EventManagement from "./components/fyp-committee-panel/EventManagement";
+import EvaluatorGroups from "./components/evaluation-management/EvaluatorGroups";
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -197,6 +200,22 @@ function App() {
                 <ProtectedReviewer>
                   <ReviewerGroupProposals />
                 </ProtectedReviewer>
+              }
+            />
+            <Route
+              path="/event-management"
+              element={
+                <ProtectedFYPCommittee>
+                  <EventManagement />
+                </ProtectedFYPCommittee>
+              }
+            />
+            <Route
+              path="/evaluator-groups"
+              element={
+                <ProtectedEvaluator>
+                  <EvaluatorGroups />
+                </ProtectedEvaluator>
               }
             />
             <Route path="*" element={<Login />} />

@@ -76,7 +76,9 @@ import {
   getEvaluatorsOne,
   getPreEvaluators,
   getEvaluatorsTwo,
+  getEvaluatorGroups,
 } from "../controllers/evaluation-controller.js";
+import { createEvent, getEvents } from "../controllers/event-controller.js";
 
 const route = express.Router();
 route.post("/getUser", getUser);
@@ -153,5 +155,7 @@ route.patch("/assignGroupTwo/:gid/:e_Id", verifyToken, assignGroupTwo);
 route.get("/getEvaluatorsOne", verifyToken, getEvaluatorsOne);
 route.get("/getPreEvaluators", verifyToken, getPreEvaluators);
 route.get("/getEvaluatorsTwo", verifyToken, getEvaluatorsTwo);
-
+route.post("/createEvent", verifyToken, createEvent);
+route.get("/getEvents", verifyToken, getEvents);
+route.get("/getEvaluatorGroups/:user_id", verifyToken, getEvaluatorGroups);
 export default route;

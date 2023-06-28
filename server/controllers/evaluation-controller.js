@@ -746,3 +746,13 @@ export const getEvaluatorsTwo = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+export const getEvaluatorGroups = async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const list = await Evaluator.findOne({ _id: user_id }, { groupList: 1 });
+    res.status(200).json(list);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};

@@ -20,6 +20,13 @@ function FYPComHome(props) {
       >
         Evaluator Management(Assign/Unassign Groups)
       </Button>
+      <Button
+        onClick={() => {
+          navigate("/event-management");
+        }}
+      >
+        Event Management
+      </Button>
     </div>
   );
 }
