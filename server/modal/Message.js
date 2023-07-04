@@ -8,8 +8,11 @@ const MessageSchema = new mongoose.Schema(
       required: true,
     },
     senderId: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
+    },
+    senderName: {
+      type: String,
     },
     receiverId: {
       type: Array,

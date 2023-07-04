@@ -34,23 +34,36 @@ const Container = styled(Box)`
 
 const Messages = ({ receiver, chatID }) => {
   const [messages, setMessages] = useState([]);
-  const [newMessageFlag, setNewMessageFlag] = useState(null);
+  const [newMessageFlag, setNewMessageFlag] = useState(false);
   const [value, setValue] = useState("");
   const [file, setFile] = useState();
   const [form, setForm] = useState();
-  const { user, socket } = useContext(ChatContext);
+  const { user, socket, roomId } = useContext(ChatContext);
+  const [newBool, setNewBool] = useState(false);
   const scrollRef = useRef();
 
   // const { account, socket, newMessageFlag, setNewMessageFlag } = useContext(AccountContext);
 
-  // useEffect(() => {
-  //     socket.current.on('getMessage', data => {
-  //         setIncomingMessage({
-  //             ...data,
-  //             createdAt: Date.now()
-  //         })
-  //     })
-  // }, []);
+  useEffect(() => {
+    socket.current.on("message", (data) => {
+      setNewMessageFlag(!newMessageFlag);
+      setNewBool(!newBool);
+      console.log(data);
+    });
+    socket.current.on("getMessage", (data) => {
+      // console.log(data);
+      // console.log(messages);
+      setNewMessageFlag(!newMessageFlag);
+      setNewBool(!newBool);
+      // sendText(data);
+      // setMessages({
+      //   ...messages,
+      //   ...data,
+      //   createdAt: Date.now(),
+      // });
+      console.log(data);
+    });
+  }, [newBool, newMessageFlag]);
 
   useEffect(() => {
     const getMessageDetails = async () => {
@@ -61,7 +74,7 @@ const Messages = ({ receiver, chatID }) => {
       // console.log(typeof messages);
     };
     getMessageDetails();
-  }, [chatID, receiver.id, newMessageFlag]);
+  }, [chatID, receiver.id, newMessageFlag, newBool]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ transition: "smooth" });
@@ -86,6 +99,7 @@ const Messages = ({ receiver, chatID }) => {
       if (!file) {
         message = {
           senderId: user.id,
+          senderName: user.name,
           receiverId: receiver.id,
           conversationId: chatID,
           type: "text",
@@ -94,6 +108,7 @@ const Messages = ({ receiver, chatID }) => {
       } else {
         message = {
           senderId: user.id,
+          senderName: user.name,
           conversationId: chatID,
           receiverId: receiver.id,
           type: "file",
@@ -101,16 +116,20 @@ const Messages = ({ receiver, chatID }) => {
         };
         console.log(form);
       }
-
-      socket.current.emit("sendMessage", message);
-
+      // console.log(message);
       await createMessage(message);
-
       setValue("");
       setFile();
       setForm("");
-
-      setNewMessageFlag((prev) => !prev);
+      setNewMessageFlag(!newMessageFlag);
+      if (roomId && roomId === receiver.id) {
+        console.log("Yes");
+        socket.current.emit("chatMessage", message);
+      } else {
+        console.log(receiver.id);
+        console.log(roomId);
+        socket.current.emit("sendMessage", message);
+      }
     }
   };
 

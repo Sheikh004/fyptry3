@@ -1,6 +1,7 @@
 import Message from "../modal/Message.js";
 import Conversation from "../modal/Conversation.js";
-
+import Student from "../modal/Student.js";
+import Faculty from "../modal/Faculty.js";
 export const createMessage = async (request, response) => {
   const newMessage = new Message(request.body);
   try {
@@ -16,7 +17,11 @@ export const createMessage = async (request, response) => {
 
 export const getMessages = async (request, response) => {
   try {
-    const messages = await Message.find({ conversationId: request.params.id });
+    const messages = await Message.find({
+      conversationId: request.params.id,
+    });
+
+    console.log(messages);
     response.status(200).json(messages);
   } catch (error) {
     response.status(500).json(error);

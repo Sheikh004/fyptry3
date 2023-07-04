@@ -5,6 +5,7 @@ export const ChatContext = createContext(null);
 const ChatProvider = ({ children }) => {
   const [chatID, setChatID] = useState("");
   const [receiver, setReceiver] = useState(null);
+  const [roomId, setRoomId] = useState(null);
   const [user, setUser] = useState(null);
   const socket = useRef();
   useEffect(() => {
@@ -20,6 +21,8 @@ const ChatProvider = ({ children }) => {
         socket,
         user,
         setUser,
+        roomId,
+        setRoomId,
       }}
     >
       {children}

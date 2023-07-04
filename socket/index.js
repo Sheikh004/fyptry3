@@ -26,13 +26,18 @@ io.on("connection", (socket) => {
 
   //connect
   socket.on("addUser", (userId) => {
+    // console.log("added user");
+    // console.log(socket.id);
     addUser(userId, socket.id);
     io.emit("getUsers", users);
   });
 
   //send message
   socket.on("sendMessage", (data) => {
-    const user = getUser(data.receiverId);
+    let user = getUser(data.receiverId);
+    console.log(users);
+    console.log(user);
+    console.log(38);
     io.to(user.socketId).emit("getMessage", data);
   });
 
@@ -52,7 +57,7 @@ io.on("connection", (socket) => {
 
   // Handle chat messages
   socket.on("chatMessage", (data) => {
-    io.to(data.room).emit("message", data.message);
+    io.to(data.receiverId).emit("message", data.message);
   });
 
   // Leave a room

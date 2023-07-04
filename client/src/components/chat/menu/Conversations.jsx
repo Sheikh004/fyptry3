@@ -114,6 +114,7 @@ const Conversations = ({ text }) => {
 
   useEffect(() => {
     socket.current.emit("addUser", user.id);
+
     socket.current.on("getUsers", (users) => {
       console.log(users);
       // setActiveUsers(users);

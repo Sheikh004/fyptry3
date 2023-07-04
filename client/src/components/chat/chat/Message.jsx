@@ -57,9 +57,15 @@ const Message = ({ message }) => {
       ) : (
         <Wrapper>
           {message.type === "file" ? (
-            <ImageMessage message={message} />
+            <Box>
+              <ImageMessage message={message} />
+              <Typography>{message.senderName}</Typography>
+            </Box>
           ) : (
-            <TextMessage message={message} />
+            <Box>
+              <TextMessage message={message} />
+              <Typography>{message.senderName}</Typography>
+            </Box>
           )}
         </Wrapper>
       )}

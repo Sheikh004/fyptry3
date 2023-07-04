@@ -70,6 +70,8 @@ const Text = styled(Typography)`
 `;
 
 const Conversation = ({ chatter, groups }) => {
+  console.log(groups);
+  console.log(chatter);
   //   const url = user.picture || emptyProfilePicture;
 
   // const { account, newMessageFlag }  = useContext(AccountContext);
@@ -83,9 +85,16 @@ const Conversation = ({ chatter, groups }) => {
   //     }
   //     getConversationMessage();
   // }, [newMessageFlag]);
-  const { setReceiver } = useContext(ChatContext);
+  const { setReceiver, socket, setRoomId } = useContext(ChatContext);
   const getChatter = () => {
     setReceiver(chatter);
+    if (groups.includes(chatter.name)) {
+      socket.current.emit("joinRoom", chatter.id);
+      setRoomId(chatter.id);
+    } else {
+      // console.log(groups);
+      setRoomId(null);
+    }
   };
 
   return (
