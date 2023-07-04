@@ -1,4 +1,5 @@
 import Evaluator from "../modal/Evaluator.js";
+import PreEvaluator from "../modal/PreEvaluator.js";
 import Student from "../modal/Student.js";
 import Supervisor from "../modal/Supervisor.js";
 import Reviewer from "../modal/Reviewer.js";
@@ -7,7 +8,8 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import FYPCommittee from "../modal/FYPCommittee.js";
 import Group from "../modal/Group.js";
-import message from "../modal/Message.js";
+import Message from "../modal/Message.js";
+import { Model } from "mongoose";
 
 export const getUser = async (request, response) => {
   let passFlag;
@@ -315,11 +317,6 @@ export const getChatters = async (req, res) => {
         model: Faculty,
         select: "name",
       },
-      {
-        path: "evaluatorID",
-        model: Faculty,
-        select: "name",
-      },
     ]);
 
     return res.send({ user });
@@ -338,11 +335,6 @@ export const getStChatters = async (req, res) => {
       },
       {
         path: "supervisorId",
-        model: Faculty,
-        select: "name",
-      },
-      {
-        path: "evaluatorID",
         model: Faculty,
         select: "name",
       },
@@ -409,5 +401,33 @@ export const registerSupervisor = async (req, res) => {
   } catch (error) {
     console.error("An error occurred during supervisor registration:", error);
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getEvaluatorOneChatter = async (req, res) => {
+  const g_Id = req.params;
+  try {
+    const evaluator = await Evaluator.findOne(
+      { groupList: g_Id },
+      { _id: 1 }
+    ).populate([{ path: "_id", Model: Faculty, select: "name " }]);
+    res.status(200).json(evaluator);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};
+
+export const getEvaluatorPreChatter = async (req, res) => {
+  const g_Id = req.params;
+  try {
+    const preEvaluator = await PreEvaluator.findOne(
+      { groupList: g_Id },
+      { _id: 1 }
+    ).populate([{ path: "_id", Model: Faculty, select: "name " }]);
+    res.status(200).json(preEvaluator);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
   }
 };

@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext, useRef } from "react";
 import { Box, styled } from "@mui/material";
 import { ChatContext } from "../../../context/ChatProvider";
-// import { io } from "socket.io-client";
+import { io } from "socket.io-client";
 
 import { createMessage, getMessages } from "../../../api/api";
 
@@ -38,7 +38,7 @@ const Messages = ({ receiver, chatID }) => {
   const [value, setValue] = useState("");
   const [file, setFile] = useState();
   const [form, setForm] = useState();
-  const { user } = useContext(ChatContext);
+  const { user, socket } = useContext(ChatContext);
   const scrollRef = useRef();
 
   // const { account, socket, newMessageFlag, setNewMessageFlag } = useContext(AccountContext);
@@ -102,7 +102,7 @@ const Messages = ({ receiver, chatID }) => {
         console.log(form);
       }
 
-      // socket.current.emit("sendMessage", message);
+      socket.current.emit("sendMessage", message);
 
       await createMessage(message);
 

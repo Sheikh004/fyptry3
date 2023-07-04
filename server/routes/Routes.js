@@ -5,6 +5,8 @@ import {
   getChatters,
   getStChatters,
   registerSupervisor,
+  getEvaluatorOneChatter,
+  getEvaluatorPreChatter,
 } from "../controllers/userController.js";
 import {
   setChat,
@@ -65,7 +67,10 @@ import {
   getGroupComments,
   createTaskComment,
 } from "../controllers/commentController.js";
-import { createNotification } from "../controllers/notification-controller.js";
+import {
+  createNotification,
+  createNotificationBroadcast,
+} from "../controllers/notification-controller.js";
 import {
   assignGroupOne,
   unassignGroupOne,
@@ -76,9 +81,16 @@ import {
   getEvaluatorsOne,
   getPreEvaluators,
   getEvaluatorsTwo,
-  getEvaluatorGroups,
+  getEvaluatorOneGroups,
+  getEvaluatorPreGroups,
+  getEvaluatorTwoGroups,
 } from "../controllers/evaluation-controller.js";
-import { createEvent, getEvents } from "../controllers/event-controller.js";
+import {
+  createEvent,
+  getActiveEvent,
+  getEvents,
+} from "../controllers/event-controller.js";
+// import { zoomAuth } from "../controllers/zoomController.js";
 
 const route = express.Router();
 route.post("/getUser", getUser);
@@ -122,7 +134,6 @@ route.get(
 route.post("/createProposal", verifyToken, createProposal);
 route.post("/updateGroupMembers", verifyToken, updateGroupMembers);
 route.delete("/deleteGroup/:id", verifyToken, deleteGroup);
-route.post("/createNotification", verifyToken, createNotification);
 route.delete("/removeFile/:id", verifyToken, removeFile);
 route.delete("/removeProposal/:id", verifyToken, removeProposal);
 route.patch("/updateTaskApproval/:id", verifyToken, updateTaskApproval);
@@ -157,5 +168,30 @@ route.get("/getPreEvaluators", verifyToken, getPreEvaluators);
 route.get("/getEvaluatorsTwo", verifyToken, getEvaluatorsTwo);
 route.post("/createEvent", verifyToken, createEvent);
 route.get("/getEvents", verifyToken, getEvents);
-route.get("/getEvaluatorGroups/:user_id", verifyToken, getEvaluatorGroups);
+route.get("/getActiveEvent", verifyToken, getActiveEvent);
+route.get(
+  "/getEvaluatorOneGroups/:user_id",
+  verifyToken,
+  getEvaluatorOneGroups
+);
+route.get(
+  "/getEvaluatorPreGroups/:user_id",
+  verifyToken,
+  getEvaluatorPreGroups
+);
+route.get(
+  "/getEvaluatorTwoGroups/:user_id",
+  verifyToken,
+  getEvaluatorTwoGroups
+);
+route.get("/getEvaluatorOneChatter/:g_Id", verifyToken, getEvaluatorOneChatter);
+route.get("/getEvaluatorPreChatter/:g_Id", verifyToken, getEvaluatorPreChatter);
+route.post("/createNotification", verifyToken, createNotification);
+route.post(
+  "/createNotificationBroadcast",
+  verifyToken,
+  createNotificationBroadcast
+);
+// route.post("/zoomAuth", zoomAuth);
+
 export default route;

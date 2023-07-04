@@ -35,6 +35,7 @@ import ReviewerGroupProposals from "./components/proposal-management/ReviewerGro
 import EvaluatorManagement from "./components/fyp-committee-panel/EvaluatorManagement";
 import EventManagement from "./components/fyp-committee-panel/EventManagement";
 import EvaluatorGroups from "./components/evaluation-management/EvaluatorGroups";
+
 function App() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

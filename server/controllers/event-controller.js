@@ -42,3 +42,13 @@ export const getEvents = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+export const getActiveEvent = async (req, res) => {
+  try {
+    const events = await Event.find({ active: true });
+    res.status(200).json(events);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};

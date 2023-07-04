@@ -2,7 +2,7 @@ import Proposal from "../modal/Proposal.js";
 import Reviewer from "../modal/Reviewer.js";
 import Faculty from "../modal/Faculty.js";
 import fs from "fs";
-import { faC } from "@fortawesome/free-solid-svg-icons";
+
 export const getSupervisorProposals = async (req, res) => {
   const { id } = req.params;
   try {
@@ -537,7 +537,7 @@ export const getReviewerProposals = async (req, res) => {
       {
         path: "proposalList",
         model: Proposal,
-        select: "filepath reviewerStatus",
+        select: "filepath reviewerStatus groupId",
       },
     ]);
     return res.status(200).json(reviewer);
@@ -550,13 +550,14 @@ export const getReviewerProposals = async (req, res) => {
 export const updateProposalReviewerStatus = async (req, res) => {
   const { pid, value } = req.params;
   try {
-    const updatedProposal = await Proposal.updateOne(
+    const updatedProposal = await Proposal.findOneAndUpdate(
       { _id: pid },
       {
         $set: {
           reviewerStatus: value,
         },
-      }
+      },
+      { returnOriginal: false }
     );
     return res.status(200).json(updatedProposal);
   } catch (err) {

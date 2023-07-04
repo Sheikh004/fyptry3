@@ -4,6 +4,8 @@ import Group from "../modal/Group.js";
 import Proposal from "../modal/Proposal.js";
 import EvaluatorTwo from "../modal/EvaluatorTwo.js";
 import PreEvaluator from "../modal/PreEvaluator.js";
+import Supervisor from "../modal/Supervisor.js";
+import Student from "../modal/Student.js";
 
 export const assignEvaluatorsForFypOne = async (req, res) => {
   const proposals = await Proposal.find({
@@ -747,12 +749,111 @@ export const getEvaluatorsTwo = async (req, res) => {
   }
 };
 
-export const getEvaluatorGroups = async (req, res) => {
+export const getEvaluatorOneGroups = async (req, res) => {
   const { user_id } = req.params;
   try {
-    const list = await Evaluator.findOne({ _id: user_id }, { groupList: 1 });
+    const list = await Evaluator.findOne(
+      { _id: user_id },
+      { groupList: 1 }
+    ).populate([
+      {
+        path: "groupList",
+        model: Group,
+        select: "name supervisorId studentID",
+        populate: [
+          {
+            path: "supervisorId",
+            model: Supervisor,
+            select: "_id",
+            populate: {
+              path: "_id",
+              model: Faculty,
+              select: "name",
+            },
+          },
+          {
+            path: "studentID",
+            model: Student,
+            select: "name",
+          },
+        ],
+      },
+    ]);
     res.status(200).json(list);
   } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+export const getEvaluatorPreGroups = async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const list = await PreEvaluator.findOne(
+      { _id: user_id },
+      { groupList: 1 }
+    ).populate([
+      {
+        path: "groupList",
+        model: Group,
+        select: "name supervisorId studentID",
+        populate: [
+          {
+            path: "supervisorId",
+            model: Supervisor,
+            select: "name",
+            populate: {
+              path: "_id",
+              model: Faculty,
+              select: "name",
+            },
+          },
+          {
+            path: "studentID",
+            model: Student,
+            select: "name",
+          },
+        ],
+      },
+    ]);
+    res.status(200).json(list);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+export const getEvaluatorTwoGroups = async (req, res) => {
+  const { user_id } = req.params;
+  try {
+    const list = await EvaluatorTwo.findOne(
+      { _id: user_id },
+      { groupList: 1 }
+    ).populate([
+      {
+        path: "groupList",
+        model: Group,
+        select: "name supervisorId studentID",
+        populate: [
+          {
+            path: "supervisorId",
+            model: Supervisor,
+            select: "name",
+            populate: {
+              path: "_id",
+              model: Faculty,
+              select: "name",
+            },
+          },
+          {
+            path: "studentID",
+            model: Student,
+            select: "name",
+          },
+        ],
+      },
+    ]);
+    res.status(200).json(list);
+  } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };

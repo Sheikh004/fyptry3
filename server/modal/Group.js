@@ -19,10 +19,10 @@ const groupSchema = new mongoose.Schema(
       ref: "Supervisor",
       required: true,
     },
-    evaluatorID: {
-      type: Schema.Types.ObjectId,
-      ref: "Evaluator",
-    },
+    // evaluatorID: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Evaluator",
+    // },
     isAssignedOne: {
       type: Boolean,
       default: false,

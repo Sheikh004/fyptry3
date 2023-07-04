@@ -7,9 +7,9 @@ const ChatProvider = ({ children }) => {
   const [receiver, setReceiver] = useState(null);
   const [user, setUser] = useState(null);
   const socket = useRef();
-  // useEffect(() => {
-  //   socket.current = io("ws://localhost:9000");
-  // }, []);
+  useEffect(() => {
+    socket.current = io("ws://localhost:9590");
+  }, []);
   return (
     <ChatContext.Provider
       value={{

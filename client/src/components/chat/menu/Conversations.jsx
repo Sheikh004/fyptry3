@@ -2,13 +2,16 @@
 import React from "react";
 import { useState, useEffect, useContext } from "react";
 import { setChat, setGroupChat } from "../../../api/api";
-import { Box, styled, Divider } from "@mui/material";
+import { Box, styled, Divider, Typography } from "@mui/material";
 
 import { getChatters, getStChatters } from "../../../api/api";
 
 //components
 import Conversation from "./Conversation";
 import { ChatContext } from "../../../context/ChatProvider";
+import { getEvaluatorOneChatter } from "../../../api/api";
+import { getEvaluatorPreChatter } from "../../../api/api";
+import { getActiveEvent } from "../../../api/api";
 
 const Component = styled(Box)`
   overflow: overlay;
@@ -22,7 +25,7 @@ const StyledDivider = styled(Divider)`
 
 const Conversations = ({ text }) => {
   const [groups, setGroups] = useState([]);
-  const { receiver, setChatID, user } = useContext(ChatContext);
+  const { receiver, setChatID, user, socket } = useContext(ChatContext);
   const [groupList, setGroupList] = useState([]);
   // const { account, socket, setActiveUsers } = useContext(AccountContext);
 
@@ -109,12 +112,13 @@ const Conversations = ({ text }) => {
     getChatterRefresh();
   }, [receiver]);
 
-  // useEffect(() => {
-  //     socket.current.emit('addUser', accounyt);
-  //     socket.current.on("getUsers", users => {
-  //         setActiveUsers(users);
-  //     })
-  // }, [account])
+  useEffect(() => {
+    socket.current.emit("addUser", user.id);
+    socket.current.on("getUsers", (users) => {
+      console.log(users);
+      // setActiveUsers(users);
+    });
+  }, [user]);
 
   // for supervisor chat
 
@@ -134,6 +138,7 @@ const Conversations = ({ text }) => {
             </React.Fragment>
           );
         })}
+      <Typography>Evaluators</Typography>
     </Component>
   );
 };

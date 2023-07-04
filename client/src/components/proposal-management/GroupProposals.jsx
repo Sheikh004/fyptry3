@@ -25,8 +25,7 @@ import {
   deleteComment,
   createComment,
   getGroupComments,
-
-  // createNotification,
+  createNotification,
 } from "../../api/api";
 function GroupProposals(props) {
   const { user } = useContext(ChatContext);
@@ -41,12 +40,14 @@ function GroupProposals(props) {
   const [open, setOpen] = useState(false);
   const [submit, setSubmit] = useState(false);
   const [currentProposal, setCurrentProposal] = useState();
+  const [currentGroup, setCurrentGroup] = useState();
   const [existingValue, setExistingValue] = useState();
   const [reRun, setReRun] = useState(false);
 
-  const handleOpen = (pid) => {
+  const handleOpen = (pid, gid) => {
     setOpen(true);
     setCurrentProposal(pid);
+    setCurrentGroup(gid);
   };
 
   const handleClose = () => {
@@ -59,6 +60,16 @@ function GroupProposals(props) {
 
   const handleDeleteComment = async (cid) => {
     const deleteResult = await deleteComment(cid);
+    if (deleteResult && currentGroup) {
+      const notif4 = await createNotification({
+        notification:
+          "A comment has been deleted by the supervisor for the submitted proposal",
+        createdBy: user.id,
+        createdFor: currentGroup,
+        notifType: "Proposal",
+      });
+      console.log(notif4);
+    }
     if (deleteResult) setRefresh2(!refresh2);
   };
 
@@ -80,13 +91,18 @@ function GroupProposals(props) {
   useEffect(() => {
     const unUpdateApproval = async () => {
       const response = await unUpdateProposalStatus(unApprovalProposal);
-      // if (response)
-      //   await createNotification({
-      //     notification:
-      //       "Your proposal has been disapproved. You may contact your supervisor",
-      //     // createdBy: group._id,
-      //     // createdFor: group.supervisorId,
-      //   });
+      if (response) {
+        const notif = await createNotification({
+          notification:
+            "Your proposal has been disapproved. You may contact your supervisor",
+          createdBy: user.id,
+          createdFor: response.proposal.groupId,
+          notifType: "Proposal",
+        });
+        // console.log(notif);
+      }
+
+      // console.log(response.proposal.groupId);
       setReRun(!reRun);
     };
     if (unApprovalProposal) {
@@ -118,6 +134,16 @@ function GroupProposals(props) {
         setSubmit(false);
         setCommentValue("");
         console.log(result);
+        if (result && currentGroup) {
+          const notif3 = await createNotification({
+            notification:
+              "A comment has been added by the supervisor for the submitted proposal",
+            createdBy: user.id,
+            createdFor: currentGroup,
+            notifType: "Proposal",
+          });
+          console.log(notif3);
+        }
       } else setSubmit(false);
     };
     sendComment();
@@ -126,12 +152,16 @@ function GroupProposals(props) {
   useEffect(() => {
     const updateApproval = async () => {
       const response = await updateProposalStatus(approvalProposal);
-      // if (response)
-      //   await createNotification({
-      //     notification: "Your proposal has been approved",
-      //     // createdBy: group._id,
-      //     // createdFor: group.supervisorId,
-      //   });
+      if (response) {
+        const notif2 = await createNotification({
+          notification: "Your proposal has been approved",
+          createdBy: user.id,
+          createdFor: response.proposal.groupId,
+          notifType: "Proposal",
+        });
+        // console.log(notif2);
+      }
+
       setReRun(!reRun);
     };
     if (approvalProposal) {
@@ -317,7 +347,7 @@ function GroupProposals(props) {
                     <TableCell>
                       <Button
                         onClick={() => {
-                          handleOpen(group.proposalId);
+                          handleOpen(group.proposalId, group._id);
                         }}
                       >
                         Add Comments

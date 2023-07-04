@@ -1,17 +1,25 @@
 import mongoose from "mongoose";
-
+const enumOptions = ["FYP_Announcements", "Proposal", "Task", "Chat"];
 const NotificationSchema = new mongoose.Schema(
   {
     createdBy: {
       type: String,
-      required: true,
     },
     createdFor: {
-      type: Array,
+      type: String,
       required: true,
     },
     text: {
       type: String,
+    },
+
+    isRead: {
+      type: Boolean,
+      default: false,
+    },
+    notifType: {
+      type: String,
+      enum: enumOptions,
     },
   },
   {

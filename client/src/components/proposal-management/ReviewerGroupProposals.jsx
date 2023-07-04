@@ -4,6 +4,7 @@ import {
   getReviewerProposals,
   updateProposalReviewerStatus,
   createComment,
+  createNotification,
   getComments,
   deleteComment,
 } from "../../api/api";
@@ -19,13 +20,25 @@ function ReviewerGroupProposals(props) {
   const [submit, setSubmit] = useState(false);
   const [refresh2, setRefresh2] = useState(false);
   const [commentValue, setCommentValue] = useState("");
+  const [currentGroup, setCurrentGroup] = useState();
 
-  const handleOpen = (pid) => {
+  const handleOpen = (pid, gid) => {
     setOpen(true);
     setCurrentProposal(pid);
+    setCurrentGroup(gid);
   };
   const handleDeleteComment = async (cid) => {
     const deleteResult = await deleteComment(cid);
+    if (deleteResult && currentGroup) {
+      const notif4 = await createNotification({
+        notification:
+          "A comment has been deleted by the reviewer for the submitted proposal",
+        createdBy: user.id,
+        createdFor: currentGroup,
+        notifType: "Proposal",
+      });
+      console.log(notif4);
+    }
     if (deleteResult) setRefresh2(!refresh2);
   };
   const handleClose = () => {
@@ -46,6 +59,16 @@ function ReviewerGroupProposals(props) {
         setSubmit(false);
         setCommentValue("");
         console.log(result);
+        if (result && currentGroup) {
+          const notif3 = await createNotification({
+            notification:
+              "A comment has been added by the reviewer for the submitted proposal",
+            createdBy: user.id,
+            createdFor: currentGroup,
+            notifType: "Proposal",
+          });
+          // console.log(notif3);
+        }
       } else setSubmit(false);
     };
     sendComment();
@@ -54,7 +77,16 @@ function ReviewerGroupProposals(props) {
   const handleRadio = async (proposalId, value) => {
     const data2 = await updateProposalReviewerStatus(proposalId, value);
     console.log(data2);
-    if (data2) setRefresh(!refresh);
+    if (data2.status === 200) {
+      const notif2 = await createNotification({
+        notification: "Your proposal has been " + data2?.data?.reviewerStatus,
+        createdBy: user.id,
+        createdFor: data2?.data?.groupId,
+        notifType: "Proposal",
+      });
+      // console.log(notif2);
+      setRefresh(!refresh);
+    }
   };
 
   useEffect(() => {
@@ -141,6 +173,7 @@ function ReviewerGroupProposals(props) {
         proposalList.map((proposal, index) => {
           return (
             <Box key={"Abox1" + index}>
+              {console.log(proposal)}
               {/* <Typography>Approved Proposals</Typography> */}
               {proposal && proposal.reviewerStatus === "Approved" && (
                 <Box key={"Abox2" + index}>
@@ -191,7 +224,7 @@ function ReviewerGroupProposals(props) {
                   <Button
                     key={"Abutton1" + index}
                     onClick={() => {
-                      handleOpen(proposal._id);
+                      handleOpen(proposal._id, proposal.groupId);
                     }}
                   >
                     Comments

@@ -1,7 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import React, { useState } from "react";
-import { assignTask } from "../../api/api";
+import { assignTask, createNotification } from "../../api/api";
 import { useContext } from "react";
 import { ChatContext } from "../../context/ChatProvider";
 import { useLocation } from "react-router-dom";
@@ -33,7 +33,15 @@ function AssignTask(props) {
         assignedBy: user.id,
         assignedTo: location.state._id,
       });
-
+      if (data) {
+        const notif = await createNotification({
+          createdBy: user.id,
+          createdFor: location.state._id,
+          notification: "You have been assigned a new task",
+          notifType: "Task",
+        });
+        console.log(notif);
+      }
       alert("Task has been assigned");
     }
   };

@@ -10,7 +10,8 @@ import {
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { getEvents, createEvent } from "../../api/api";
 import React, { useEffect, useState } from "react";
-
+import { createNotification, createNotificationBroadcast } from "../../api/api";
+import { formatDate2, formatTimeAMPM2 } from "../../utils/common-utils";
 function EventManagement(props) {
   const [selectedEvent, setSelectedEvent] = useState("");
   const [startDate, setStartDate] = useState();
@@ -35,7 +36,24 @@ function EventManagement(props) {
           eDate: endDate,
         });
         console.log(data2);
-
+        if (data2.status === 200) {
+          const notif = await createNotificationBroadcast({
+            notification:
+              "Schedule for " +
+              selectedEvent +
+              " has been updated: " +
+              "Start Date: " +
+              formatDate2(startDate) +
+              ", " +
+              formatTimeAMPM2(startDate) +
+              "End Date: " +
+              formatDate2(endDate) +
+              ", " +
+              formatTimeAMPM2(endDate),
+            notifType: "FYP_Announcements",
+          });
+          console.log(notif);
+        }
         setBool(false);
       }
       setCheck(false);
