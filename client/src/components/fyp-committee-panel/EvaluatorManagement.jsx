@@ -177,8 +177,15 @@ function EvaluatorManagement(props) {
               return (
                 <Box>
                   <Typography>{group.gName.name}</Typography>
-                  <Typography>{group.aInterest}</Typography>
-                  <Typography>{group.dArea}</Typography>
+                  {group.aInterest.map((interest) => {
+                    return <Typography>{interest}</Typography>;
+                  })}
+                  {group.dArea.map((field) => {
+                    return <Typography>{field}</Typography>;
+                  })}
+                  {/* <Typography>{group.aInterest}</Typography> */}
+                  {/* <Typography>{group.dArea}</Typography> */}
+
                   <Button
                     onClick={() => {
                       handleOpen1(group);
@@ -228,8 +235,14 @@ function EvaluatorManagement(props) {
               return (
                 <Box>
                   <Typography>{group.gName.name}</Typography>
-                  <Typography>{group.aInterest}</Typography>
-                  <Typography>{group.dArea}</Typography>
+                  {group.aInterest.map((interest) => {
+                    return <Typography>{interest}</Typography>;
+                  })}
+                  {group.dArea.map((field) => {
+                    return <Typography>{field}</Typography>;
+                  })}
+                  {/* <Typography>{group.aInterest}</Typography>
+                  <Typography>{group.dArea}</Typography> */}
                   <Button
                     onClick={() => {
                       handleOpen2(group);
@@ -279,8 +292,14 @@ function EvaluatorManagement(props) {
               return (
                 <Box>
                   <Typography>{group.gName.name}</Typography>
-                  <Typography>{group.aInterest}</Typography>
-                  <Typography>{group.dArea}</Typography>
+                  {group.aInterest.map((interest) => {
+                    return <Typography>{interest}</Typography>;
+                  })}
+                  {group.dArea.map((field) => {
+                    return <Typography>{field}</Typography>;
+                  })}
+                  {/* <Typography>{group.aInterest}</Typography>
+                  <Typography>{group.dArea}</Typography> */}
                   <Button
                     onClick={() => {
                       handleOpen3(group);
@@ -321,11 +340,18 @@ function EvaluatorManagement(props) {
                         Total Number of Assigned Groups:{" "}
                         {evaluator.groupList.length}
                       </Typography>
+                      {/* {console.log(evaluator  )} */}
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -360,10 +386,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -398,10 +430,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -436,10 +474,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -484,10 +528,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -522,10 +572,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -560,10 +616,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -598,10 +660,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Development Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -646,10 +714,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -684,10 +758,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -722,10 +802,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {
@@ -760,10 +846,16 @@ function EvaluatorManagement(props) {
                         {evaluator.groupList.length}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Area of Interest: {evaluator._id.areaOfInterest}
+                        Area of Interest:{" "}
+                        {evaluator._id.areaOfInterest.map((interest) => {
+                          return <Typography>{interest}</Typography>;
+                        })}
                       </Typography>
                       <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                        Developmment Field: {evaluator._id.developmentField}
+                        Developmment Field:{" "}
+                        {evaluator._id.developmentField.map((field) => {
+                          return <Typography>{field}</Typography>;
+                        })}
                       </Typography>
                       <Button
                         onClick={() => {

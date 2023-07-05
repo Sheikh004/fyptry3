@@ -122,9 +122,14 @@ export const assignEvaluatorsForFypOne = async (req, res) => {
         if (
           allEvaluators.length != 0 &&
           allEvaluators[i]._id.toString() !== group.gSupervisorId &&
-          allEvaluators[i].populatedFaculty[0].developmentField.includes(
-            group.gDevelopmentArea
+          group.gDevelopmentArea.some((field) =>
+            allEvaluators[i].populatedFaculty[0].developmentField.includes(
+              field
+            )
           )
+          // allEvaluators[i].populatedFaculty[0].developmentField.includes(
+          //   group.gDevelopmentArea
+          // )
         ) {
           if (
             group.gAreaOfInterest.some((interest) =>
@@ -286,9 +291,14 @@ export const assignEvaluatorsForPreFyp = async (req, res) => {
         if (
           allEvaluators.length != 0 &&
           allEvaluators[i]._id.toString() !== group.gSupervisorId &&
-          allEvaluators[i].populatedFaculty[0].developmentField.includes(
-            group.gDevelopmentArea
+          group.gDevelopmentArea.some((field) =>
+            allEvaluators[i].populatedFaculty[0].developmentField.includes(
+              field
+            )
           )
+          // allEvaluators[i].populatedFaculty[0].developmentField.includes(
+          //   group.gDevelopmentArea
+          // )
         ) {
           if (
             group.gAreaOfInterest.some((interest) =>
@@ -450,9 +460,14 @@ export const assignEvaluatorsForFypTwo = async (req, res) => {
         if (
           allEvaluators.length != 0 &&
           allEvaluators[i]._id.toString() !== group.gSupervisorId &&
-          allEvaluators[i].populatedFaculty[0].developmentField.includes(
-            group.gDevelopmentArea
+          group.gDevelopmentArea.some((field) =>
+            allEvaluators[i].populatedFaculty[0].developmentField.includes(
+              field
+            )
           )
+          // allEvaluators[i].populatedFaculty[0].developmentField.includes(
+          //   group.gDevelopmentArea
+          // )
         ) {
           if (
             group.gAreaOfInterest.some((interest) =>

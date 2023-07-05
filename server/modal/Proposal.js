@@ -25,13 +25,12 @@ const proposalSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    areaOfInterest: [
-      {
-        type: String,
-      },
-    ],
+    areaOfInterest: {
+      type: [String],
+    },
+
     developmentArea: {
-      type: String,
+      type: [String],
     },
     reviewerStatus: {
       type: String,

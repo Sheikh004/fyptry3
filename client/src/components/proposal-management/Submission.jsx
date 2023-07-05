@@ -16,9 +16,13 @@ import {
   Box,
   Button,
   ButtonBase,
+  FormControlLabel,
+  FormGroup,
   Link,
   Typography,
   Modal,
+  Checkbox,
+  TextField,
 } from "@mui/material";
 import FileUploadIcon from "@mui/icons-material/FileUpload";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -168,27 +172,90 @@ function Submission(props) {
           style={{
             gcolor: "white",
             color: "black",
-            padding: "20px",
-            width: "50%",
+            // padding: "20px",
+            width: "90%",
+            height: "95%",
             margin: "auto",
-            marginTop: "20%",
+            marginTop: "1%",
             boxShadow: "0 2px 4px #28282B",
             borderRadius: "10px",
-            justifyContent: "center",
-            alignItems: "center",
+            // justifyContent: "center",
+            // alignItems: "center",
             textAlign: "center",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "center",
+            // justifyContent: "center",
             alignItems: "center",
-            padding: "20px",
+            paddingTop: "25px",
             borderRadius: "10px",
             backgroundColor: "white",
           }}
         >
-          <h1 style={{ color: "Black", borderRadius: "5px", width: "100%" }}>
-            FYP Proposal
-          </h1>
+          <h4>Project Details</h4>
+          <h5>Area of Interest </h5>
+
+          <Box
+            sx={{
+              display: "flex",
+              width: "auto",
+              height: "auto",
+              padding: "1%",
+            }}
+          >
+            <FormControlLabel control={<Checkbox />} label="Machine Learning" />
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Augmented Reality"
+            />
+            <FormControlLabel control={<Checkbox />} label="E-Commerce" />
+            <FormControlLabel control={<Checkbox />} label="Image Processing" />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "auto",
+              height: "auto",
+              padding: "1%",
+            }}
+          >
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Natural Language Processing"
+            />
+            <FormControlLabel control={<Checkbox />} label="Web 3.0" />
+            <FormControlLabel control={<Checkbox />} label="Virtual Reality" />
+            <FormControlLabel control={<Checkbox />} label="Game Development" />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "auto",
+              height: "auto",
+              paddingBottom: "3%",
+            }}
+          >
+            <TextField id="filled-basic" label="Other" variant="standard" />
+          </Box>
+          <h5>Development Area</h5>
+          <Box
+            sx={{
+              display: "flex",
+              width: "auto",
+              height: "auto",
+              padding: "1%",
+            }}
+          >
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Mobile Application Development"
+            />
+            <FormControlLabel
+              control={<Checkbox />}
+              label="System Application Development"
+            />
+            <FormControlLabel control={<Checkbox />} label="Web Development" />
+          </Box>
+          <h4 style={{ color: "Black", borderRadius: "5px" }}>FYP Proposal</h4>
           <br />
           {proposalPath && (
             <Box>

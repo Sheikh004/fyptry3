@@ -219,9 +219,14 @@ export const assignProposals = async (req, res) => {
           if (
             allReviewers.length != 0 &&
             allReviewers[i]._id !== proposal.supervisorId &&
-            allReviewers[i].populatedFaculty[0].developmentField.includes(
-              proposal.developmentArea
+            proposal.developmentArea.some((field) =>
+              allReviewers[i].populatedFaculty[0].developmentField.includes(
+                field
+              )
             )
+            // allReviewers[i].populatedFaculty[0].developmentField.includes(
+            //   proposal.developmentArea
+            // )
           ) {
             if (
               proposal.areaOfInterest.some((interest) =>
@@ -491,6 +496,7 @@ export const assignProposal = async (req, res) => {
         {
           $set: {
             isAssigned: true,
+            reviewerStatus: "Pending",
           },
         }
       );
@@ -511,6 +517,7 @@ export const unassignProposal = async (req, res) => {
       {
         $set: {
           isAssigned: false,
+          reviewerStatus: "Pending",
         },
       }
     );

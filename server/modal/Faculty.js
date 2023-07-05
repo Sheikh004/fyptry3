@@ -23,16 +23,14 @@ const facultySchema = new mongoose.Schema(
     role: {
       type: String,
     },
-    areaOfInterest: [
-      {
-        type: String,
-      },
-    ],
-    developmentField: [
-      {
-        type: String,
-      },
-    ],
+    areaOfInterest: {
+      type: [String],
+    },
+
+    developmentField: {
+      type: [String],
+    },
+
     activeStatus: {
       type: Boolean,
     },

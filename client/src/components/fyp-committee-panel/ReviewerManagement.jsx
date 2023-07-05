@@ -91,9 +91,17 @@ function ReviewerManagement(props) {
                       {proposal.filepath.split("--").pop()}
                     </Link>
                     <p>Development Area:</p>
-                    <p>{proposal.developmentArea}</p>
+                    <p>
+                      {proposal.developmentArea.map((field) => {
+                        return <Typography>{field}</Typography>;
+                      })}
+                    </p>
                     <p>Area of Interest</p>
-                    <p>{proposal.areaOfInterest}</p>
+                    <p>
+                      {proposal.areaOfInterest.map((interest) => {
+                        return <Typography>{interest}</Typography>;
+                      })}
+                    </p>
                     <p>Reviewer</p>
                     <p>Name: {reviewer._id.name}</p>
                     <p>Title: {reviewer._id.title}</p>
@@ -124,7 +132,11 @@ function ReviewerManagement(props) {
                 return <p>{area}</p>;
               })}
               <p>Development Area:</p>
-              <p>{proposal.developmentArea}</p>
+              <p>
+                {proposal.developmentArea.map((field) => {
+                  return <Typography>{field}</Typography>;
+                })}
+              </p>
               <p>Proposal:</p>
               <Link href={proposal.filepath}>
                 {proposal.filepath.split("--").pop()}
@@ -171,14 +183,19 @@ function ReviewerManagement(props) {
                                 id="modal-modal-description"
                                 sx={{ mt: 2 }}
                               >
-                                Area of Interest: {reviewer._id.areaOfInterest}
+                                Area of Interest:{" "}
+                                {reviewer._id.areaOfInterest.map((interest) => {
+                                  return <Typography>{interest}</Typography>;
+                                })}
                               </Typography>
                               <Typography
                                 id="modal-modal-description"
                                 sx={{ mt: 2 }}
                               >
                                 Developmment Field:{" "}
-                                {reviewer._id.developmentField}
+                                {reviewer._id.developmentField.map((field) => {
+                                  return <Typography>{field}</Typography>;
+                                })}
                               </Typography>
                               <Button
                                 onClick={() => {
@@ -222,14 +239,19 @@ function ReviewerManagement(props) {
                                 id="modal-modal-description"
                                 sx={{ mt: 2 }}
                               >
-                                Area of Interest: {reviewer._id.areaOfInterest}
+                                Area of Interest:{" "}
+                                {reviewer._id.areaOfInterest.map((interest) => {
+                                  return <Typography>{interest}</Typography>;
+                                })}
                               </Typography>
                               <Typography
                                 id="modal-modal-description"
                                 sx={{ mt: 2 }}
                               >
                                 Developmment Field:{" "}
-                                {reviewer._id.developmentField}
+                                {reviewer._id.developmentField.map((field) => {
+                                  return <Typography>{field}</Typography>;
+                                })}
                               </Typography>
                               <Button
                                 onClick={() => {
@@ -273,14 +295,19 @@ function ReviewerManagement(props) {
                                 id="modal-modal-description"
                                 sx={{ mt: 2 }}
                               >
-                                Area of Interest: {reviewer._id.areaOfInterest}
+                                Area of Interest:{" "}
+                                {reviewer._id.areaOfInterest.map((interest) => {
+                                  return <Typography>{interest}</Typography>;
+                                })}
                               </Typography>
                               <Typography
                                 id="modal-modal-description"
                                 sx={{ mt: 2 }}
                               >
                                 Developmment Field:{" "}
-                                {reviewer._id.developmentField}
+                                {reviewer._id.developmentField.map((field) => {
+                                  return <Typography>{field}</Typography>;
+                                })}
                               </Typography>
                               <Button
                                 onClick={() => {
@@ -324,14 +351,19 @@ function ReviewerManagement(props) {
                                 id="modal-modal-description"
                                 sx={{ mt: 2 }}
                               >
-                                Area of Interest: {reviewer._id.areaOfInterest}
+                                Area of Interest:{" "}
+                                {reviewer._id.areaOfInterest.map((interest) => {
+                                  return <Typography>{interest}</Typography>;
+                                })}
                               </Typography>
                               <Typography
                                 id="modal-modal-description"
                                 sx={{ mt: 2 }}
                               >
                                 Developmment Field:{" "}
-                                {reviewer._id.developmentField}
+                                {reviewer._id.developmentField.map((field) => {
+                                  return <Typography>{field}</Typography>;
+                                })}
                               </Typography>
                               <Button
                                 onClick={() => {
