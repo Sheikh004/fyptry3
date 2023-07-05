@@ -90,6 +90,7 @@ import {
   getActiveEvent,
   getEvents,
 } from "../controllers/event-controller.js";
+import { fetchPref, updatePref } from "../controllers/faculty-controller.js";
 // import { zoomAuth } from "../controllers/zoomController.js";
 
 const route = express.Router();
@@ -192,6 +193,8 @@ route.post(
   verifyToken,
   createNotificationBroadcast
 );
+route.post("/updatePref", verifyToken, updatePref);
+route.get("/fetchPref/:f_id", verifyToken, fetchPref);
 // route.post("/zoomAuth", zoomAuth);
 
 export default route;

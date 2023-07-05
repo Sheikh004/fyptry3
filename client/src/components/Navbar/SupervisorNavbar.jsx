@@ -99,6 +99,14 @@ function SupervisorNavbar(props) {
             >
               Help
             </Nav.Link>
+            <Nav.Link
+              as={NavLink}
+              to="/edit-preference"
+              className="nav-link-card"
+              activeClassName="active"
+            >
+              Edit Preference
+            </Nav.Link>
             <Nav.Link eventKey={2} href="#memes" className="nav-link-card">
               <FontAwesomeIcon icon={faUser} className="me-2" />
               Log out

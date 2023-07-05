@@ -1273,3 +1273,40 @@ export const getEvaluatorPreChatter = async (g_Id) => {
       console.error(error);
     });
 };
+
+export const updatePref = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  const decryptedBytes = CryptoJS.AES.decrypt(token, encryptionKey);
+  const decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
+  return await axios
+    .post(`${url}/updatePref`, data, {
+      headers: {
+        Authorization: `Bearer ${decryptedText}`,
+      },
+    })
+    .then((response) => {
+      console.log(response);
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export const fetchPref = async (id) => {
+  const token = sessionStorage.getItem("jwtToken");
+  const decryptedBytes = CryptoJS.AES.decrypt(token, encryptionKey);
+  const decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
+  return await axios
+    .get(`${url}/fetchPref/${id}`, {
+      headers: {
+        Authorization: `Bearer ${decryptedText}`,
+      },
+    })
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};

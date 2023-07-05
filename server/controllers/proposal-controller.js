@@ -95,6 +95,8 @@ export const createProposal = async (req, res) => {
           $set: {
             filepath: req.body.proposalsPath,
             status: "Pending",
+            developmentArea: req.body.developmentArea,
+            areaOfInterest: req.body.areaOfInterest,
           },
         },
         { returnOriginal: false }
@@ -109,6 +111,8 @@ export const createProposal = async (req, res) => {
         groupId: req.body.groupsId,
         filepath: req.body.proposalsPath,
         status: "Pending",
+        developmentArea: req.body.developmentArea,
+        areaOfInterest: req.body.areaOfInterest,
       });
       await newProposal.save();
       console.log(newProposal);

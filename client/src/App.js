@@ -35,6 +35,7 @@ import ReviewerGroupProposals from "./components/proposal-management/ReviewerGro
 import EvaluatorManagement from "./components/fyp-committee-panel/EvaluatorManagement";
 import EventManagement from "./components/fyp-committee-panel/EventManagement";
 import EvaluatorGroups from "./components/evaluation-management/EvaluatorGroups";
+import EditPreference from "./components/dashboards/EditPreference";
 
 function App() {
   return (
@@ -219,6 +220,7 @@ function App() {
                 </ProtectedEvaluator>
               }
             />
+            <Route path="/edit-preference" element={<EditPreference />} />
             <Route path="*" element={<Login />} />
           </Routes>
         </Router>

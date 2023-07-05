@@ -35,8 +35,13 @@ function Submission(props) {
   const [open, setOpen] = useState(false);
   const [comments, setComments] = useState([]);
   const [currentProposalId, setCurrentProposalId] = useState();
+
   // const [notification, setNotification] = useState("");
   // const [noti, setNoti] = useState(false);
+  const [fieldArray, setFieldArray] = useState([]);
+  const [interestArray, setInterestArray] = useState([]);
+
+  const [isDisabled, setIsDisabled] = useState();
   const [submittedProposal, setSubmittedProposal] = useState();
   const [isRemove, setIsRemove] = useState(false);
   const onFileChange = (e) => {
@@ -51,6 +56,41 @@ function Submission(props) {
     setOpen(false);
   };
 
+  const handleCheckChange = (event) => {
+    let { value, checked } = event.target;
+    if (checked) {
+      setInterestArray((prevInterestArray) => [...prevInterestArray, value]);
+    } else {
+      setInterestArray((prevInterestArray) =>
+        prevInterestArray.filter((option) => option !== value)
+      );
+    }
+  };
+  const handleFieldChange = (event2) => {
+    let { value, checked } = event2.target;
+    if (checked) {
+      setFieldArray((prevFieldArray) => [...prevFieldArray, value]);
+    } else {
+      setFieldArray((prevFieldArray) =>
+        prevFieldArray.filter((option) => option !== value)
+      );
+    }
+  };
+
+  useEffect(() => {
+    if (interestArray.length === 0) {
+      setIsDisabled(true);
+      // console.log("You need to atleast select 1 Area of Interest");
+    }
+    if (fieldArray.length === 0) {
+      setIsDisabled(true);
+      // console.log("You need to atleast select 1 Development Field");
+    }
+    if (interestArray.length > 0 && fieldArray.length > 0) {
+      setIsDisabled(false);
+    }
+  }, [interestArray, fieldArray]);
+
   useEffect(() => {
     const getExistingProposal = async () => {
       if (group) {
@@ -63,6 +103,10 @@ function Submission(props) {
         ) {
           setProposalPath(proposal.data.filepath);
           setCurrentProposalId(proposal.data._id);
+          setInterestArray(proposal.data.areaOfInterest);
+          setFieldArray(proposal.data.developmentArea);
+          console.log(proposal);
+          // setCurrentPref(proposal.data.)
         }
       }
     };
@@ -73,7 +117,7 @@ function Submission(props) {
     const fetchGroupComments = async () => {
       if (currentProposalId) {
         const gComments = await getGroupComments(currentProposalId);
-        console.log(gComments);
+        // console.log(gComments);
         if (gComments.status === 200) {
           setComments(gComments.data);
         }
@@ -133,6 +177,8 @@ function Submission(props) {
           groupName: group.name,
           supervisorsId: group.supervisorId,
           proposalsPath: proposalPath,
+          developmentArea: fieldArray,
+          areaOfInterest: interestArray,
         });
         setSubmittedProposal(data2.proposal);
         setCurrentProposalId(data2.proposal._id);
@@ -192,23 +238,12 @@ function Submission(props) {
           }}
         >
           <h4>Project Details</h4>
-          <h5>Area of Interest </h5>
 
-          <Box
-            sx={{
-              display: "flex",
-              width: "auto",
-              height: "auto",
-              padding: "1%",
-            }}
-          >
-            <FormControlLabel control={<Checkbox />} label="Machine Learning" />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Augmented Reality"
-            />
-            <FormControlLabel control={<Checkbox />} label="E-Commerce" />
-            <FormControlLabel control={<Checkbox />} label="Image Processing" />
+          <h5>Area of Interest </h5>
+          <Box sx={{ marginTop: "2%" }}>
+            {interestArray.length === 0 && (
+              <Typography>Please check atleast 1 Area of Interest</Typography>
+            )}
           </Box>
           <Box
             sx={{
@@ -219,12 +254,96 @@ function Submission(props) {
             }}
           >
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  value="machine-learning"
+                  onChange={handleCheckChange}
+                  checked={interestArray.includes("machine-learning")}
+                />
+              }
+              label="Machine Learning"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="augmented-reality"
+                  onChange={handleCheckChange}
+                  checked={interestArray.includes("augmented-reality")}
+                />
+              }
+              label="Augmented Reality"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="e-commerce"
+                  onChange={handleCheckChange}
+                  checked={interestArray.includes("e-commerce")}
+                />
+              }
+              label="E-Commerce"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="image-processing"
+                  onChange={handleCheckChange}
+                  checked={interestArray.includes("image-processing")}
+                />
+              }
+              label="Image Processing"
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              width: "auto",
+              height: "auto",
+              padding: "1%",
+            }}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="natural-language-processing"
+                  onChange={handleCheckChange}
+                  checked={interestArray.includes(
+                    "natural-language-processing"
+                  )}
+                />
+              }
               label="Natural Language Processing"
             />
-            <FormControlLabel control={<Checkbox />} label="Web 3.0" />
-            <FormControlLabel control={<Checkbox />} label="Virtual Reality" />
-            <FormControlLabel control={<Checkbox />} label="Game Development" />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="web-3"
+                  onChange={handleCheckChange}
+                  checked={interestArray.includes("web-3")}
+                />
+              }
+              label="Web 3.0"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="virtual-reality"
+                  onChange={handleCheckChange}
+                  checked={interestArray.includes("virtual-reality")}
+                />
+              }
+              label="Virtual Reality"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="game-development"
+                  onChange={handleCheckChange}
+                  checked={interestArray.includes("game-development")}
+                />
+              }
+              label="Game Development"
+            />
           </Box>
           <Box
             sx={{
@@ -234,9 +353,23 @@ function Submission(props) {
               paddingBottom: "3%",
             }}
           >
-            <TextField id="filled-basic" label="Other" variant="standard" />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="other"
+                  onChange={handleCheckChange}
+                  checked={interestArray.includes("other")}
+                />
+              }
+              label="Other"
+            />
           </Box>
           <h5>Development Area</h5>
+          <Box sx={{ marginTop: "2%" }}>
+            {fieldArray.length === 0 && (
+              <Typography>Please check atleast 1 Development Field</Typography>
+            )}
+          </Box>
           <Box
             sx={{
               display: "flex",
@@ -246,14 +379,40 @@ function Submission(props) {
             }}
           >
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  value="mobile-application-development"
+                  onChange={handleFieldChange}
+                  checked={fieldArray.includes(
+                    "mobile-application-development"
+                  )}
+                />
+              }
               label="Mobile Application Development"
             />
+            {/* {console.log(currentDA.includes("mobile-application-development"))} */}
             <FormControlLabel
-              control={<Checkbox />}
+              control={
+                <Checkbox
+                  value="system-application-development"
+                  onChange={handleFieldChange}
+                  checked={fieldArray.includes(
+                    "system-application-development"
+                  )}
+                />
+              }
               label="System Application Development"
             />
-            <FormControlLabel control={<Checkbox />} label="Web Development" />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  value="web-development"
+                  onChange={handleFieldChange}
+                  checked={fieldArray.includes("web-development")}
+                />
+              }
+              label="Web Development"
+            />
           </Box>
           <h4 style={{ color: "Black", borderRadius: "5px" }}>FYP Proposal</h4>
           <br />
@@ -271,8 +430,10 @@ function Submission(props) {
               </Button>
             </Box>
           )}
+
           <form
             method="post"
+            disabled={false}
             encType="multipart/form-data"
             style={{
               display: "flex",
@@ -300,6 +461,7 @@ function Submission(props) {
             <input
               type="file"
               name="files"
+              disabled={isDisabled}
               style={{ display: "none" }}
               id="fileInput2"
               onChange={(e) => onFileChange(e)}
@@ -307,6 +469,7 @@ function Submission(props) {
             <br />
             <br />
           </form>
+
           {proposalPath && <Button onClick={handleOpen}>View Comments</Button>}
 
           <Modal

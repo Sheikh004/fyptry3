@@ -58,9 +58,9 @@ function EvaluatorManagement(props) {
       let unOne = await getUnAssignedGroupsOne();
       let unPre = await getUnAssignedPreGroups();
       let unTwo = await getUnAssignedGroupsTwo();
-      console.log(unOne);
-      //   console.log(unPre);
-      //   console.log(unTwo);
+      // console.log(unOne);
+      // console.log(unPre);
+      // console.log(unTwo);
       setUnassignedGroupsOneList(unOne);
       setUnassignedGroupsPreList(unPre);
       setUnassignedGroupsTwoList(unTwo);
