@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/logo.png";
 
-function SupervisorNavbar(props) {
+function FypNavBar(props) {
   return (
     <Navbar
       collapseOnSelect
@@ -34,12 +34,12 @@ function SupervisorNavbar(props) {
         <Navbar.Brand style={{ paddingTop: "8px" }}>E-FYP</Navbar.Brand>
       </div>
 
-      <img
-        src="https://www.cornwallbusinessawards.co.uk/wp-content/uploads/2017/11/dummy450x450.jpg" // Use your imported logo image here
-        width="60"
-        height="60"
+      <FontAwesomeIcon
+        icon={faUser}
+        size="2x"
         className="d-inline-block align-top"
-        alt="Logo"
+        color="white"
+        style={{ paddingTop: "20px" }}
       />
       <h6
         style={{
@@ -58,55 +58,46 @@ function SupervisorNavbar(props) {
           <Nav className="flex-column">
             <Nav.Link
               as={NavLink}
-              to="/supervisor-dashboard"
+              to="/fyp-committee-dashboard"
               className="nav-link-card"
               activeClassName="active"
             >
               Home
             </Nav.Link>
+
             <Nav.Link
               as={NavLink}
-              to="/view-groups"
+              to="/reviewer-management"
               className="nav-link-card"
               activeClassName="active"
             >
-              Groups
+              Reviewer Management
             </Nav.Link>
             <Nav.Link
               as={NavLink}
-              to="/group-proposals"
+              to="/evaluator-management"
               className="nav-link-card"
               activeClassName="active"
             >
-              Proposals
+              Evaluator Management
             </Nav.Link>
             <Nav.Link
               as={NavLink}
-              to="/discussion"
+              to="/event-management"
               className="nav-link-card"
               activeClassName="active"
             >
-              Discussion
-            </Nav.Link>
-            {/* <Nav.Link as={NavLink} to="">
-              Announcement
-            </Nav.Link> */}
-            <Nav.Link
-              as={NavLink}
-              to="/view-help"
-              className="nav-link-card"
-              activeClassName="active"
-            >
-              Help
+              Event Manager
             </Nav.Link>
             <Nav.Link
               as={NavLink}
-              to="/edit-preference"
+              to="/template"
               className="nav-link-card"
               activeClassName="active"
             >
-              Edit Preference
+              Template Support
             </Nav.Link>
+
             <Nav.Link eventKey={2} href="/login" className="nav-link-card">
               <FontAwesomeIcon icon={faUser} className="me-2" />
               Log out
@@ -118,4 +109,4 @@ function SupervisorNavbar(props) {
   );
 }
 
-export default SupervisorNavbar;
+export default FypNavBar;

@@ -1,6 +1,8 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import IconButton from "@mui/material/IconButton";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import React from "react";
 
 function GroupMember({ student }) {
@@ -11,36 +13,20 @@ function GroupMember({ student }) {
   const navigateStudentDetails = () => {
     navigate("/student-details", { state: student });
   };
+
   return (
-    <Box>
+    <Box display="flex" alignItems="center">
       <Typography>{student.name}</Typography>
-      <Button
-        onClick={() => {
-          navigateStudentDetails(student);
-        }}
-      >
-        View Tasks
-      </Button>
-      <Button
+      <IconButton onClick={navigateStudentDetails} title="View Task">
+        <VisibilityIcon style={{ color: "black" }} />
+      </IconButton>
+      <IconButton
         onClick={navigateAssignTask}
         variant="outlined"
-        sx={{
-          bgcolor: "#052f72",
-          color: "white",
-          border: "1px solid #052f72",
-          borderRadius: "4px",
-          padding: "8px 16px",
-          fontWeight: "bold",
-          textTransform: "uppercase",
-          transition: "background-color 0.3s ease",
-          "&:hover": {
-            bgcolor: "white",
-            color: "#052f72",
-          },
-        }}
+        title="Assign Task"
       >
-        Assign New Task
-      </Button>
+        <AssignmentIcon style={{ color: "black" }} />
+      </IconButton>
     </Box>
   );
 }

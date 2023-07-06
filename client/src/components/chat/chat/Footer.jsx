@@ -5,7 +5,7 @@ import { Box, styled, InputBase } from "@mui/material";
 
 const Container = styled(Box)`
   height: 100%;
-  background: #052f72;
+  background: black;
   width: 100%;
   display: flex;
   align-items: center;

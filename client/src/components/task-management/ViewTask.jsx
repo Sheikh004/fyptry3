@@ -114,13 +114,15 @@ function ViewTask(props) {
   };
 
   return (
-    <Box sx={{ bgcolor: "#0B2B40", color: "white", minHeight: "100vh" }}>
-      {console.log(tasks)}
-      <NavBar />
+    <Box sx={{ display: "flex", height: "100vh", background: "lightgrey" }}>
+      <Box sx={{ width: "20%", backgroundColor: "#28282B" }}>
+        <NavBar />
+      </Box>
       <Box
         sx={{
-          bgcolor: "#6A0572",
-          color: "white",
+          bgcolor: "white",
+          borderRadius: "10px",
+          color: "black",
           padding: "20px",
           width: { xs: "100%", sm: "100%", md: "100%", lg: "100%" },
           margin: "20px auto",
@@ -128,120 +130,163 @@ function ViewTask(props) {
           maxWidth: { xs: "100%", sm: "90%", md: "70%", lg: "50%" },
         }}
       >
-        <Typography variant="h6">Title</Typography>
-        <Typography>{location.state.title}</Typography>
-        <Typography variant="h6">Description</Typography>
-        <Typography>{location.state.description}</Typography>
-        <Typography variant="h6">Due Date</Typography>
-        <Typography>Date: {formatDate2(location.state.deadline)}</Typography>
-        <Typography>
-          Time: {formatTimeAMPM2(location.state.deadline)}
-        </Typography>
-        {user.type === "Student" && tasks && tasks.taskStatus === "Pending" && (
-          <Box>
-            {" "}
-            <label htmlFor="fileInput">Upload</label>
-            <form method="post" encType="multipart/form-data">
-              <input
-                type="file"
-                name="files"
-                multiple
-                style={{ display: "none" }}
-                id="fileInput"
-                onChange={(e) => onFileChange(e)}
-              />
-            </form>
-          </Box>
-        )}
-        {user.type === "Student" && tasks && tasks.taskStatus === "Pending" && (
-          <Button onClick={handleUploadTask}>Submit Task</Button>
-        )}{" "}
-        {user.type === "Student" &&
-          tasks &&
-          tasks.taskStatus === "Completed" && (
-            <Button onClick={handleUnUploadTask}>Unsubmit Task</Button>
-          )}
-        <Box>
-          {tasks &&
-            tasks.filespaths.length !== 0 &&
-            tasks.filespaths.map((task, index) => {
-              return (
-                <Box>
-                  <Link href={task} target="_blank" rel="noopener" key={index}>
-                    {task.split("--").pop()}
-                  </Link>
-                  {tasks.taskStatus === "Pending" && (
-                    <Button
-                      key={"remove file" + index}
-                      onClick={() => {
-                        handleRemoveFile(tasks._id, task);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  )}
-                </Box>
-              );
-            })}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            paddingTop: "20px",
+          }}
+        >
+          <Typography variant="h4">"{location.state.title}"</Typography>
+          <Typography>
+            {formatDate2(location.state.deadline)} -{" "}
+            {formatTimeAMPM2(location.state.deadline)}
+          </Typography>
         </Box>
-      </Box>
-      <Box sx={{ backgroundColor: "white" }}>
-        <Typography sx={{ color: "black" }}>Comments</Typography>
-        <Box>
-          <div>
-            {comments.length !== 0 &&
-              comments.map((comment, index) => (
-                <Box key={"Box" + index}>
-                  {comment.senderId === user.id && (
-                    <Typography color="black">{user.type}</Typography>
-                  )}
-                  <Typography
-                    key={"text" + index}
-                    variant="body1"
-                    gutterBottom
-                    color="black"
-                  >
-                    {comment.text}
-                  </Typography>
-                  <Typography key={"time" + index} color="black">
-                    {formatTimeAMPM2(comment.createdAt)},
-                    {formatDate2(comment.createdAt)}
-                  </Typography>
-                  {comment.senderId === user.id && (
-                    <Button
-                      key={"delete" + index}
-                      onClick={() => {
-                        handleDeleteComment(comment._id);
-                      }}
-                    >
-                      Delete
-                    </Button>
-                  )}
-                </Box>
-              ))}
-          </div>
 
-          <TextField
-            name="comment"
-            label="Add a comment"
-            variant="outlined"
-            fullWidth
-            value={commentValue}
-            margin="normal"
-            onChange={(e) => {
-              setCommentValue(e.target.value);
-            }}
-          ></TextField>
-          <Button
-            onClick={() => {
-              setSubmit(true);
-            }}
-            variant="contained"
-            color="primary"
-          >
-            Add comment
-          </Button>
+        <Typography style={{ paddingTop: "30px", paddingBottom: "30px" }}>
+          Description: {location.state.description}
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          {user.type === "Student" &&
+            tasks &&
+            tasks.taskStatus === "Pending" && (
+              <Box sx={{ marginRight: "10px" }}>
+                <label htmlFor="fileInput">
+                  <Button
+                    component="span"
+                    variant="contained"
+                    color="primary"
+                    style={{ cursor: "pointer" }}
+                  >
+                    Upload
+                  </Button>
+                </label>
+                <form method="post" encType="multipart/form-data">
+                  <input
+                    type="file"
+                    name="files"
+                    multiple
+                    style={{ display: "none" }}
+                    id="fileInput"
+                    onChange={(e) => onFileChange(e)}
+                  />
+                </form>
+              </Box>
+            )}
+
+          {user.type === "Student" &&
+            tasks &&
+            tasks.taskStatus === "Pending" && (
+              <Button
+                onClick={handleUploadTask}
+                variant="contained"
+                color="primary"
+                style={{ marginLeft: "10px" }}
+              >
+                Submit Task
+              </Button>
+            )}
+
+          {user.type === "Student" &&
+            tasks &&
+            tasks.taskStatus === "Completed" && (
+              <Button
+                onClick={handleUnUploadTask}
+                variant="contained"
+                color="primary"
+                style={{ marginLeft: "10px" }}
+              >
+                Unsubmit Task
+              </Button>
+            )}
+
+          <Box>
+            {tasks &&
+              tasks.filespaths.length !== 0 &&
+              tasks.filespaths.map((task, index) => {
+                return (
+                  <Box key={index}>
+                    <Link href={task} target="_blank" rel="noopener">
+                      {task.split("--").pop()}
+                    </Link>
+                    {tasks.taskStatus === "Pending" && (
+                      <Button
+                        key={"remove file" + index}
+                        onClick={() => {
+                          handleRemoveFile(tasks._id, task);
+                        }}
+                        style={{ marginLeft: "10px" }}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </Box>
+                );
+              })}
+          </Box>
         </Box>
+        {/* 
+        <Box sx={{ backgroundColor: "white", paddingTop: "200px" }}>
+          <Typography sx={{ color: "black" }}>Comments</Typography>
+          <Box>
+            <div>
+              {comments.length !== 0 &&
+                comments.map((comment, index) => (
+                  <Box key={"Box" + index}>
+                    {comment.senderId === user.id && (
+                      <Typography color="black">{user.type}</Typography>
+                    )}
+                    <Typography
+                      key={"text" + index}
+                      variant="body1"
+                      gutterBottom
+                      color="black"
+                    >
+                      {comment.text}
+                    </Typography>
+                    <Typography key={"time" + index} color="black">
+                      {formatTimeAMPM2(comment.createdAt)},
+                      {formatDate2(comment.createdAt)}
+                    </Typography>
+                    {comment.senderId === user.id && (
+                      <Button
+                        key={"delete" + index}
+                        onClick={() => {
+                          handleDeleteComment(comment._id);
+                        }}
+                        variant="contained"
+                        sx={{ backgroundColor: "primary.main" }}
+                      >
+                        Delete
+                      </Button>
+                    )}
+                  </Box>
+                ))}
+            </div>
+
+            <TextField
+              name="comment"
+              label="Add a comment"
+              variant="outlined"
+              fullWidth
+              value={commentValue}
+              margin="normal"
+              onChange={(e) => {
+                setCommentValue(e.target.value);
+              }}
+            ></TextField>
+            <Button
+              onClick={() => {
+                setSubmit(true);
+              }}
+              variant="contained"
+              color="primary"
+            >
+              Add comment
+            </Button>
+          </Box>
+        </Box> */}
       </Box>
     </Box>
   );

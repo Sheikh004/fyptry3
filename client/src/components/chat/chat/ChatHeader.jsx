@@ -6,7 +6,7 @@ import { Search, MoreVert } from "@mui/icons-material";
 
 const Header = styled(Box)`
   height: 44px;
-  background: #052f72;
+  background: black;
   display: flex;
   padding: 8px 16px;
   align-items: center;
@@ -25,6 +25,7 @@ const Image = styled("img")({
 
 const Name = styled(Typography)`
   margin-left: 12px !important;
+  color: white;
 `;
 
 const RightContainer = styled(Box)`
@@ -32,7 +33,7 @@ const RightContainer = styled(Box)`
   & > svg {
     padding: 8px;
     font-size: 22px;
-    color: #000;
+    color: grey;
   }
 `;
 

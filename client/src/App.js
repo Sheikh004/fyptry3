@@ -8,6 +8,7 @@ import ProtectedStudent from "./components/protected/ProtectedStudent";
 import ProtectedSupervisor from "./components/protected/ProtectedSupervisor";
 import ProtectedUser from "./components/protected/ProtectedUser";
 import ProtectedReviewer from "./components/protected/ProtectedReviewer";
+import ProtectedFaculty from "./components/protected/ProtectedFaculty";
 import ProtectedFYPCommittee from "./components/protected/ProtectedFYPCommittee";
 import ProtectedEvaluator from "./components/protected/ProtectedEvaluator";
 import ChatProvider from "./context/ChatProvider";
@@ -36,6 +37,9 @@ import EvaluatorManagement from "./components/fyp-committee-panel/EvaluatorManag
 import EventManagement from "./components/fyp-committee-panel/EventManagement";
 import EvaluatorGroups from "./components/evaluation-management/EvaluatorGroups";
 import EditPreference from "./components/dashboards/EditPreference";
+import Template from "./components/template-management/Template";
+import TemplateList from "./components/template-management/TemplateList";
+import FypCommDashboard from "./components/dashboards/FypCommDashboard";
 
 function App() {
   return (
@@ -168,7 +172,7 @@ function App() {
               path="/fyp-committee-dashboard"
               element={
                 <ProtectedFYPCommittee>
-                  <FYPComHome />
+                  <FypCommDashboard />
                 </ProtectedFYPCommittee>
               }
             />
@@ -220,7 +224,30 @@ function App() {
                 </ProtectedEvaluator>
               }
             />
-            <Route path="/edit-preference" element={<EditPreference />} />
+            <Route
+              path="/edit-preference"
+              element={
+                <ProtectedFaculty>
+                  <EditPreference />
+                </ProtectedFaculty>
+              }
+            />
+            <Route
+              path="/template-list"
+              element={
+                <ProtectedStudent>
+                  <TemplateList />
+                </ProtectedStudent>
+              }
+            />
+            <Route
+              path="/template"
+              element={
+                <ProtectedFYPCommittee>
+                  <Template />
+                </ProtectedFYPCommittee>
+              }
+            />
             <Route path="*" element={<Login />} />
           </Routes>
         </Router>

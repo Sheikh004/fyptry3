@@ -70,12 +70,14 @@ function RegisterGroup(props) {
     console.log(groupLeader);
   };
   return (
-    <Box>
-      <SupervisorNavbar />
+    <Box sx={{ display: "flex", height: "100vh", backgroundColor: "white" }}>
+      <Box sx={{ width: "20%", backgroundColor: "#28282B" }}>
+        <SupervisorNavbar />
+      </Box>
       <Box
         sx={{
-          bgcolor: "#0B2B40",
-          height: "100vh",
+          bgcolor: "white",
+          width: "80%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -83,16 +85,17 @@ function RegisterGroup(props) {
       >
         <Box
           sx={{
-            bgcolor: "purple",
-            width: { xs: "90%", sm: "70%", md: "50%", lg: "50%" },
+            bgcolor: "lightgrey",
+            width: "80%",
             paddingLeft: { xs: "10px", md: "100px" },
             paddingRight: { xs: "10px", md: "100px" },
             paddingTop: "20px",
             paddingBottom: "30px",
+            borderRadius: "20px",
           }}
         >
           <Box>
-            <Typography sx={{ color: "white" }}>Enter Group Name</Typography>
+            <Typography sx={{ color: "black" }}>Enter Group Name</Typography>
             <TextField
               sx={{ bgcolor: "white", width: "100%" }}
               id="group-name"
@@ -115,7 +118,7 @@ function RegisterGroup(props) {
                 {Array.from({ length: memberNumber }, (_, i) => {
                   return (
                     <Box key={i.toString()}>
-                      <Typography sx={{ color: "white" }}>
+                      <Typography sx={{ color: "black" }}>
                         Enter Email Address of Student
                       </Typography>
                       <TextField
@@ -129,7 +132,7 @@ function RegisterGroup(props) {
                         }}
                       ></TextField>
                       <FormControlLabel
-                        sx={{ color: "white" }}
+                        sx={{ color: "black" }}
                         value={members[i]}
                         control={<Radio />}
                         label="Assign Group Leader"

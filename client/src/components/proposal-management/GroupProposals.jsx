@@ -363,20 +363,39 @@ function GroupProposals(props) {
             style={{
               position: "absolute",
               top: "50%",
-              height: "auto",
               left: "50%",
               transform: "translate(-50%, -50%)",
               width: 400,
               bgcolor: "background.paper",
               boxShadow: 24,
-              p: 4,
+              padding: "14px",
+              backgroundColor: "white",
+              margin: "10px",
             }}
           >
-            <Typography variant="h5" gutterBottom>
+            <Typography
+              sx={{
+                textAlign: "center",
+                fontFamily: "bold",
+                color: "white",
+                bgcolor: "blue",
+                borderRadius: "10px",
+                padding: "5px",
+                margin: "10px",
+              }}
+              variant="h5"
+              gutterBottom
+            >
               Comments
             </Typography>
 
-            <div>
+            <div
+              style={{
+                padding: "10px",
+                border: "1px solid lightgray",
+                borderRadius: "5px",
+              }}
+            >
               {comments &&
                 comments.length !== 0 &&
                 comments.map((comment, index) => (
@@ -390,21 +409,31 @@ function GroupProposals(props) {
                     )}
 
                     <Typography
+                      key={"time" + index}
+                      style={{
+                        fontSize: "12px",
+                        paddingTop: "10px",
+                        paddingBottom: "10px",
+                      }}
+                    >
+                      {formatTimeAMPM2(comment.createdAt)},
+                      {formatDate2(comment.createdAt)}
+                    </Typography>
+
+                    <Typography
                       key={"text" + index}
                       variant="body1"
                       gutterBottom
                     >
-                      {comment.text}
+                      "{comment.text}""
                     </Typography>
-                    <Typography key={"time" + index}>
-                      {formatTimeAMPM2(comment.createdAt)},
-                      {formatDate2(comment.createdAt)}
-                    </Typography>
+
                     <Button
                       key={"delete" + index}
                       onClick={() => {
                         handleDeleteComment(comment._id);
                       }}
+                      style={{ backgroundColor: "red", color: "white" }}
                     >
                       Delete
                     </Button>

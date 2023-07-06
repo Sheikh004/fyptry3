@@ -1,10 +1,12 @@
 import React from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import FypNavBar from "../Navbar/FypNavBar";
 function FYPComHome(props) {
   const navigate = useNavigate();
   return (
     <div>
+      <FypNavBar />
       <p>Hi! this is admin panel homepage</p>
       <Button
         onClick={() => {

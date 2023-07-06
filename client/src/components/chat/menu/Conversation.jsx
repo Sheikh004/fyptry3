@@ -17,6 +17,7 @@ const ChatName = styled(Typography)`
   display: block;
   color: rgba(0, 0, 0, 0.6);
   font-size: 14px;
+  color: "black";
 `;
 
 const GroupChatName = styled(Typography)`
@@ -24,7 +25,7 @@ const GroupChatName = styled(Typography)`
   color: rgba(0, 0, 0, 0.6);
   font-size: 15px;
   margin-left: 20px;
-  color: white;
+  color: black;
   font-weight: bold;
   fontfamily: "Geneva";
 `;
@@ -35,7 +36,7 @@ const PersonalChatName = styled(Typography)`
   color: rgba(0, 0, 0, 0.6);
   font-size: 15px;
   // margin-left: 30px;
-  color: white;
+  color: black;
   border-radius: 50%;
   padding: 5px;
   width: 20vw;

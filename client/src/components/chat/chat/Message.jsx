@@ -17,7 +17,7 @@ word-break: break-word;
 `;
 
 const Own = styled(Box)`
-  background: #81007f;
+  background: lightgrey;
   padding: 5px;
   max-width: 60%;
   width: fit-content;
@@ -31,7 +31,7 @@ const Own = styled(Box)`
 const Text = styled(Typography)`
   font-size: 14px;
   padding: 0 25px 0 5px;
-  color: white;
+  color: black;
 `;
 
 const Time = styled(Typography)`

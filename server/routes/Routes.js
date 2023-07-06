@@ -91,6 +91,11 @@ import {
   getEvents,
 } from "../controllers/event-controller.js";
 import { fetchPref, updatePref } from "../controllers/faculty-controller.js";
+import {
+  createTemplate,
+  fetchTemplate,
+} from "../controllers/template-controller.js";
+import { grade } from "../controllers/gradeController.js";
 // import { zoomAuth } from "../controllers/zoomController.js";
 
 const route = express.Router();
@@ -195,6 +200,9 @@ route.post(
 );
 route.post("/updatePref", verifyToken, updatePref);
 route.get("/fetchPref/:f_id", verifyToken, fetchPref);
+route.post("/template", upload2.single("image"), createTemplate);
+route.get("/fetchTemplate", fetchTemplate);
+route.post("/grade", verifyToken, grade);
 // route.post("/zoomAuth", zoomAuth);
 
 export default route;

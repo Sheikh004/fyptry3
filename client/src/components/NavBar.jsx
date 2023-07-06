@@ -90,12 +90,12 @@ function NavBar(props) {
                 Discussion
               </Nav.Link>
               {/* <Nav.Link as={NavLink} to="">Announcement</Nav.Link> */}
-              <Nav.Link as={NavLink} to="/view-help">
-                Help
+              <Nav.Link as={NavLink} to="/template-list">
+                Template
               </Nav.Link>
               {/* <Nav.Link as={NavLink} to="">Resources</Nav.Link> */}
 
-              <Nav.Link eventKey={2} href="#memes" className="nav-link-card">
+              <Nav.Link eventKey={2} href="/login" className="nav-link-card">
                 <FontAwesomeIcon icon={faUser} className="me-2" />
                 Log out
               </Nav.Link>

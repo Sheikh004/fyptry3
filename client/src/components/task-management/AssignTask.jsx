@@ -1,7 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import React, { useState } from "react";
-import { assignTask, createNotification } from "../../api/api";
+import { assignTask } from "../../api/api";
 import { useContext } from "react";
 import { ChatContext } from "../../context/ChatProvider";
 import { useLocation } from "react-router-dom";
@@ -33,15 +33,7 @@ function AssignTask(props) {
         assignedBy: user.id,
         assignedTo: location.state._id,
       });
-      if (data) {
-        const notif = await createNotification({
-          createdBy: user.id,
-          createdFor: location.state._id,
-          notification: "You have been assigned a new task",
-          notifType: "Task",
-        });
-        console.log(notif);
-      }
+
       alert("Task has been assigned");
     }
   };
@@ -60,7 +52,9 @@ function AssignTask(props) {
           borderRadius: "15px", // Added borderRadius property
         }}
       >
-        <Typography variant="h6">Enter Title of Task</Typography>
+        <Typography variant="h6" style={{ color: "black" }}>
+          Enter Title of Task
+        </Typography>
         <TextField
           multiline
           rows={1}
@@ -73,7 +67,9 @@ function AssignTask(props) {
           }} // Added borderRadius property
         />
 
-        <Typography variant="h6">Enter Task Description</Typography>
+        <Typography variant="h6" style={{ color: "black" }}>
+          Enter Task Description
+        </Typography>
         <TextField
           multiline
           rows={13}
@@ -86,7 +82,9 @@ function AssignTask(props) {
           }} // Added borderRadius property
         />
 
-        <Typography variant="h6">Enter Due Date of Task</Typography>
+        <Typography variant="h6" style={{ color: "black" }}>
+          Enter Due Date of Task
+        </Typography>
         <DateTimePicker
           onChange={handleDueDateChange}
           sx={{

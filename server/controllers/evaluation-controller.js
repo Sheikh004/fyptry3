@@ -342,172 +342,172 @@ export const assignEvaluatorsForPreFyp = async (req, res) => {
   // }
 };
 
-export const assignEvaluatorsForFypTwo = async (req, res) => {
-  const proposals = await Proposal.find({
-    reviewerStatus: "Approved",
-  });
-  const groups = await Group.find(
-    { $and: [{ isAssignedTwo: false }, { isApprovedPre: "Approved" }] },
-    { _id: 1 }
-  );
-  const faculty = await Faculty.find({ activeStatus: true });
-  const groupArr = [];
-  groups.map((group) => groupArr.push(group._id.toString()));
-  const filteredGroups = [];
-  proposals.forEach((proposal) => {
-    if (groupArr.includes(proposal.groupId.toString()))
-      filteredGroups.push({
-        groupID: proposal.groupId.toString(),
-        gDevelopmentArea: proposal.developmentArea,
-        gAreaOfInterest: proposal.areaOfInterest,
-        gSupervisorId: proposal.supervisorId.toString(),
-        proposalPath: proposal.filepath,
-      });
-  });
+// export const assignEvaluatorsForFypTwo = async (req, res) => {
+//   const proposals = await Proposal.find({
+//     reviewerStatus: "Approved",
+//   });
+//   const groups = await Group.find(
+//     { $and: [{ isAssignedTwo: false }, { isApprovedPre: "Approved" }] },
+//     { _id: 1 }
+//   );
+//   const faculty = await Faculty.find({ activeStatus: true });
+//   const groupArr = [];
+//   groups.map((group) => groupArr.push(group._id.toString()));
+//   const filteredGroups = [];
+//   proposals.forEach((proposal) => {
+//     if (groupArr.includes(proposal.groupId.toString()))
+//       filteredGroups.push({
+//         groupID: proposal.groupId.toString(),
+//         gDevelopmentArea: proposal.developmentArea,
+//         gAreaOfInterest: proposal.areaOfInterest,
+//         gSupervisorId: proposal.supervisorId.toString(),
+//         proposalPath: proposal.filepath,
+//       });
+//   });
 
-  // console.log(filteredGroups);
-  const evaluatorList = await EvaluatorTwo.find({}, { _id: 1 });
+//   // console.log(filteredGroups);
+//   const evaluatorList = await EvaluatorTwo.find({}, { _id: 1 });
 
-  const evaluators = [];
+//   const evaluators = [];
 
-  evaluatorList.map((evaluator) => evaluators.push(evaluator._id.toString()));
+//   evaluatorList.map((evaluator) => evaluators.push(evaluator._id.toString()));
 
-  const filteredFaculty = faculty.filter((member) => {
-    if (!evaluators.includes(member._id.toString())) return member;
-  });
+//   const filteredFaculty = faculty.filter((member) => {
+//     if (!evaluators.includes(member._id.toString())) return member;
+//   });
 
-  await Promise.all(
-    filteredFaculty.map(async (faculty) => {
-      let addEvaluator = new EvaluatorTwo({
-        _id: faculty._id,
-      });
-      await addEvaluator.save();
-      return addEvaluator;
-    })
-  );
-  // console.log(result);
-  // if (result) {
-  const aggregatedEvaluator = await EvaluatorTwo.aggregate([
-    {
-      $addFields: {
-        groupNo: { $size: "$groupList" },
-      },
-    },
-    {
-      $sort: { groupNo: 1 },
-    },
-    {
-      $lookup: {
-        from: "faculties", // Name of the referenced collection
-        localField: "_id",
-        foreignField: "_id",
-        as: "populatedFaculty",
-      },
-    },
-  ]);
-  // console.log(aggregatedEvaluator);
-  const lecturers = aggregatedEvaluator.filter((evaluator) => {
-    if (
-      evaluator.populatedFaculty[0].title == "Lecturer" &&
-      evaluator.populatedFaculty[0].role !== "HOD" &&
-      evaluator.populatedFaculty[0].role !== "DCO"
-    )
-      //   console.log(evaluator.proposalNo);
-      // evaluator.proposalNo += 1;
-      return evaluator;
-  });
-  // console.log(lecturers);
-  const assistantProfessors = aggregatedEvaluator.filter((evaluator) => {
-    if (
-      evaluator.populatedFaculty[0].title == "Assistant Professor" &&
-      evaluator.populatedFaculty[0].role !== "HOD" &&
-      evaluator.populatedFaculty[0].role !== "DCO"
-    )
-      return evaluator;
-  });
+//   await Promise.all(
+//     filteredFaculty.map(async (faculty) => {
+//       let addEvaluator = new EvaluatorTwo({
+//         _id: faculty._id,
+//       });
+//       await addEvaluator.save();
+//       return addEvaluator;
+//     })
+//   );
+//   // console.log(result);
+//   // if (result) {
+//   const aggregatedEvaluator = await EvaluatorTwo.aggregate([
+//     {
+//       $addFields: {
+//         groupNo: { $size: "$groupList" },
+//       },
+//     },
+//     {
+//       $sort: { groupNo: 1 },
+//     },
+//     {
+//       $lookup: {
+//         from: "faculties", // Name of the referenced collection
+//         localField: "_id",
+//         foreignField: "_id",
+//         as: "populatedFaculty",
+//       },
+//     },
+//   ]);
+//   // console.log(aggregatedEvaluator);
+//   const lecturers = aggregatedEvaluator.filter((evaluator) => {
+//     if (
+//       evaluator.populatedFaculty[0].title == "Lecturer" &&
+//       evaluator.populatedFaculty[0].role !== "HOD" &&
+//       evaluator.populatedFaculty[0].role !== "DCO"
+//     )
+//       //   console.log(evaluator.proposalNo);
+//       // evaluator.proposalNo += 1;
+//       return evaluator;
+//   });
+//   // console.log(lecturers);
+//   const assistantProfessors = aggregatedEvaluator.filter((evaluator) => {
+//     if (
+//       evaluator.populatedFaculty[0].title == "Assistant Professor" &&
+//       evaluator.populatedFaculty[0].role !== "HOD" &&
+//       evaluator.populatedFaculty[0].role !== "DCO"
+//     )
+//       return evaluator;
+//   });
 
-  const pHDAssistantProfessors = aggregatedEvaluator.filter((evaluator) => {
-    if (
-      evaluator.populatedFaculty[0].title == "PHD Assistant Professor" &&
-      evaluator.populatedFaculty[0].role !== "HOD" &&
-      evaluator.populatedFaculty[0].role !== "DCO"
-    )
-      return evaluator;
-  });
-  const associateProfessors = aggregatedEvaluator.filter((evaluator) => {
-    if (
-      evaluator.populatedFaculty[0].title == "Associate Professor" &&
-      evaluator.populatedFaculty[0].role !== "HOD" &&
-      evaluator.populatedFaculty[0].role !== "DCO"
-    )
-      return evaluator;
-  });
-  const allEvaluators = [
-    ...lecturers,
-    ...assistantProfessors,
-    ...pHDAssistantProfessors,
-    ...associateProfessors,
-  ];
-  // console.log(allEvaluators);
-  const data = await Promise.all(
-    filteredGroups.map(async (group) => {
-      // console.log(group);
-      allEvaluators.sort((a, b) => a.groupNo - b.groupNo);
-      // console.log(allEvaluators);
-      for (let i = 0; i < allEvaluators.length; i++) {
-        // console.log(group);
-        // console.log(allEvaluators[i].populatedFaculty[0].developmentField);
-        if (
-          allEvaluators.length != 0 &&
-          allEvaluators[i]._id.toString() !== group.gSupervisorId &&
-          group.gDevelopmentArea.some((field) =>
-            allEvaluators[i].populatedFaculty[0].developmentField.includes(
-              field
-            )
-          )
-          // allEvaluators[i].populatedFaculty[0].developmentField.includes(
-          //   group.gDevelopmentArea
-          // )
-        ) {
-          if (
-            group.gAreaOfInterest.some((interest) =>
-              allEvaluators[i].populatedFaculty[0].areaOfInterest.includes(
-                interest
-              )
-            )
-          ) {
-            console.log(group);
-            let arr = allEvaluators[i].groupList;
-            arr.push(group.groupID);
-            console.log(arr);
+//   const pHDAssistantProfessors = aggregatedEvaluator.filter((evaluator) => {
+//     if (
+//       evaluator.populatedFaculty[0].title == "PHD Assistant Professor" &&
+//       evaluator.populatedFaculty[0].role !== "HOD" &&
+//       evaluator.populatedFaculty[0].role !== "DCO"
+//     )
+//       return evaluator;
+//   });
+//   const associateProfessors = aggregatedEvaluator.filter((evaluator) => {
+//     if (
+//       evaluator.populatedFaculty[0].title == "Associate Professor" &&
+//       evaluator.populatedFaculty[0].role !== "HOD" &&
+//       evaluator.populatedFaculty[0].role !== "DCO"
+//     )
+//       return evaluator;
+//   });
+//   const allEvaluators = [
+//     ...lecturers,
+//     ...assistantProfessors,
+//     ...pHDAssistantProfessors,
+//     ...associateProfessors,
+//   ];
+//   // console.log(allEvaluators);
+//   const data = await Promise.all(
+//     filteredGroups.map(async (group) => {
+//       // console.log(group);
+//       allEvaluators.sort((a, b) => a.groupNo - b.groupNo);
+//       // console.log(allEvaluators);
+//       for (let i = 0; i < allEvaluators.length; i++) {
+//         // console.log(group);
+//         // console.log(allEvaluators[i].populatedFaculty[0].developmentField);
+//         if (
+//           allEvaluators.length != 0 &&
+//           allEvaluators[i]._id.toString() !== group.gSupervisorId &&
+//           group.gDevelopmentArea.some((field) =>
+//             allEvaluators[i].populatedFaculty[0].developmentField.includes(
+//               field
+//             )
+//           )
+//           // allEvaluators[i].populatedFaculty[0].developmentField.includes(
+//           //   group.gDevelopmentArea
+//           // )
+//         ) {
+//           if (
+//             group.gAreaOfInterest.some((interest) =>
+//               allEvaluators[i].populatedFaculty[0].areaOfInterest.includes(
+//                 interest
+//               )
+//             )
+//           ) {
+//             console.log(group);
+//             let arr = allEvaluators[i].groupList;
+//             arr.push(group.groupID);
+//             console.log(arr);
 
-            let data2 = await Group.findOneAndUpdate(
-              { _id: group.groupID },
-              {
-                $set: {
-                  isAssignedTwo: true,
-                },
-              },
-              { returnOriginal: false }
-            );
+//             let data2 = await Group.findOneAndUpdate(
+//               { _id: group.groupID },
+//               {
+//                 $set: {
+//                   isAssignedTwo: true,
+//                 },
+//               },
+//               { returnOriginal: false }
+//             );
 
-            let data3 = await EvaluatorTwo.findOneAndUpdate(
-              {
-                _id: allEvaluators[i].populatedFaculty[0]._id,
-              },
-              {
-                $set: { groupList: arr },
-              },
-              { returnOriginal: false }
-            );
-            allEvaluators[i].groupNo += 1;
-            return { proposal: data2, evaluator: data3 };
-          }
-        }
-      }
-    })
-  );
-};
+//             let data3 = await EvaluatorTwo.findOneAndUpdate(
+//               {
+//                 _id: allEvaluators[i].populatedFaculty[0]._id,
+//               },
+//               {
+//                 $set: { groupList: arr },
+//               },
+//               { returnOriginal: false }
+//             );
+//             allEvaluators[i].groupNo += 1;
+//             return { proposal: data2, evaluator: data3 };
+//           }
+//         }
+//       }
+//     })
+//   );
+// };
 
 export const unassignGroupOne = async (req, res) => {
   const { gid, e_Id } = req.params;

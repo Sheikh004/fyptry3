@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Box } from "@mui/material";
 import { Typography } from "@mui/material";
-import NavBar from "../NavBar";
+import FypNavBar from "../Navbar/FypNavBar";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
@@ -16,7 +16,6 @@ import { CircularProgress } from "@mui/material"; // Import CircularProgress
 import logo from "../../assets/logo.png";
 import { styled } from "@mui/material";
 import { ChatContext } from "../../context/ChatProvider";
-
 const Heading = styled(Typography)(({ theme }) => ({
   position: "absolute",
   top: "2rem",
@@ -40,7 +39,7 @@ const AvatarImage = styled("img")({
   marginRight: "1rem",
 });
 
-const StudentDashboard = () => {
+const FypCommDashboard = () => {
   const [open, setOpen] = useState(false); // State for drawer open/close
   const { user } = useContext(ChatContext);
   const [group, setGroup] = useState();
@@ -59,11 +58,28 @@ const StudentDashboard = () => {
   }, []);
 
   const notifications = 26;
+  // const groups = [
+  //   {
+  //     name: "E-fyp",
+  //     members: ["Hammad    (FA19-BSE-111)", "Irfan      (FA19-BSE-110)"],
+  //     percentage: 70, // Example percentage value (replace with your actual data)
+  //   },
+  //   {
+  //     name: "Home Lancers",
+  //     members: ["Raheem     (FA19-BSE-123)"],
+  //     percentage: 50, // Example percentage value (replace with your actual data)
+  //   },
+  //   {
+  //     name: "Cui Help desk",
+  //     members: ["Raheem     (FA19-BSE-123)"],
+  //     percentage: 50, // Example percentage value (replace with your actual data)
+  //   },
+  // ];
 
   return (
     <Box sx={{ display: "flex", height: "100vh" }}>
       <Box sx={{ width: "20%", backgroundColor: "#28282B" }}>
-        <NavBar onDrawerToggle={handleDrawerToggle} />
+        <FypNavBar />
       </Box>
 
       <Box
@@ -128,102 +144,53 @@ const StudentDashboard = () => {
             <br />
           </Typography>
         </Box>
-        {group && (
-          <Box
+
+        <Box
+          sx={{
+            backgroundColor: "#28282B",
+            boxShadow: "0px 2px 4px #28282B",
+            borderRadius: 4,
+            color: "white",
+            width: "calc(50% - 15px)",
+            padding: 2,
+            marginBottom: "36px",
+            "&:hover": {
+              boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
+            },
+          }}
+        >
+          <Typography
+            variant="h6"
             sx={{
-              width: "calc(50% - 16px)",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
+              marginBottom: "16px",
+              fontFamily: "Geneva",
+              fontWeight: "bold",
             }}
           >
-            <Card
-              key={group.user.name}
-              sx={{
-                backgroundColor: "#FFFFFF",
-                boxShadow: "2px 2px 4px #28282B",
-                borderRadius: 4,
-                width: "100%",
-                marginBottom: "20px",
-                "&:last-child": {
-                  marginBottom: 0,
-                },
-                "&:hover": {
-                  boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.3)",
-                },
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{
-                  marginBottom: "16px",
-                  fontFamily: "Geneva",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {group.user.name}
-              </Typography>
-              {console.log(group.user)}
-              <CardContent>
-                <Typography
-                  variant="subtitle2"
-                  sx={{ fontWeight: "bold", marginBottom: "10px" }}
-                >
-                  Group Members
-                </Typography>
-                <Box sx={{ display: "flex", flexDirection: "row" }}>
-                  <Box sx={{ flex: 1 }}>
-                    {group &&
-                      group.user.studentID.map((member, index) => (
-                        <Typography
-                          key={index}
-                          variant="body2"
-                          sx={{ color: "black", display: "block" }}
-                        >
-                          {member.name}
-                        </Typography>
-                      ))}
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Box
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        marginRight: 2,
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        sx={{ fontWeight: "bold", marginRight: 1 }}
-                      >
-                        67%
-                      </Typography>
-                      <CircularProgress
-                        variant="determinate"
-                        value={67}
-                        size={40}
-                        thickness={10}
-                        color="primary"
-                      />
-                    </Box>
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
-          </Box>
-        )}
+            Notifications
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              marginBottom: "16px",
+              backgroundColor: "white",
+              color: "black",
+              padding: 2,
+              borderRadius: 4,
+              overflow: "auto",
+            }}
+          >
+            - You have {notifications} notifications
+            <br />
+            - Project proposal has been approved
+            <br />
+            - Your task has been approved
+            <br />
+          </Typography>
+        </Box>
       </Box>
-
-      <Drawer
-        sx={{ width: 240 }}
-        variant="temporary"
-        anchor="left"
-        open={open}
-        onClose={handleDrawerToggle}
-      ></Drawer>
     </Box>
   );
 };
 
-export default StudentDashboard;
+export default FypCommDashboard;

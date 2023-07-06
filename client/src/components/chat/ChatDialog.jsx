@@ -6,13 +6,13 @@ import Menu from "./menu/Menu";
 import EmptyChat from "./chat/EmptyChat";
 import { ChatContext } from "../../context/ChatProvider";
 import ChatBox from "./chat/ChatBox";
-import NavBar from "../NavBar";
-import SupervisorNavbar from "../Navbar/SupervisorNavbar";
+// import NavBar from "../NavBar";
+// import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 
 const Component = styled(Box)`
   display: flex;
   height: 100vh;
-  background-color: #0b2b40;
+  background-color: black;
   @media (max-width: 768px) {
     height: 100vh;
   }
@@ -21,7 +21,7 @@ const Component = styled(Box)`
 
 const LeftComponent = styled(Box)`
   min-width: 400px;
-  background-color: #052f72;
+  background-color: white;
   padding: 1rem;
   min-height: 100px;
   @media (max-width: 768px) {
@@ -34,7 +34,7 @@ const RightComponent = styled(Box)`
   min-width: 300px;
   height: 100vh;
   border-left: 1px solid rgba(0, 0, 0, 0.14);
-  background-color: #12222f;
+  background-color: grey;
   padding: 1rem;
 
   @media (max-width: 768px) {
@@ -66,8 +66,8 @@ const ChatDialog = () => {
       maxWidth={"md"}
       fullWidth /* Set full width */
     >
-      {user && user.type == "Supervisor" && <SupervisorNavbar />}
-      {user && user.type == "Student" && <NavBar />}
+      {/* {user && user.type == "Supervisor" && <SupervisorNavbar />}
+      {user && user.type == "Student" && <NavBar />} */}
       <Component>
         <LeftComponent>
           <Menu />

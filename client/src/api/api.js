@@ -1310,3 +1310,22 @@ export const fetchPref = async (id) => {
       console.error(error);
     });
 };
+
+export const grade = async (data) => {
+  const token = sessionStorage.getItem("jwtToken");
+  const decryptedBytes = CryptoJS.AES.decrypt(token, encryptionKey);
+  const decryptedText = decryptedBytes.toString(CryptoJS.enc.Utf8);
+  return await axios
+    .post(`${url}/grade`, data, {
+      headers: {
+        Authorization: `Bearer ${decryptedText}`,
+      },
+    })
+    .then((response) => {
+      console.log(response);
+      return response;
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};

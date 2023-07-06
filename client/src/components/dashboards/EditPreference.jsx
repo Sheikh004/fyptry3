@@ -13,10 +13,12 @@ import {
 } from "@mui/material";
 import { fetchPref, updatePref } from "../../api/api";
 import { ChatContext } from "../../context/ChatProvider";
+import SupervisorNavbar from "../Navbar/SupervisorNavbar";
 function EditPreference(props) {
   const [fieldArray, setFieldArray] = useState([]);
   const [interestArray, setInterestArray] = useState([]);
   const [isDisabled, setIsDisabled] = useState();
+  const [open, setOpen] = useState(false); // State for drawer open/close
   const { user } = useContext(ChatContext);
   useEffect(() => {
     const getPrefs = async () => {
@@ -68,6 +70,10 @@ function EditPreference(props) {
     }
   };
 
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
+
   const handleUpdate = async () => {
     if (isDisabled === false) {
       console.log(isDisabled);
@@ -85,6 +91,10 @@ function EditPreference(props) {
   };
 
   return (
+    // <Box sx={{ display: "flex", height: "100vh" }}>
+    //   <Box sx={{ width: "20%", backgroundColor: "#28282B" }}>
+    //     <SupervisorNavbar onDrawerToggle={handleDrawerToggle} />
+    //   </Box>
     <Box>
       <h4>Project Details</h4>
 

@@ -19,7 +19,7 @@ const Component = styled(Box)`
 `;
 
 const StyledDivider = styled(Divider)`
-  background-color: #e9edef;
+  background-color: grey;
   opacity: 0.6;
 `;
 
@@ -139,7 +139,6 @@ const Conversations = ({ text }) => {
             </React.Fragment>
           );
         })}
-      <Typography>Evaluators</Typography>
     </Component>
   );
 };
