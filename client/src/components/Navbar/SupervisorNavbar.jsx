@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -6,8 +6,11 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/logo.png";
+import { ChatContext } from "../../context/ChatProvider";
 
 function SupervisorNavbar(props) {
+  const { user } = useContext(ChatContext);
+
   return (
     <Navbar
       collapseOnSelect
@@ -49,7 +52,7 @@ function SupervisorNavbar(props) {
           textAlign: "center",
         }}
       >
-        Welcome Mahwish Waqas
+        Welcome {user.name}
       </h6>
 
       <Container style={{ alignItems: "center" }}>

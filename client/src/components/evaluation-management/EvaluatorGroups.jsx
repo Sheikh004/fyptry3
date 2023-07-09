@@ -73,8 +73,9 @@ function EvaluatorGroups(props) {
     fetchEvaluatorGroups();
   }, []);
   return (
-    <div style={{ display: "flex" }}>
-      <EvaluatorNavbar />
+    <div style={{ height: "100%", width: "100%", flex: "100%" }}>
+      {/* <EvaluatorNavbar /> */}
+
       <div
         style={{
           width: { xs: "90%", sm: "70%", md: "50%", lg: "50%" },

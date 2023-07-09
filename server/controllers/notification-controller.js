@@ -37,3 +37,13 @@ export const createNotificationBroadcast = async (req, res) => {
     res.status(500).json(err);
   }
 };
+
+export const getNotifications = async (req, res) => {
+  try {
+    const not = await Notification.find({ createdFor: req.body.cFor });
+    res.status(200).json(not);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
+};

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import Container from "react-bootstrap/Container";
+import { ChatContext } from "../../context/ChatProvider";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
@@ -8,6 +9,8 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/logo.png";
 
 function EvaluatorNavbar(props) {
+  const { user } = useContext(ChatContext);
+
   return (
     <Navbar
       collapseOnSelect
@@ -52,7 +55,7 @@ function EvaluatorNavbar(props) {
           textAlign: "center",
         }}
       >
-        Welcome Mahwish Waqas
+        Welcome {user.name}
       </h6>
 
       <Container
@@ -72,6 +75,14 @@ function EvaluatorNavbar(props) {
               activeClassName="active"
             >
               Home
+            </Nav.Link>
+            <Nav.Link
+              as={NavLink}
+              to="/edit-preference"
+              className="nav-link-card"
+              activeClassName="active"
+            >
+              Edit Preference
             </Nav.Link>
             <Nav.Link eventKey={2} href="logout" className="nav-link-card">
               <FontAwesomeIcon icon={faUser} className="me-2" />

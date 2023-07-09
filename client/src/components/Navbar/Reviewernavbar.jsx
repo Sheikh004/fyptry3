@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
@@ -6,8 +6,10 @@ import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import logo from "../../assets/logo.png";
-
+import { ChatContext } from "../../context/ChatProvider";
 function Reviewernavbar(props) {
+  const { user } = useContext(ChatContext);
+
   return (
     <Navbar
       collapseOnSelect
@@ -52,7 +54,7 @@ function Reviewernavbar(props) {
           textAlign: "center",
         }}
       >
-        Welcome Mahwish Waqas
+        Welcome {user.name}
       </h6>
 
       <Container
@@ -65,6 +67,14 @@ function Reviewernavbar(props) {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="flex-column">
+            <Nav.Link
+              as={NavLink}
+              to="/edit-preference"
+              className="nav-link-card"
+              activeClassName="active"
+            >
+              Edit Preference
+            </Nav.Link>
             <Nav.Link eventKey={2} href="/login" className="nav-link-card">
               <FontAwesomeIcon icon={faUser} className="me-2" />
               Log out

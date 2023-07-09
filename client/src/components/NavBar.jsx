@@ -66,7 +66,7 @@ function NavBar(props) {
             textAlign: "center",
           }}
         >
-          Welcome Mahwish Waqas
+          Welcome {user.name}
         </h6>
 
         <Container style={{ alignItems: "center" }}>
